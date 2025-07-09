@@ -35,13 +35,13 @@ graph TD
     D -- LLM Response --> C;
     C -- Learning Signal --> F;
 
-    style A fill:#D1E8E2,stroke:#333,stroke-width:2px
-    style B fill:#B2D8D8,stroke:#333,stroke-width:2px
-    style C fill:#6E90A5,stroke:#333,stroke-width:2px
-    style D fill:#4D6A8D,stroke:#333,stroke-width:2px
-    style E fill:#3A506B,stroke:#333,stroke-width:2px
-    style F fill:#3A506B,stroke:#333,stroke-width:2px
-    style G fill:#1C2541,stroke:#333,stroke-width:2px
+    style A fill:#0d1b2a,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    style B fill:#1b263b,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    style C fill:#415a77,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    style D fill:#778da9,stroke:#ffffff,stroke-width:2px,color:#ffffff
+    style E fill:#e0e1dd,stroke:#000000,stroke-width:2px,color:#000000
+    style F fill:#e0e1dd,stroke:#000000,stroke-width:2px,color:#000000
+    style G fill:#e0e1dd,stroke:#000000,stroke-width:2px,color:#000000
 ```
 
 ## 4. Data Flow & Process Maps
