@@ -34,13 +34,13 @@ graph TD
     D -- LLM Response --> C;
     C -- Learning Signal --> F;
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#ccf,stroke:#333,stroke-width:2px
-    style C fill:#f96,stroke:#333,stroke-width:2px
-    style D fill:#bbf,stroke:#333,stroke-width:2px
-    style E fill:#9cf,stroke:#333,stroke-width:2px
-    style F fill:#9cf,stroke:#333,stroke-width:2px
-    style G fill:#c9c,stroke:#333,stroke-width:2px
+    style A fill:#D1E8E2,stroke:#333,stroke-width:2px
+    style B fill:#B2D8D8,stroke:#333,stroke-width:2px
+    style C fill:#6E90A5,stroke:#333,stroke-width:2px
+    style D fill:#4D6A8D,stroke:#333,stroke-width:2px
+    style E fill:#3A506B,stroke:#333,stroke-width:2px
+    style F fill:#3A506B,stroke:#333,stroke-width:2px
+    style G fill:#1C2541,stroke:#333,stroke-width:2px
 ```
 
 ## Further Reading
