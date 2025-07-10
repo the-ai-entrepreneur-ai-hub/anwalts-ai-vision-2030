@@ -28,25 +28,29 @@ Our "Trusted Handshake" model is the cornerstone of our compliance strategy. It 
 ```mermaid
 graph TD
     subgraph "Law Firm A"
-        A1[Client Data (PII)] --> A2{Local n8n Instance};
-        A2 -- Anonymized Data --> C;
+        A1["Client Data (PII)"] --> A2{"Local n8n Instance"};
+        A2 -- "Anonymized Data" --> C;
     end
     subgraph "Law Firm B"
-        B1[Client Data (PII)] --> B2{Local n8n Instance};
-        B2 -- Anonymized Data --> C;
+        B1["Client Data (PII)"] --> B2{"Local n8n Instance"};
+        B2 -- "Anonymized Data" --> C;
     end
     subgraph "Law Firm C"
-        C1[Client Data (PII)] --> C2{Local n8n Instance};
-        C2 -- Anonymized Data --> C;
+        C1["Client Data (PII)"] --> C2{"Local n8n Instance"};
+        C2 -- "Anonymized Data" --> C;
     end
 
     subgraph "Cloud Infrastructure"
-        C(Centralized LLM on Together.ai);
+        C("Centralized LLM on Together.ai");
     end
 
-    style A1 fill:#f9f,stroke:#333,stroke-width:2px
-    style B1 fill:#f9f,stroke:#333,stroke-width:2px
-    style C1 fill:#f9f,stroke:#333,stroke-width:2px
+    style A1 fill:#fff,stroke:#333,stroke-width:2px,color:#000
+    style B1 fill:#fff,stroke:#333,stroke-width:2px,color:#000
+    style C1 fill:#fff,stroke:#333,stroke-width:2px,color:#000
+    style A2 fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
+    style B2 fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
+    style C2 fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
+    style C fill:#e6f7ff,stroke:#0066cc,stroke-width:2px,color:#000
 ```
 *Diagram: The "Trusted Handshake" model ensures Personally Identifiable Information (PII) is processed locally, with only anonymized data sent to the central LLM.*
 
