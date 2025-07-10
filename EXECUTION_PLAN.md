@@ -64,7 +64,26 @@ The core of our architecture, the "Trusted Handshake" model, is designed to be h
     *   **Certifications:** Achieving certifications like SOC 2 for an in-house data center is a complex and expensive process requiring extensive internal resources and expertise.
     *   **Responsibility:** We would be solely responsible for all aspects of security, from physical access to the servers to network intrusion detection and data governance. This represents a significant and ongoing operational burden.
 
-## 3. Recommendation and Next Steps
+## 3. Process Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant LawFirm as Law Firm's On-Premise Network
+    participant LocalAgent as Local n8n Agent
+    participant TogetherAI as Together.ai Cloud
+    participant CentralLLM as Centralized Legal LLM
+
+    LawFirm->>+LocalAgent: 1. User interacts with legal software (e.g., document analysis)
+    LocalAgent->>LocalAgent: 2. Identifies and strips PII from the data
+    LocalAgent-->>-TogetherAI: 3. Sends anonymized data and learning signals
+    TogetherAI->>+CentralLLM: 4. Routes request to the Central LLM
+    CentralLLM->>CentralLLM: 5. Performs inference and fine-tuning
+    CentralLLM-->>-TogetherAI: 6. Returns processed data
+    TogetherAI-->>LocalAgent: 7. Sends results back to the Local n8n Agent
+    LocalAgent->>LawFirm: 8. Presents results to the user
+```
+
+## 4. Recommendation and Next Steps
 
 Based on this analysis, the recommendation is to **proceed with Together.ai for hosting the central LLM.**
 

@@ -1,14 +1,12 @@
 # Law Firm 2030: Central LLM Hosting Recommendation
 
-**To:** Key Decision-Makers  
-**From:** GEORGE, Project Developer  
-**Subject:** Recommendation for Centralized LLM Hosting: Together.ai vs. On-Premise
-
 ## 1. Executive Summary
 
 This document outlines the analysis and recommendation for hosting the central Large Language Model (LLM) for our "Law Firm 2030" federated AI infrastructure. After evaluating cloud-based solutions against local on-premise hosting, **I recommend using Together.ai for the centralized LLM.**
 
 This approach offers the best balance of scalability, cost-effectiveness, and operational efficiency, while aligning perfectly with our project's core requirements for data ownership and our "Trusted Handshake" compliance model. It allows us to leverage a powerful, managed infrastructure, enabling us to focus on developing our proprietary legal AI without the significant overhead of building and maintaining a complex hardware stack.
+
+For a detailed technical breakdown, please see the [EXECUTION_PLAN.md](EXECUTION_PLAN.md).
 
 ## 2. Hosting Model Comparison
 
@@ -27,30 +25,26 @@ Our "Trusted Handshake" model is the cornerstone of our compliance strategy. It 
 
 ```mermaid
 graph TD
-    subgraph "Law Firm A"
-        A1["Client Data (PII)"] --> A2{"Local n8n Instance"};
-        A2 -- "Anonymized Data" --> C;
-    end
-    subgraph "Law Firm B"
-        B1["Client Data (PII)"] --> B2{"Local n8n Instance"};
-        B2 -- "Anonymized Data" --> C;
-    end
-    subgraph "Law Firm C"
-        C1["Client Data (PII)"] --> C2{"Local n8n Instance"};
-        C2 -- "Anonymized Data" --> C;
+    subgraph "On-Premise (Per Law Firm)"
+        direction LR
+        A["Client's Legal Data (PII)"] --> B{Local n8n Instance: Data Anonymization};
+        B --> C["Anonymized Data & Learning Signals"];
     end
 
-    subgraph "Cloud Infrastructure"
-        C("Centralized LLM on Together.ai");
+    subgraph "Cloud Infrastructure (Together.ai)"
+        direction LR
+        D[Centralized Legal LLM] --> E{Fine-Tuning & Inference};
+        E --> F["Proprietary AI Model"];
     end
 
-    style A1 fill:#fff,stroke:#333,stroke-width:2px,color:#000
-    style B1 fill:#fff,stroke:#333,stroke-width:2px,color:#000
-    style C1 fill:#fff,stroke:#333,stroke-width:2px,color:#000
-    style A2 fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
-    style B2 fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
-    style C2 fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
+    C --> D;
+
+    style A fill:#fff,stroke:#333,stroke-width:2px,color:#000
+    style B fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
     style C fill:#e6f7ff,stroke:#0066cc,stroke-width:2px,color:#000
+    style D fill:#fff,stroke:#333,stroke-width:2px,color:#000
+    style E fill:#f2f2f2,stroke:#333,stroke-width:2px,color:#000
+    style F fill:#e6f7ff,stroke:#0066cc,stroke-width:2px,color:#000
 ```
 *Diagram: The "Trusted Handshake" model ensures Personally Identifiable Information (PII) is processed locally, with only anonymized data sent to the central LLM.*
 
