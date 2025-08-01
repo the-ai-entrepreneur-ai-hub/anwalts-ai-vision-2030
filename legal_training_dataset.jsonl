@@ -1,6 +1,0 @@
-{
-  "input": "Verwenden Sie die Vorlage 'Standard-Mietvertrag', um einen Mietvertrag für die Wohnung in [STRASSE] [HAUSNUMMER], [PLZ] [ORT] zu erstellen. Der Mieter ist [MIETER_NAME] und die Vermieterin ist [VERMIETER_NAME]. Die monatliche Miete beträgt [BETRAG] EUR.",
-  "output": {
-    "dokument": "Mietvertrag\n\nzwischen\n\n[VERMIETER_NAME]\n[VERMIETER_STRASSE]\n[VERMIETER_PLZ] [VERMIETER_ORT]\n\n- nachfolgend Vermieter genannt -\n\nund\n\n[MIETER_NAME]\n[MIETER_STRASSE]\n[MIETER_PLZ] [MIETER_ORT]\n\n- nachfolgend Mieter genannt -\n\n§ 1 Mietgegenstand\n\nDer Vermieter vermietet an den Mieter die Wohnung in der [STRASSE] [HAUSNUMMER], [PLZ] [ORT].\n\n§ 2 Miete\n\nDie monatliche Miete beträgt [BETRAG] EUR. Die Miete ist monatlich im Voraus, spätestens am dritten Werktag eines jeden Monats, auf das Konto des Vermieters zu zahlen.\n\n§ 3 Mietdauer\n\nDas Mietverhältnis beginnt am [DATUM_BEGINN] und läuft auf unbestimmte Zeit.\n\n§ 4 Kündigung\n\nDie gesetzlichen Kündigungsfristen gelten.\n\n[ORT], den [DATUM]\n\n_______________________________\n[VERMIETER_NAME]\n\n_______________________________\n[MIETER_NAME]"
-  }
-}

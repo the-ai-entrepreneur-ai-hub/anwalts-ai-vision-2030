@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "Bash(claude mcp remove:*)",
@@ -67,7 +68,36 @@
       "Bash(sed:*)",
       "Bash(ollama:*)",
       "Bash(pip3:*)",
-      "Bash(kill:*)"
+      "Bash(kill:*)",
+      "Bash(node:*)",
+      "Bash(del extract_and_combine.js)",
+      "Bash(start combined-anwalts-ai.html)",
+      "Bash(/usr/bin/python3:*)",
+      "Bash(winget search:*)",
+      "Bash(winget install:*)",
+      "Bash(refreshenv)",
+      "Bash(\"/c/Program Files/Python312/python.exe\" -m pip install flask flask-cors requests pyjwt)",
+      "Bash(cmd.exe /c install_and_run.bat)",
+      "Bash(cmd /c:*)",
+      "Bash(start \"\" \"http://localhost:8080/anwalts_ai_enhanced.html\")",
+      "Bash(start http://localhost:8080/anwalts_ai_enhanced.html)",
+      "Bash(powershell:*)",
+      "Bash(git clone:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(npm install:*)",
+      "Bash(copy \"anwalts_ai_enhanced.html\" \"anwalts-ai-app.html\")",
+      "Bash(touch:*)",
+      "Bash(taskkill:*)",
+      "Bash(start \"\" \"anwalts-ai-dashboard.html\")",
+      "Bash(./install_and_run.bat)",
+      "Bash(start \"AnwaltsAI Backend\" python enhanced_api_server.py)",
+      "Bash(start \"AnwaltsAI Frontend\" python -m http.server 8080)",
+      "Bash(start:*)",
+      "Bash(dir:*)",
+      "Bash(git config:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git rm:*)"
     ],
     "deny": []
   }
