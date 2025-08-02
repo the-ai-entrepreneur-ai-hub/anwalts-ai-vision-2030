@@ -323,18 +323,19 @@ class TogetherAIClient:
             user_prompt = f"Erstellen Sie ein professionelles Rechtsdokument für: {prompt}"
         
         payload = {
-            "model": "deepseek-ai/DeepSeek-V3",
+            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            "max_tokens": 4096,
+            "max_tokens": 2048,
             "temperature": 0.2,
             "top_p": 0.8
         }
         
         try:
-            response = self.session.post(f"{self.base_url}/chat/completions", json=payload, timeout=30)
+            # Try with longer timeout and retry logic
+            response = self.session.post(f"{self.base_url}/chat/completions", json=payload, timeout=60)
             response.raise_for_status()
             
             data = response.json()
@@ -346,7 +347,7 @@ class TogetherAIClient:
                 'content': content,
                 'confidence': 0.85 + (0.1 * min(processing_time, 5) / 5),  # Mock confidence
                 'processing_time': processing_time,
-                'model_used': 'deepseek-ai/DeepSeek-V3',
+                'model_used': 'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo',
                 'tokens_used': tokens_used
             }
             
