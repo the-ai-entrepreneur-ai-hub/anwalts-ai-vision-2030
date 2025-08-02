@@ -6,6 +6,7 @@
     <title>AnwaltsAI Dashboard - Professional Legal AI Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;500;600&display=swap" rel="stylesheet">
@@ -3140,15 +3141,16 @@
                 if (generateBtn) generateBtn.disabled = true;
                 
                 try {
-                    // Call FastAPI backend for document generation
-                    const response = await fetch('http://localhost:8003/api/generate', {
+                    // Call enhanced API server for document generation
+                    const authToken = localStorage.getItem('anwalts_auth_token');
+                    const response = await fetch('http://localhost:5001/generate-document', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`,
                         },
                         body: JSON.stringify({
-                            text: instructions || objective,
-                            context: objective
+                            prompt: instructions || objective
                         })
                     });
                     
@@ -3158,8 +3160,15 @@
                     
                     const data = await response.json();
                     
-                    if (data.success) {
-                        this.showRealGeneratedDocument(data.generated_doc, data.processing_stats);
+                    if (data.success && data.document) {
+                        // Convert backend response to expected format for showRealGeneratedDocument
+                        const mockStats = {
+                            processing_time: data.document.processing_time,
+                            model_used: data.document.model_used,
+                            tokens_used: data.document.tokens_used,
+                            confidence: data.document.confidence
+                        };
+                        this.showRealGeneratedDocument(data.document.content, mockStats);
                     } else {
                         throw new Error('Document generation failed');
                     }
@@ -3226,10 +3235,6 @@
                 // Show success notification
                 this.showNotification('Document generated successfully!', 'success');
                 
-                // Add PDF download functionality if available
-                if (stats && stats.pdf_available && stats.document_id) {
-                    this.addPDFDownloadButton(stats.document_id);
-                }
             }
 
             formatLegalDocument(rawText) {
@@ -3257,78 +3262,6 @@
                 return formatted.trim();
             }
 
-            addPDFDownloadButton(documentId) {
-                // Find the document actions area
-                const actions = document.getElementById('document-actions');
-                if (!actions) return;
-                
-                // Remove existing PDF button if present
-                const existingBtn = document.getElementById('pdf-download-btn');
-                if (existingBtn) existingBtn.remove();
-                
-                // Create PDF download button
-                const pdfBtn = document.createElement('button');
-                pdfBtn.id = 'pdf-download-btn';
-                pdfBtn.className = 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2';
-                pdfBtn.innerHTML = `
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    Download PDF
-                `;
-                
-                // Add click handler
-                pdfBtn.addEventListener('click', () => this.downloadPDF(documentId));
-                
-                // Add to actions area
-                actions.appendChild(pdfBtn);
-            }
-
-            async downloadPDF(documentId) {
-                try {
-                    this.showNotification('Generating PDF...', 'info');
-                    
-                    const response = await fetch(`http://localhost:8003/api/download-pdf/${documentId}`);
-                    
-                    if (!response.ok) {
-                        throw new Error(`PDF generation failed: ${response.status}`);
-                    }
-                    
-                    // Get the PDF blob
-                    const blob = await response.blob();
-                    
-                    // Extract filename from response headers
-                    const contentDisposition = response.headers.get('Content-Disposition');
-                    let filename = 'AnwaltsAI_Document.pdf';
-                    if (contentDisposition) {
-                        const filenameMatch = contentDisposition.match(/filename=(.+)/);
-                        if (filenameMatch) {
-                            filename = filenameMatch[1];
-                        }
-                    }
-                    
-                    // Create download link
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.style.display = 'none';
-                    a.href = url;
-                    a.download = filename;
-                    
-                    // Trigger download
-                    document.body.appendChild(a);
-                    a.click();
-                    
-                    // Cleanup
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-                    
-                    this.showNotification('PDF downloaded successfully!', 'success');
-                    
-                } catch (error) {
-                    console.error('PDF download failed:', error);
-                    this.showNotification('PDF download failed: ' + error.message, 'error');
-                }
-            }
 
             showGeneratedDocument(objective, instructions) {
                 const placeholder = document.getElementById('document-placeholder');
@@ -3496,18 +3429,129 @@ Document ID: DOC-${Date.now()}`;
             }
             
             downloadDocument() {
-                const content = document.getElementById('document-content');
-                if (content && content.value) {
-                    const blob = new Blob([content.value], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `AnwaltsAI-Document-${Date.now()}.txt`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
+                try {
+                    this.showNotification('Generiere europäisches Standard-PDF...', 'info');
+                    
+                    // Get the document content from the textarea
+                    const documentContent = document.getElementById('document-content');
+                    if (!documentContent || !documentContent.value) {
+                        throw new Error('Kein Dokumenteninhalt verfügbar');
+                    }
+                    
+                    const content = documentContent.value;
+                    const { jsPDF } = window.jspdf;
+                    
+                    // Create PDF with European A4 standards (210 × 297 mm)
+                    const pdf = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4',
+                        putOnlyUsedFonts: true
+                    });
+                    
+                    // European A4 dimensions and margins
+                    const pageWidth = 210;
+                    const pageHeight = 297;
+                    const marginLeft = 25;
+                    const marginRight = 25;
+                    const marginTop = 30;
+                    const marginBottom = 25;
+                    const contentWidth = pageWidth - marginLeft - marginRight;
+                    
+                    // Set font for German legal documents
+                    pdf.setFont('helvetica', 'normal');
+                    
+                    // Split content into lines that fit the page width
+                    const fontSize = 11;
+                    pdf.setFontSize(fontSize);
+                    const lineHeight = 6;
+                    
+                    // Split text into lines
+                    const lines = pdf.splitTextToSize(content, contentWidth);
+                    
+                    let currentY = marginTop + 20; // Start below header
+                    let pageNumber = 1;
+                    
+                    // Add first page header
+                    this.addPDFHeader(pdf, pageNumber, pageWidth, marginLeft, marginRight);
+                    
+                    // Add content line by line
+                    for (let i = 0; i < lines.length; i++) {
+                        // Check if we need a new page
+                        if (currentY + lineHeight > pageHeight - marginBottom) {
+                            // Add footer with page number
+                            this.addPDFFooter(pdf, pageNumber, pageWidth, pageHeight, marginBottom);
+                            
+                            // Add new page
+                            pdf.addPage();
+                            pageNumber++;
+                            currentY = marginTop + 20; // Reset Y position for new page
+                            
+                            // Add header to new page
+                            this.addPDFHeader(pdf, pageNumber, pageWidth, marginLeft, marginRight);
+                        }
+                        
+                        // Add line to PDF
+                        pdf.text(lines[i], marginLeft, currentY);
+                        currentY += lineHeight;
+                    }
+                    
+                    // Add footer to last page
+                    this.addPDFFooter(pdf, pageNumber, pageWidth, pageHeight, marginBottom);
+                    
+                    // Generate filename with timestamp
+                    const timestamp = new Date().toISOString().split('T')[0];
+                    const filename = `AnwaltsAI_Rechtsdokument_${timestamp}.pdf`;
+                    
+                    // Download the PDF
+                    pdf.save(filename);
+                    
+                    this.showNotification('PDF erfolgreich generiert und heruntergeladen!', 'success');
+                    
+                } catch (error) {
+                    console.error('PDF generation failed:', error);
+                    this.showNotification('PDF-Generierung fehlgeschlagen: ' + error.message, 'error');
                 }
+            }
+            
+            addPDFHeader(pdf, pageNumber, pageWidth, marginLeft, marginRight) {
+                // Add header with Lawyer AI and legal symbol
+                pdf.setFontSize(14);
+                pdf.setFont('helvetica', 'bold');
+                
+                // Legal symbol (§) and "Lawyer AI" in center, italicized
+                const headerText = '§ Lawyer AI';
+                const textWidth = pdf.getTextWidth(headerText);
+                const centerX = pageWidth / 2;
+                
+                // Draw header
+                pdf.setFont('helvetica', 'italic');
+                pdf.text(headerText, centerX - (textWidth / 2), 15);
+                
+                // Add horizontal line under header
+                pdf.setLineWidth(0.5);
+                pdf.line(marginLeft, 20, pageWidth - marginRight, 20);
+                
+                // Reset font
+                pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(11);
+            }
+            
+            addPDFFooter(pdf, pageNumber, pageWidth, pageHeight, marginBottom) {
+                // Add page number at bottom center
+                pdf.setFontSize(10);
+                pdf.setFont('helvetica', 'normal');
+                
+                const footerText = `Seite ${pageNumber}`;
+                const textWidth = pdf.getTextWidth(footerText);
+                const centerX = pageWidth / 2;
+                
+                // Add horizontal line above footer
+                pdf.setLineWidth(0.3);
+                pdf.line(25, pageHeight - marginBottom + 5, pageWidth - 25, pageHeight - marginBottom + 5);
+                
+                // Add page number
+                pdf.text(footerText, centerX - (textWidth / 2), pageHeight - marginBottom + 12);
             }
             
             clearAll() {
