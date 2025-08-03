@@ -170,12 +170,17 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 50;
+            z-index: 90;
+            user-select: none;
         }
         
         .fab:hover {
             transform: scale(1.1);
             box-shadow: 0 12px 32px rgba(134, 97, 247, 0.6);
+        }
+        
+        .fab:active {
+            transform: scale(0.95);
         }
         
         .fab-menu {
@@ -185,16 +190,16 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            z-index: 40;
+            z-index: 89;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(20px) scale(0.8);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
         }
         
         .fab-menu.open {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
             pointer-events: all;
         }
         
@@ -203,7 +208,7 @@
             align-items: center;
             gap: 1rem;
             padding: 0.75rem 1rem;
-            background: linear-gradient(135deg, rgba(46, 42, 77, 0.9), rgba(24, 22, 45, 0.8));
+            background: linear-gradient(135deg, rgba(46, 42, 77, 0.95), rgba(24, 22, 45, 0.9));
             border: 1px solid rgba(134, 97, 247, 0.3);
             border-radius: 0.75rem;
             color: white;
@@ -211,11 +216,66 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(20px);
             white-space: nowrap;
+            min-width: 140px;
         }
         
         .fab-item:hover {
-            background: linear-gradient(135deg, rgba(134, 97, 247, 0.3), rgba(46, 42, 77, 0.8));
+            background: linear-gradient(135deg, rgba(134, 97, 247, 0.3), rgba(46, 42, 77, 0.9));
             transform: translateX(-8px);
+            border-color: rgba(134, 97, 247, 0.5);
+        }
+        
+        .fab-item:active {
+            transform: translateX(-4px) scale(0.98);
+        }
+        
+        /* Responsive FAB Design */
+        @media (max-width: 768px) {
+            .fab {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 52px;
+                height: 52px;
+            }
+            
+            .fab-menu {
+                bottom: 4.5rem;
+                right: 1.5rem;
+            }
+            
+            .fab-item {
+                padding: 0.625rem 0.875rem;
+                gap: 0.75rem;
+                min-width: 120px;
+            }
+            
+            .fab-item span {
+                font-size: 0.875rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .fab {
+                bottom: 1rem;
+                right: 1rem;
+                width: 48px;
+                height: 48px;
+            }
+            
+            .fab-menu {
+                bottom: 4rem;
+                right: 1rem;
+            }
+            
+            .fab-item {
+                padding: 0.5rem 0.75rem;
+                gap: 0.5rem;
+                min-width: 100px;
+            }
+            
+            .fab-item span {
+                font-size: 0.8rem;
+            }
         }
         
         /* AI Suggestions Panel */
@@ -910,6 +970,22 @@
         .success-rate-badge {
             position: relative;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            line-height: 1;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 130px;
+            min-width: fit-content;
+            flex-shrink: 0;
+            word-break: keep-all;
         }
         
         .success-rate-tooltip {
@@ -955,9 +1031,45 @@
         /* Template Section Enhancements */
         .template-card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: 1fr;
             gap: 1.5rem;
             padding: 1rem 0;
+            align-items: start;
+        }
+        
+        /* Mobile (default): 1 column */
+        @media (min-width: 480px) {
+            .template-card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                max-width: 100%;
+            }
+        }
+        
+        /* Tablet: 2 columns */
+        @media (min-width: 768px) {
+            .template-card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 2rem;
+            }
+        }
+        
+        /* Desktop: Maximum 3 columns */
+        @media (min-width: 1200px) {
+            .template-card-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 1200px;
+                margin: 0 auto;
+                gap: 1.5rem;
+            }
+        }
+        
+        /* Large Desktop: Maintain 3-column limit */
+        @media (min-width: 1400px) {
+            .template-card-grid {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 1400px;
+                gap: 2rem;
+            }
         }
         
         .template-card {
@@ -973,6 +1085,11 @@
             opacity: 0;
             transform: translateY(20px) scale(0.95);
             animation: templateCardFadeIn 0.6s ease-out forwards;
+            display: flex;
+            flex-direction: column;
+            min-height: 320px;
+            height: 100%;
+            align-items: stretch;
         }
         
         .template-card:hover {
@@ -1033,6 +1150,187 @@
             background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(251, 146, 60, 0.1));
             color: #fb923c;
             border: 1px solid rgba(251, 146, 60, 0.3);
+        }
+        
+        /* Template Card Content Structure */
+        .template-card .template-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .template-card .template-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #f1f5f9;
+            line-height: 1.3;
+            margin: 0;
+            min-height: 1.5rem;
+        }
+        
+        .template-card .template-description {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin: 0;
+            flex-grow: 1;
+            min-height: 2.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .template-card .template-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(134, 97, 247, 0.2);
+        }
+        
+        .template-card .template-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        
+        /* Responsive adjustments for template cards */
+        @media (max-width: 767px) {
+            .template-card {
+                min-height: 280px;
+                padding: 1.25rem;
+            }
+            
+            .template-card .template-title {
+                font-size: 1rem;
+            }
+            
+            .template-card .template-description {
+                font-size: 0.8125rem;
+                -webkit-line-clamp: 2;
+                min-height: 2rem;
+            }
+            
+            .success-rate-badge {
+                max-width: 100px;
+                font-size: 0.6875rem;
+            }
+        }
+        
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .template-card {
+                min-height: 320px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .template-card {
+                min-height: 320px;
+            }
+            
+            .template-card .template-title {
+                font-size: 1.25rem;
+            }
+        }
+        
+        /* Additional responsive breakpoints for better UX */
+        @media (min-width: 480px) and (max-width: 767px) {
+            .template-card-grid {
+                gap: 1.25rem;
+            }
+            
+            .template-card {
+                min-height: 280px;
+            }
+        }
+        
+        /* Large tablet landscape */
+        @media (min-width: 1024px) and (max-width: 1199px) {
+            .template-card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+                gap: 1.75rem;
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+            
+            .template-card {
+                min-height: 320px;
+            }
+        }
+        
+        /* Ultra-wide screens */
+        @media (min-width: 1600px) {
+            .template-card-grid {
+                max-width: 1500px;
+                gap: 2.5rem;
+            }
+            
+            .template-card {
+                min-height: 350px;
+                padding: 2rem;
+            }
+            
+            .template-card .template-title {
+                font-size: 1.375rem;
+            }
+            
+            .template-card .template-description {
+                font-size: 0.9375rem;
+            }
+        }
+        
+        /* Additional improved responsive breakpoints */
+        @media (min-width: 375px) and (max-width: 479px) {
+            .template-card-grid {
+                gap: 1rem;
+                padding: 0.5rem 0;
+            }
+            
+            .template-card {
+                min-height: 260px;
+                padding: 1rem;
+            }
+            
+            .template-card .template-title {
+                font-size: 0.95rem;
+            }
+            
+            .success-rate-badge {
+                font-size: 0.65rem;
+                padding: 0.25rem 0.5rem;
+                max-width: 90px;
+            }
+        }
+        
+        /* Medium tablet portrait */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .template-card-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            
+            .template-card {
+                min-height: 300px;
+            }
+        }
+        
+        /* Large desktop optimization */
+        @media (min-width: 1400px) and (max-width: 1599px) {
+            .template-card-grid {
+                gap: 2.25rem;
+            }
+            
+            .template-card {
+                min-height: 330px;
+                padding: 1.75rem;
+            }
         }
         
         .suggested-templates-bar {
@@ -1191,74 +1489,6 @@
             }
         }
         
-        .template-fab {
-            position: fixed;
-            bottom: 6rem;
-            right: 2rem;
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8661f7, #6d44d3);
-            box-shadow: 0 8px 24px rgba(134, 97, 247, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 45;
-            animation: fabPulse 10s infinite;
-        }
-        
-        .template-fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 32px rgba(134, 97, 247, 0.6);
-        }
-        
-        @keyframes fabPulse {
-            0%, 90%, 100% { transform: scale(1); }
-            5% { transform: scale(1.05); }
-            10% { transform: scale(1); }
-        }
-        
-        .fab-radial-menu {
-            position: fixed;
-            bottom: 8rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 40;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            pointer-events: none;
-        }
-        
-        .fab-radial-menu.open {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: all;
-        }
-        
-        .fab-radial-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, rgba(46, 42, 77, 0.9), rgba(24, 22, 45, 0.8));
-            border: 1px solid rgba(134, 97, 247, 0.3);
-            border-radius: 0.75rem;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            white-space: nowrap;
-        }
-        
-        .fab-radial-item:hover {
-            background: linear-gradient(135deg, rgba(134, 97, 247, 0.3), rgba(46, 42, 77, 0.8));
-            transform: translateX(-8px);
-        }
         
         .import-export-modal {
             position: fixed;
@@ -2379,15 +2609,29 @@
                         </div>
                         
                         <!-- Template Card 2 -->
-                        <div class="template-card" style="animation-delay: 0.2s" data-template-id="2">
+                        <div class="template-card" style="--animation-delay: 0.2s; animation-delay: 0.2s" data-template-id="2" data-testid="template-card-2">
+                            <div class="template-border-glow"></div>
                             <div class="relative z-10">
                                 <div class="flex items-start justify-between mb-4">
                                     <div>
-                                        <h3 class="text-lg font-semibold text-white mb-2">Geheimhaltungsvereinbarung</h3>
-                                        <p class="text-sm text-gray-400 serif-text">NDA für vertrauliche Geschäftsinformationen</p>
+                                        <h3 class="template-title text-lg font-semibold text-white mb-2">Geheimhaltungsvereinbarung</h3>
+                                        <p class="template-description text-sm text-gray-400 serif-text">NDA für vertrauliche Geschäftsinformationen</p>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="Edit Template">
+                                        <span class="success-rate-badge text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                                            91% success
+                                            <div class="success-rate-tooltip">
+                                                Historical Success Rate
+                                                <div class="mini-chart">
+                                                    <span class="chart-bar-mini" style="height: 16px; transform: scaleY(0.85);"></span>
+                                                    <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.9);"></span>
+                                                    <span class="chart-bar-mini" style="height: 17px; transform: scaleY(0.88);"></span>
+                                                    <span class="chart-bar-mini" style="height: 19px; transform: scaleY(0.92);"></span>
+                                                    <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.91);"></span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors edit-template-btn" title="Edit Template" data-template-id="2">
                                             <i data-lucide="edit-2" class="w-4 h-4 text-gray-400"></i>
                                         </button>
                                         <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="More Options">
@@ -2422,14 +2666,14 @@
                                 
                                 <div class="flex gap-2">
                                     <button class="use-template-btn flex-1 py-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-700 transition-all" 
-                                            data-template-id="{{ template_id }}" 
-                                            data-testid="use-template-{{ template_id }}">
+                                            data-template-id="2" 
+                                            data-testid="use-template-2">
                                         Use Template
                                     </button>
-                                    <button class="duplicate-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
-                                            title="Duplicate" 
-                                            data-template-id="{{ template_id }}"
-                                            data-testid="duplicate-template-{{ template_id }}">
+                                    <button class="copy-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
+                                            title="Copy to Clipboard" 
+                                            data-template-id="2"
+                                            data-testid="copy-template-2">
                                         <i data-lucide="copy" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -2437,15 +2681,29 @@
                         </div>
                         
                         <!-- Template Card 3 -->
-                        <div class="template-card" style="animation-delay: 0.3s" data-template-id="3">
+                        <div class="template-card" style="--animation-delay: 0.3s; animation-delay: 0.3s" data-template-id="3" data-testid="template-card-3">
+                            <div class="template-border-glow"></div>
                             <div class="relative z-10">
                                 <div class="flex items-start justify-between mb-4">
                                     <div>
-                                        <h3 class="text-lg font-semibold text-white mb-2">Kündigung Arbeitsvertrag</h3>
-                                        <p class="text-sm text-gray-400 serif-text">Ordentliche Kündigung eines Arbeitsverhältnisses</p>
+                                        <h3 class="template-title text-lg font-semibold text-white mb-2">Kündigung Arbeitsvertrag</h3>
+                                        <p class="template-description text-sm text-gray-400 serif-text">Ordentliche Kündigung eines Arbeitsverhältnisses</p>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="Edit Template">
+                                        <span class="success-rate-badge text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                                            89% success
+                                            <div class="success-rate-tooltip">
+                                                Historical Success Rate
+                                                <div class="mini-chart">
+                                                    <span class="chart-bar-mini" style="height: 15px; transform: scaleY(0.82);"></span>
+                                                    <span class="chart-bar-mini" style="height: 17px; transform: scaleY(0.87);"></span>
+                                                    <span class="chart-bar-mini" style="height: 16px; transform: scaleY(0.85);"></span>
+                                                    <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.89);"></span>
+                                                    <span class="chart-bar-mini" style="height: 17px; transform: scaleY(0.88);"></span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors edit-template-btn" title="Edit Template" data-template-id="3">
                                             <i data-lucide="edit-2" class="w-4 h-4 text-gray-400"></i>
                                         </button>
                                         <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="More Options">
@@ -2480,14 +2738,14 @@
                                 
                                 <div class="flex gap-2">
                                     <button class="use-template-btn flex-1 py-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-700 transition-all" 
-                                            data-template-id="{{ template_id }}" 
-                                            data-testid="use-template-{{ template_id }}">
+                                            data-template-id="3" 
+                                            data-testid="use-template-3">
                                         Use Template
                                     </button>
-                                    <button class="duplicate-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
-                                            title="Duplicate" 
-                                            data-template-id="{{ template_id }}"
-                                            data-testid="duplicate-template-{{ template_id }}">
+                                    <button class="copy-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
+                                            title="Copy to Clipboard" 
+                                            data-template-id="3"
+                                            data-testid="copy-template-3">
                                         <i data-lucide="copy" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -2495,15 +2753,29 @@
                         </div>
 
                         <!-- Template Card 4 -->
-                        <div class="template-card" style="animation-delay: 0.4s" data-template-id="4">
+                        <div class="template-card" style="--animation-delay: 0.4s; animation-delay: 0.4s" data-template-id="4" data-testid="template-card-4">
+                            <div class="template-border-glow"></div>
                             <div class="relative z-10">
                                 <div class="flex items-start justify-between mb-4">
                                     <div>
-                                        <h3 class="text-lg font-semibold text-white mb-2">Kaufvertrag Immobilie</h3>
-                                        <p class="text-sm text-gray-400 serif-text">Vollständiger Kaufvertrag für Immobilienerwerb</p>
+                                        <h3 class="template-title text-lg font-semibold text-white mb-2">Kaufvertrag Immobilie</h3>
+                                        <p class="template-description text-sm text-gray-400 serif-text">Vollständiger Kaufvertrag für Immobilienerwerb</p>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="Edit Template">
+                                        <span class="success-rate-badge text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                                            94% success
+                                            <div class="success-rate-tooltip">
+                                                Historical Success Rate
+                                                <div class="mini-chart">
+                                                    <span class="chart-bar-mini" style="height: 17px; transform: scaleY(0.88);"></span>
+                                                    <span class="chart-bar-mini" style="height: 19px; transform: scaleY(0.93);"></span>
+                                                    <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.91);"></span>
+                                                    <span class="chart-bar-mini" style="height: 20px; transform: scaleY(0.95);"></span>
+                                                    <span class="chart-bar-mini" style="height: 19px; transform: scaleY(0.94);"></span>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors edit-template-btn" title="Edit Template" data-template-id="4">
                                             <i data-lucide="edit-2" class="w-4 h-4 text-gray-400"></i>
                                         </button>
                                         <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="More Options">
@@ -2538,14 +2810,14 @@
                                 
                                 <div class="flex gap-2">
                                     <button class="use-template-btn flex-1 py-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-700 transition-all" 
-                                            data-template-id="{{ template_id }}" 
-                                            data-testid="use-template-{{ template_id }}">
+                                            data-template-id="4" 
+                                            data-testid="use-template-4">
                                         Use Template
                                     </button>
-                                    <button class="duplicate-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
-                                            title="Duplicate" 
-                                            data-template-id="{{ template_id }}"
-                                            data-testid="duplicate-template-{{ template_id }}">
+                                    <button class="copy-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
+                                            title="Copy to Clipboard" 
+                                            data-template-id="4"
+                                            data-testid="copy-template-4">
                                         <i data-lucide="copy" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -2568,11 +2840,7 @@
             <i data-lucide="file-plus" class="w-5 h-5"></i>
             <span>New Document</span>
         </div>
-        <div class="fab-item" onclick="document.getElementById('document-upload').click()">
-            <i data-lucide="upload" class="w-5 h-5"></i>
-            <span>Upload File</span>
-        </div>
-        <div class="fab-item" onclick="switchSection('templates')">
+        <div class="fab-item" onclick="window.dashboard.openCreateTemplateModal()">
             <i data-lucide="bookmark-plus" class="w-5 h-5"></i>
             <span>Create Template</span>
         </div>
@@ -2680,26 +2948,6 @@
         </button>
     </div>
 
-    <!-- Template FAB -->
-    <div class="template-fab" id="template-fab">
-        <i data-lucide="plus" class="w-6 h-6 text-white"></i>
-    </div>
-    
-    <!-- Template FAB Radial Menu -->
-    <div class="fab-radial-menu" id="template-fab-menu">
-        <div class="fab-radial-item" data-action="blank">
-            <i data-lucide="file-plus" class="w-5 h-5"></i>
-            <span>From Blank</span>
-        </div>
-        <div class="fab-radial-item" data-action="existing">
-            <i data-lucide="copy" class="w-5 h-5"></i>
-            <span>From Existing</span>
-        </div>
-        <div class="fab-radial-item" data-action="ai">
-            <i data-lucide="brain" class="w-5 h-5"></i>
-            <span>From AI Draft</span>
-        </div>
-    </div>
 
     <!-- Template Filter Sidebar -->
     <div class="template-filter-sidebar" id="template-filter-sidebar">
@@ -4149,7 +4397,6 @@ Kollege Schmidt`,
             setupTemplatePortal() {
                 // Setup template card interactions
                 this.setupTemplateCards();
-                this.setupTemplateFAB();
                 this.setupTemplateFilters();
                 this.setupImportExport();
                 this.setupTemplateAnalytics();
@@ -4203,51 +4450,6 @@ Kollege Schmidt`,
                 });
             }
             
-            setupTemplateFAB() {
-                const templateFAB = document.getElementById('template-fab');
-                const templateFABMenu = document.getElementById('template-fab-menu');
-                let isOpen = false;
-                
-                if (templateFAB && templateFABMenu) {
-                    templateFAB.addEventListener('click', () => {
-                        isOpen = !isOpen;
-                        templateFABMenu.classList.toggle('open', isOpen);
-                        
-                        // Rotate FAB icon
-                        const icon = templateFAB.querySelector('i');
-                        if (icon) {
-                            icon.style.transform = isOpen ? 'rotate(45deg)' : 'rotate(0deg)';
-                        }
-                    });
-                    
-                    // FAB menu item handlers
-                    const createBtn = document.getElementById('fab-create-template');
-                    const importBtn = document.getElementById('fab-import-templates');
-                    const aiBtn = document.getElementById('fab-ai-generate');
-                    
-                    if (createBtn) {
-                        createBtn.addEventListener('click', () => this.createNewTemplate());
-                    }
-                    
-                    if (importBtn) {
-                        importBtn.addEventListener('click', () => this.openImportDialog());
-                    }
-                    
-                    if (aiBtn) {
-                        aiBtn.addEventListener('click', () => this.generateAITemplate());
-                    }
-                    
-                    // Close FAB menu when clicking outside
-                    document.addEventListener('click', (e) => {
-                        if (!templateFAB.contains(e.target) && !templateFABMenu.contains(e.target) && isOpen) {
-                            isOpen = false;
-                            templateFABMenu.classList.remove('open');
-                            const icon = templateFAB.querySelector('i');
-                            if (icon) icon.style.transform = 'rotate(0deg)';
-                        }
-                    });
-                }
-            }
             
             setupTemplateFilters() {
                 const filterSidebar = document.getElementById('template-filter-sidebar');
@@ -5093,6 +5295,404 @@ Kollege Schmidt`,
                 });
             }
             
+            openCreateTemplateModal() {
+                // Check if modal already exists
+                let modal = document.getElementById('create-template-modal');
+                if (!modal) {
+                    // Create the modal if it doesn't exist
+                    modal = this.createTemplateModal();
+                    document.body.appendChild(modal);
+                }
+                
+                // Reset form
+                this.resetCreateTemplateForm();
+                
+                // Show modal
+                modal.classList.add('active');
+                document.body.classList.add('modal-open');
+                
+                // Focus on title input
+                setTimeout(() => {
+                    const titleInput = document.getElementById('create-template-title');
+                    if (titleInput) titleInput.focus();
+                }, 100);
+            }
+            
+            createTemplateModal() {
+                const modal = document.createElement('div');
+                modal.id = 'create-template-modal';
+                modal.className = 'glassmorphic-modal z-50';
+                modal.innerHTML = `
+                    <div class="modal-overlay" id="create-modal-overlay"></div>
+                    <div class="modal-container max-w-2xl w-full mx-4">
+                        <div class="modal-header">
+                            <h2 class="text-xl font-semibold text-white">Create New Template</h2>
+                            <button class="modal-close" id="create-modal-close" aria-label="Close">
+                                <i data-lucide="x" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="modal-body space-y-6">
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Template Title</label>
+                                <input type="text" id="create-template-title" class="template-input w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none" placeholder="Enter template title">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                                <textarea id="create-template-description" rows="3" class="template-input w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none resize-none" placeholder="Enter template description"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Template Content</label>
+                                <textarea id="create-template-content" rows="8" class="template-input w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none resize-y" placeholder="Enter template content with placeholders like {{client_name}}, {{date}}, etc."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Tags</label>
+                                <div class="tag-input-container">
+                                    <input type="text" id="create-tag-input" class="template-input w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none" placeholder="Add tags (press Enter to add)">
+                                    <div id="create-template-tags" class="flex flex-wrap gap-2 mt-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button class="cancel-btn px-4 py-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" id="create-cancel-btn">
+                                Cancel
+                            </button>
+                            <button class="save-btn px-6 py-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-700 transition-all disabled:opacity-50" id="create-save-btn" disabled>
+                                <span class="btn-text">Create Template</span>
+                                <div class="btn-loader hidden">
+                                    <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Setup event listeners
+                this.setupCreateTemplateModalListeners(modal);
+                
+                return modal;
+            }
+            
+            setupCreateTemplateModalListeners(modal) {
+                const overlay = modal.querySelector('#create-modal-overlay');
+                const closeBtn = modal.querySelector('#create-modal-close');
+                const cancelBtn = modal.querySelector('#create-cancel-btn');
+                const saveBtn = modal.querySelector('#create-save-btn');
+                const tagInput = modal.querySelector('#create-tag-input');
+                
+                // Close modal events
+                const closeModal = () => {
+                    modal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                };
+                
+                if (overlay) overlay.onclick = closeModal;
+                if (closeBtn) closeBtn.onclick = closeModal;
+                if (cancelBtn) cancelBtn.onclick = closeModal;
+                
+                // Save template
+                if (saveBtn) {
+                    saveBtn.onclick = () => {
+                        this.saveNewTemplate();
+                        closeModal();
+                    };
+                }
+                
+                // Add tags on Enter
+                if (tagInput) {
+                    tagInput.onkeypress = (e) => {
+                        if (e.key === 'Enter' && tagInput.value.trim()) {
+                            this.addTagToCreate(tagInput.value.trim());
+                            tagInput.value = '';
+                        }
+                    };
+                }
+                
+                // Track changes to enable/disable save button
+                this.setupCreateChangeTracking();
+            }
+            
+            resetCreateTemplateForm() {
+                document.getElementById('create-template-title').value = '';
+                document.getElementById('create-template-description').value = '';
+                document.getElementById('create-template-content').value = '';
+                document.getElementById('create-template-tags').innerHTML = '';
+                document.getElementById('create-save-btn').disabled = true;
+            }
+            
+            addTagToCreate(tagText) {
+                const tagsContainer = document.getElementById('create-template-tags');
+                const tag = document.createElement('span');
+                tag.className = 'template-tag-editable bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm flex items-center gap-2';
+                tag.innerHTML = `
+                    ${tagText}
+                    <button class="remove-tag hover:text-red-400" onclick="this.parentElement.remove(); window.dashboard.checkCreateFormChanges();">
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                `;
+                tagsContainer.appendChild(tag);
+                
+                // Re-initialize Lucide icons
+                if (window.lucide) window.lucide.createIcons();
+                
+                this.checkCreateFormChanges();
+            }
+            
+            setupCreateChangeTracking() {
+                const titleInput = document.getElementById('create-template-title');
+                const descInput = document.getElementById('create-template-description');
+                const contentInput = document.getElementById('create-template-content');
+                
+                const checkForChanges = () => {
+                    this.checkCreateFormChanges();
+                };
+                
+                if (titleInput) titleInput.addEventListener('input', checkForChanges);
+                if (descInput) descInput.addEventListener('input', checkForChanges);
+                if (contentInput) contentInput.addEventListener('input', checkForChanges);
+            }
+            
+            checkCreateFormChanges() {
+                const title = document.getElementById('create-template-title')?.value.trim();
+                const content = document.getElementById('create-template-content')?.value.trim();
+                const saveBtn = document.getElementById('create-save-btn');
+                
+                if (saveBtn) {
+                    saveBtn.disabled = !title || !content;
+                }
+            }
+            
+            saveNewTemplate() {
+                const title = document.getElementById('create-template-title').value.trim();
+                const description = document.getElementById('create-template-description').value.trim();
+                const content = document.getElementById('create-template-content').value.trim();
+                const tags = Array.from(document.querySelectorAll('#create-template-tags .template-tag-editable'))
+                    .map(tag => tag.textContent.trim());
+                
+                // Generate new template ID
+                const newTemplateId = String(Date.now());
+                
+                // Create template data
+                const templateData = {
+                    title,
+                    description: description || 'Custom template',
+                    content,
+                    tags: tags.length > 0 ? tags : ['Custom'],
+                    category: 'custom',
+                    version: 1.0,
+                    created: new Date().toISOString(),
+                    author: 'User'
+                };
+                
+                // Add to template grid (this would normally save to backend)
+                this.addNewTemplateToGrid(newTemplateId, templateData);
+                
+                this.showNotification(`Template "${title}" created successfully!`, 'success');
+            }
+            
+            addNewTemplateToGrid(templateId, templateData) {
+                const grid = document.getElementById('template-grid');
+                if (!grid) return;
+                
+                // Create new template card HTML
+                const cardHtml = this.generateTemplateCardHtml(templateId, templateData);
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+                
+                // Re-initialize Lucide icons
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+                
+                // Setup event listeners for the new card
+                this.setupNewTemplateCardListeners(templateId);
+            }
+            
+            generateTemplateCardHtml(templateId, templateData) {
+                const tagsHtml = this.generateTagsHtml(templateData.tags || []);
+                
+                return `
+                    <div class="template-card" style="--animation-delay: 0.1s; animation-delay: 0.1s" data-template-id="${templateId}" data-testid="template-card-${templateId}">
+                        <div class="template-border-glow"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h3 class="template-title text-lg font-semibold text-white mb-2">${templateData.title}</h3>
+                                    <p class="template-description text-sm text-gray-400 serif-text">${templateData.description}</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="success-rate-badge text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                                        New
+                                    </span>
+                                    <button class="p-2 hover:bg-white/10 rounded-lg transition-colors edit-template-btn" title="Edit Template" data-template-id="${templateId}">
+                                        <i data-lucide="edit-2" class="w-4 h-4 text-gray-400"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="More Options">
+                                        <i data-lucide="more-vertical" class="w-4 h-4 text-gray-400"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${tagsHtml}
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                                <div>
+                                    <span class="text-gray-400">Created by:</span>
+                                    <p class="text-white font-medium">${templateData.author}</p>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400">Created:</span>
+                                    <p class="text-white font-medium">Just now</p>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400">Usage count:</span>
+                                    <p class="text-white font-medium">0 times</p>
+                                </div>
+                                <div>
+                                    <span class="text-gray-400">Status:</span>
+                                    <p class="text-blue-400 font-medium">Ready</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button class="use-template-btn flex-1 py-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-700 transition-all" 
+                                        data-template-id="${templateId}" 
+                                        data-testid="use-template-${templateId}">
+                                    Use Template
+                                </button>
+                                <button class="copy-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
+                                        title="Copy to Clipboard" 
+                                        data-template-id="${templateId}"
+                                        data-testid="copy-template-${templateId}">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            generateTagsHtml(tags) {
+                if (!tags || tags.length === 0) return '';
+                
+                return tags.map(tag => 
+                    `<span class="template-tag ${tag.toLowerCase()}">${tag}</span>`
+                ).join('');
+            }
+            
+            setupNewTemplateCardListeners(templateId) {
+                const card = document.querySelector(`[data-template-id="${templateId}"]`);
+                if (!card) return;
+                
+                const useBtn = card.querySelector('.use-template-btn');
+                const copyBtn = card.querySelector('.copy-template-btn');
+                const editBtn = card.querySelector('.edit-template-btn');
+                
+                if (useBtn) {
+                    useBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.useTemplate(templateId);
+                    });
+                }
+                
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.copyTemplateToClipboard(templateId);
+                    });
+                }
+                
+                if (editBtn) {
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.editTemplate(templateId);
+                    });
+                }
+            }
+            
+            copyTemplateToClipboard(templateId) {
+                // Get template data
+                const templateData = this.getTemplateData(templateId);
+                if (!templateData) {
+                    this.showNotification('Template not found', 'error');
+                    return;
+                }
+                
+                // Create clipboard content
+                const clipboardContent = {
+                    id: templateId,
+                    title: templateData.name || templateData.title,
+                    content: templateData.content,
+                    category: templateData.category,
+                    type: 'anwalts-template',
+                    exportedAt: new Date().toISOString()
+                };
+                
+                // Copy to clipboard
+                const textContent = JSON.stringify(clipboardContent, null, 2);
+                
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(textContent).then(() => {
+                        this.showNotification('Template copied to clipboard!', 'success');
+                        this.showCopyFeedback(templateId);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                        this.fallbackCopyToClipboard(textContent, templateId);
+                    });
+                } else {
+                    // Fallback for older browsers or non-HTTPS
+                    this.fallbackCopyToClipboard(textContent, templateId);
+                }
+            }
+            
+            fallbackCopyToClipboard(text, templateId) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    textArea.remove();
+                    this.showNotification('Template copied to clipboard!', 'success');
+                    this.showCopyFeedback(templateId);
+                } catch (err) {
+                    console.error('Fallback copy failed: ', err);
+                    textArea.remove();
+                    this.showNotification('Failed to copy template', 'error');
+                }
+            }
+            
+            showCopyFeedback(templateId) {
+                const copyBtn = document.querySelector(`[data-template-id="${templateId}"] .copy-template-btn`);
+                if (!copyBtn) return;
+                
+                // Show visual feedback
+                const originalIcon = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>';
+                copyBtn.classList.add('bg-green-600');
+                copyBtn.classList.remove('bg-gray-600');
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalIcon;
+                    copyBtn.classList.remove('bg-green-600');
+                    copyBtn.classList.add('bg-gray-600');
+                    
+                    // Re-initialize lucide icons
+                    if (window.lucide) window.lucide.createIcons();
+                }, 2000);
+            }
+
             showNotification(message, type = 'info') {
                 // Create notification element
                 const notification = document.createElement('div');
