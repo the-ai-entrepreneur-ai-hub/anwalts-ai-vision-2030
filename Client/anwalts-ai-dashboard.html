@@ -3433,15 +3433,7 @@
         </div>
         <div class="text-xs text-gray-400 mb-3">Recent snippets for reuse</div>
         <div class="space-y-2 max-h-40 overflow-y-auto">
-            <div class="p-2 bg-white/5 rounded text-xs text-gray-300 cursor-pointer hover:bg-white/10">
-                "Sehr geehrte Damen und Herren, hiermit kündigen wir..."
-            </div>
-            <div class="p-2 bg-white/5 rounded text-xs text-gray-300 cursor-pointer hover:bg-white/10">
-                "Zahlungsfrist: 14 Tage nach Erhalt"
-            </div>
-            <div class="p-2 bg-white/5 rounded text-xs text-gray-300 cursor-pointer hover:bg-white/10">
-                "Mit freundlichen Grüßen, Rechtsanwaltskanzlei..."
-            </div>
+            <div class="text-xs text-gray-500 text-center py-4">No snippets copied yet</div>
         </div>
         <button class="w-full mt-3 py-1 bg-gradient-to-r from-green-500 to-green-600 rounded text-white text-xs hover:from-green-600 hover:to-green-700 transition-all">
             Clear Clipboard
@@ -5154,7 +5146,7 @@ Kollege Schmidt`,
                         duplicateBtn.dataset.testid = `duplicate-template-${templateId}`;
                         duplicateBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
-                            this.duplicateTemplate(templateId);
+                            this.copyTemplateToClipboard(templateId);
                         });
                     }
                     
@@ -6554,7 +6546,7 @@ Kollege Schmidt`,
                 if (copyBtn) {
                     copyBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        this.duplicateTemplate(templateId);
+                        this.copyTemplateToClipboard(templateId);
                     });
                 }
                 
