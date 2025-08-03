@@ -657,23 +657,22 @@
                 rgba(59, 130, 246, 0.04) 70%,
                 rgba(255, 255, 255, 0.08) 100%);
             backdrop-filter: blur(35px) saturate(200%) brightness(1.1);
-            border: 1px solid;
+            border: 2px solid;
             border-image: linear-gradient(135deg, 
                 rgba(134, 97, 247, 0.6), 
                 rgba(255, 255, 255, 0.3), 
                 rgba(59, 130, 246, 0.4),
                 rgba(134, 97, 247, 0.5)) 1;
-            border-radius: 1.5rem;
+            border-radius: 2rem;
             box-shadow: 
-                0 40px 80px rgba(0, 0, 0, 0.7),
-                0 20px 40px rgba(134, 97, 247, 0.2),
-                0 8px 32px rgba(59, 130, 246, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.15),
-                inset 0 2px 0 rgba(255, 255, 255, 0.2),
-                inset 0 -2px 0 rgba(134, 97, 247, 0.15),
-                inset 0 0 40px rgba(134, 97, 247, 0.05);
-            max-width: 90vw;
-            max-height: 90vh;
+                0 25px 50px rgba(0, 0, 0, 0.6),
+                0 15px 25px rgba(134, 97, 247, 0.25),
+                0 5px 15px rgba(59, 130, 246, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.25),
+                inset 0 -2px 4px rgba(134, 97, 247, 0.15);
+            width: min(90vw, 500px);
+            max-height: 85vh;
             overflow: hidden;
             z-index: 90;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -721,8 +720,8 @@
         }
         
         .modal-header {
-            padding: 2.5rem 2.5rem 2rem;
-            border-bottom: 1px solid rgba(134, 97, 247, 0.3);
+            padding: 2rem 2rem 1.5rem;
+            border-bottom: 1px solid rgba(134, 97, 247, 0.2);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -732,7 +731,7 @@
                 rgba(59, 130, 246, 0.06) 70%,
                 rgba(255, 255, 255, 0.12) 100%);
             position: relative;
-            border-radius: 1.5rem 1.5rem 0 0;
+            border-radius: 2rem 2rem 0 0;
         }
 
         .modal-header::before {
@@ -785,15 +784,16 @@
         }
         
         .modal-body {
-            padding: 2.5rem;
+            padding: 2rem;
             overflow-y: auto;
-            max-height: calc(90vh - 220px);
+            max-height: calc(85vh - 180px);
             background: linear-gradient(135deg, 
                 rgba(255, 255, 255, 0.03) 0%, 
                 rgba(134, 97, 247, 0.015) 30%,
                 rgba(59, 130, 246, 0.01) 70%,
                 rgba(255, 255, 255, 0.02) 100%);
             position: relative;
+            border-radius: 0 0 2rem 2rem;
         }
 
         .modal-body::before {
@@ -945,15 +945,23 @@
         /* Enhanced responsive behavior */
         @media (max-width: 768px) {
             .glassmorphic-modal {
-                width: 95vw !important;
-                height: 95vh !important;
-                border-radius: 1rem;
-                margin: 0;
+                width: 96vw !important;
+                height: auto !important;
+                max-height: 90vh !important;
+                border-radius: 1.5rem !important;
+                margin: 2vh auto !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) scale(0.9) !important;
+            }
+
+            .glassmorphic-modal.active {
+                transform: translate(-50%, -50%) scale(1) !important;
             }
 
             .modal-header {
                 padding: 1.5rem 1.5rem 1rem;
-                border-radius: 1rem 1rem 0 0;
+                border-radius: 1.5rem 1.5rem 0 0;
             }
 
             .modal-header h2,
@@ -963,7 +971,8 @@
 
             .modal-body {
                 padding: 1.5rem;
-                max-height: calc(95vh - 180px);
+                max-height: calc(90vh - 160px);
+                overflow-y: auto;
             }
 
             .modal-close {
@@ -974,8 +983,19 @@
             }
 
             .email-modal {
-                width: 95vw;
+                width: 96vw;
                 height: 95vh;
+            }
+
+            .import-export-modal .modal-content {
+                width: 96vw !important;
+                padding: 1.5rem !important;
+                border-radius: 1.5rem !important;
+            }
+
+            .drop-zone {
+                padding: 2rem 1rem !important;
+                border-radius: 1rem !important;
             }
             
             .email-actions {
@@ -1811,15 +1831,15 @@
                 rgba(59, 130, 246, 0.04) 70%,
                 rgba(255, 255, 255, 0.08) 100%);
             backdrop-filter: blur(35px) saturate(200%) brightness(1.1);
-            border: 1px solid;
+            border: 2px solid;
             border-image: linear-gradient(135deg, 
                 rgba(134, 97, 247, 0.6), 
                 rgba(255, 255, 255, 0.3), 
                 rgba(59, 130, 246, 0.4),
                 rgba(134, 97, 247, 0.5)) 1;
-            border-radius: 1.5rem;
-            padding: 2.5rem;
-            max-width: 500px;
+            border-radius: 2rem;
+            padding: 2rem;
+            width: min(90vw, 500px);
             width: 90%;
             transform: scale(0.9);
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1838,8 +1858,8 @@
         
         .drop-zone {
             border: 2px dashed rgba(134, 97, 247, 0.6);
-            border-radius: 1rem;
-            padding: 3rem;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
             text-align: center;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
@@ -2969,7 +2989,7 @@
                             <div class="relative z-10">
                                 <div class="flex items-start justify-between mb-4">
                                     <div>
-                                        <h3 class="template-title text-lg font-semibold text-white mb-2">Geheimhaltungsvereinbarung</h3>
+                                        <h3 class="template-title text-lg font-semibold text-white mb-2" title="Geheimhaltungsvereinbarung">Geheimhaltungsver...</h3>
                                         <p class="template-description text-sm text-gray-400 serif-text">NDA für vertrauliche Geschäftsinformationen</p>
                                     </div>
                                     <div class="flex items-center gap-2">
@@ -3029,9 +3049,9 @@
                                         Use Template
                                     </button>
                                     <button class="duplicate-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
-                                            title="Copy to Clipboard" 
+                                            title="Duplicate Template" 
                                             data-template-id="2"
-                                            data-testid="copy-template-2">
+                                            data-testid="duplicate-template-2">
                                         <i data-lucide="copy" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -3044,7 +3064,7 @@
                             <div class="relative z-10">
                                 <div class="flex items-start justify-between mb-4">
                                     <div>
-                                        <h3 class="template-title text-lg font-semibold text-white mb-2">Kündigung Arbeitsvertrag</h3>
+                                        <h3 class="template-title text-lg font-semibold text-white mb-2" title="Kündigung Arbeitsvertrag">Kündigung Arbeits...</h3>
                                         <p class="template-description text-sm text-gray-400 serif-text">Ordentliche Kündigung eines Arbeitsverhältnisses</p>
                                     </div>
                                     <div class="flex items-center gap-2">
@@ -3104,9 +3124,9 @@
                                         Use Template
                                     </button>
                                     <button class="duplicate-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
-                                            title="Copy to Clipboard" 
+                                            title="Duplicate Template" 
                                             data-template-id="3"
-                                            data-testid="copy-template-3">
+                                            data-testid="duplicate-template-3">
                                         <i data-lucide="copy" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -3119,7 +3139,7 @@
                             <div class="relative z-10">
                                 <div class="flex items-start justify-between mb-4">
                                     <div>
-                                        <h3 class="template-title text-lg font-semibold text-white mb-2">Kaufvertrag Immobilie</h3>
+                                        <h3 class="template-title text-lg font-semibold text-white mb-2" title="Kaufvertrag Immobilie">Kaufvertrag Immo...</h3>
                                         <p class="template-description text-sm text-gray-400 serif-text">Vollständiger Kaufvertrag für Immobilienerwerb</p>
                                     </div>
                                     <div class="flex items-center gap-2">
@@ -3179,9 +3199,9 @@
                                         Use Template
                                     </button>
                                     <button class="duplicate-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
-                                            title="Copy to Clipboard" 
+                                            title="Duplicate Template" 
                                             data-template-id="4"
-                                            data-testid="copy-template-4">
+                                            data-testid="duplicate-template-4">
                                         <i data-lucide="copy" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -4751,7 +4771,7 @@ Kollege Schmidt`,
             
             showNotification(message, type = 'info') {
                 const notification = document.createElement('div');
-                notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 ${
+                notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-[9999] ${
                     type === 'success' ? 'bg-green-600' : 'bg-blue-600'
                 }`;
                 notification.textContent = message;
@@ -4947,7 +4967,7 @@ Kollege Schmidt`,
                         e.preventDefault();
                         const format = btn.dataset.format;
                         this.exportTemplates(format);
-                        this.closeModal('import-modal');
+                        // Modal already closed by export function
                     });
                 });
             }
@@ -5368,56 +5388,11 @@ Kollege Schmidt`,
             
             // Enhanced Modal System
             setupModals() {
-                this.setupImportModal();
                 this.setupFilterModal();
                 this.setupEmailModal();
                 this.setupModalOverlay();
             }
             
-            setupImportModal() {
-                const importBtn = document.getElementById('import-templates-btn');
-                const importModal = document.getElementById('import-modal');
-                const importClose = document.getElementById('import-modal-close');
-                const dropZone = document.getElementById('import-drop-zone');
-                const fileInput = document.getElementById('import-file-input');
-                
-                if (importBtn && importModal) {
-                    importBtn.addEventListener('click', () => {
-                        this.openModal('import-modal');
-                    });
-                }
-                
-                if (importClose) {
-                    importClose.addEventListener('click', () => {
-                        this.closeModal('import-modal');
-                    });
-                }
-                
-                if (dropZone && fileInput) {
-                    dropZone.addEventListener('click', () => {
-                        fileInput.click();
-                    });
-                    
-                    dropZone.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        dropZone.classList.add('border-purple-500');
-                    });
-                    
-                    dropZone.addEventListener('dragleave', () => {
-                        dropZone.classList.remove('border-purple-500');
-                    });
-                    
-                    dropZone.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        dropZone.classList.remove('border-purple-500');
-                        this.handleImportFiles(e.dataTransfer.files);
-                    });
-                    
-                    fileInput.addEventListener('change', (e) => {
-                        this.handleImportFiles(e.target.files);
-                    });
-                }
-            }
             
             setupFilterModal() {
                 const filterBtn = document.getElementById('filter-templates-btn');
@@ -5652,7 +5627,7 @@ Kollege Schmidt`,
                     }
                 });
                 
-                this.closeModal('import-modal');
+                // Import completed
             }
             
             applyTemplateFilters() {
@@ -5728,7 +5703,7 @@ Kollege Schmidt`,
                     if (e.ctrlKey && e.key === 'i') {
                         e.preventDefault();
                         if (this.currentSection === 'templates') {
-                            this.openModal('import-modal');
+                            this.openImportDialog();
                         }
                     }
                 });
@@ -5763,7 +5738,7 @@ Kollege Schmidt`,
                 });
             }
             
-            openCreateTemplateModal() {
+            openCreateTemplateModal(templateData = null, templateId = null) {
                 // Check if modal already exists
                 let modal = document.getElementById('create-template-modal');
                 if (!modal) {
@@ -5772,8 +5747,25 @@ Kollege Schmidt`,
                     document.body.appendChild(modal);
                 }
                 
-                // Reset form
+                // Reset form first
                 this.resetCreateTemplateForm();
+                
+                // If editing existing template, populate form
+                if (templateData && templateId) {
+                    this.populateTemplateForm(templateData, templateId);
+                    // Update modal title
+                    const modalTitle = modal.querySelector('.modal-header h2');
+                    if (modalTitle) modalTitle.textContent = 'Edit Template';
+                    // Update button text
+                    const saveBtn = modal.querySelector('#create-save-btn .btn-text');
+                    if (saveBtn) saveBtn.textContent = 'Update Template';
+                } else {
+                    // Reset to create mode
+                    const modalTitle = modal.querySelector('.modal-header h2');
+                    if (modalTitle) modalTitle.textContent = 'Create New Template';
+                    const saveBtn = modal.querySelector('#create-save-btn .btn-text');
+                    if (saveBtn) saveBtn.textContent = 'Create Template';
+                }
                 
                 // Show modal
                 modal.classList.add('active');
@@ -5786,13 +5778,27 @@ Kollege Schmidt`,
                 }, 100);
             }
             
+            // Add function to populate form with existing data
+            populateTemplateForm(templateData, templateId) {
+                const titleInput = document.getElementById('create-template-title');
+                const descInput = document.getElementById('create-template-description');
+                const contentInput = document.getElementById('create-template-content');
+                
+                if (titleInput) titleInput.value = templateData.title || templateData.name || '';
+                if (descInput) descInput.value = templateData.description || '';
+                if (contentInput) contentInput.value = templateData.content || '';
+                
+                // Store the template ID for updating
+                if (titleInput) titleInput.dataset.editingTemplateId = templateId;
+            }
+            
             createTemplateModal() {
                 const modal = document.createElement('div');
                 modal.id = 'create-template-modal';
                 modal.className = 'glassmorphic-modal z-90';
                 modal.innerHTML = `
-                    <div class="modal-overlay" id="create-modal-overlay"></div>
-                    <div class="modal-container max-w-2xl w-full mx-4">
+                    <div class="modal-overlay" id="create-modal-overlay" style="z-index: 89;"></div>
+                    <div class="modal-container max-w-2xl w-full mx-4" style="position: relative; z-index: 90;">
                         <div class="modal-header">
                             <h2 class="text-xl font-semibold text-white">Create New Template</h2>
                             <button class="modal-close" id="create-modal-close" aria-label="Close">
@@ -6117,9 +6123,9 @@ Kollege Schmidt`,
                                     Use Template
                                 </button>
                                 <button class="duplicate-template-btn p-2 bg-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors" 
-                                        title="Copy to Clipboard" 
+                                        title="Duplicate Template" 
                                         data-template-id="${templateId}"
-                                        data-testid="copy-template-${templateId}">
+                                        data-testid="duplicate-template-${templateId}">
                                     <i data-lucide="copy" class="w-4 h-4"></i>
                                 </button>
                             </div>
@@ -6154,7 +6160,7 @@ Kollege Schmidt`,
                 if (copyBtn) {
                     copyBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        this.copyTemplateToClipboard(templateId);
+                        this.duplicateTemplate(templateId);
                     });
                 }
                 
@@ -6255,7 +6261,7 @@ Kollege Schmidt`,
             showNotification(message, type = 'info') {
                 // Create notification element
                 const notification = document.createElement('div');
-                notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white font-medium shadow-lg transform transition-all duration-300 translate-x-full`;
+                notification.className = `fixed top-4 right-4 z-[9999] px-6 py-3 rounded-lg text-white font-medium shadow-lg transform transition-all duration-300 translate-x-full`;
                 
                 // Set notification style based on type
                 if (type === 'success') {
@@ -6454,38 +6460,5 @@ Kollege Schmidt`,
         </div>
     </div>
     
-    <!-- Template Import Modal -->
-    <div class="glassmorphic-modal" id="import-modal" style="width: 500px; height: 400px;">
-        <button class="modal-close" id="import-modal-close" aria-label="Close import">
-            <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-        
-        <div class="modal-header">
-            <h3 class="text-lg font-semibold text-white">Import Templates</h3>
-        </div>
-        
-        <div class="modal-body">
-            <div class="text-center py-8">
-                <div class="border-2 border-dashed border-gray-500 rounded-lg p-8 hover:border-purple-500 transition-colors cursor-pointer" id="import-drop-zone">
-                    <i data-lucide="upload" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
-                    <p class="text-white font-medium mb-2">Drop files here or click to browse</p>
-                    <p class="text-gray-400 text-sm">Supports PDF, DOCX, and JSON files</p>
-                    <input type="file" class="hidden" id="import-file-input" multiple accept=".pdf,.docx,.json">
-                </div>
-            </div>
-            
-            <div class="mt-6">
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                    <i data-lucide="info" class="w-4 h-4"></i>
-                    Supported formats:
-                </div>
-                <ul class="text-sm text-gray-300 space-y-1 ml-6">
-                    <li>• <strong>JSON:</strong> Exported template collections</li>
-                    <li>• <strong>PDF:</strong> Existing documents to convert</li>
-                    <li>• <strong>DOCX:</strong> Word documents to import</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
