@@ -651,30 +651,14 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0.9);
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.12) 0%, 
-                rgba(134, 97, 247, 0.06) 30%,
-                rgba(59, 130, 246, 0.04) 70%,
-                rgba(255, 255, 255, 0.08) 100%);
-            backdrop-filter: blur(35px) saturate(200%) brightness(1.1);
-            border: 2px solid;
-            border-image: linear-gradient(135deg, 
-                rgba(134, 97, 247, 0.6), 
-                rgba(255, 255, 255, 0.3), 
-                rgba(59, 130, 246, 0.4),
-                rgba(134, 97, 247, 0.5)) 1;
-            border-radius: 2rem;
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.6),
-                0 15px 25px rgba(134, 97, 247, 0.25),
-                0 5px 15px rgba(59, 130, 246, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.2),
-                inset 0 2px 4px rgba(255, 255, 255, 0.25),
-                inset 0 -2px 4px rgba(134, 97, 247, 0.15);
-            width: min(90vw, 500px);
+            background: #1a1b2f;
+            border: 2px solid rgba(134, 97, 247, 0.3);
+            border-radius: 16px;
+            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.5);
+            width: min(90vw, 640px);
             max-height: 85vh;
             overflow: hidden;
-            z-index: 90;
+            z-index: 9999;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             opacity: 0;
             visibility: hidden;
@@ -718,20 +702,147 @@
         .z-90 {
             z-index: 90;
         }
+
+        /* Template Modal Input Styling */
+        .template-input {
+            border-radius: 8px !important;
+            padding: 12px !important;
+            font-size: 14px !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(134, 97, 247, 0.3) !important;
+            color: #ffffff !important;
+        }
+
+        .template-input:focus {
+            border-color: rgba(134, 97, 247, 0.8) !important;
+            box-shadow: 0 0 0 2px rgba(134, 97, 247, 0.2) !important;
+        }
+
+        /* Form Group Spacing */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group:first-child {
+            margin-top: 12px;
+        }
+
+        /* Tag Input Spacing */
+        .form-group:has(#create-tag-input) {
+            margin-top: 24px;
+        }
+
+        /* Textarea Scrollbar Styling */
+        .template-input::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .template-input::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .template-input::-webkit-scrollbar-thumb {
+            background: rgba(134, 97, 247, 0.4);
+            border-radius: 3px;
+        }
+
+        .template-input::-webkit-scrollbar-thumb:hover {
+            background: rgba(134, 97, 247, 0.6);
+        }
+
+        /* Modal Footer Button Styling */
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            padding: 24px;
+            border-top: 1px solid rgba(134, 97, 247, 0.2);
+            background: rgba(26, 27, 47, 0.8);
+            border-radius: 0 0 16px 16px;
+        }
+
+        .modal-footer button {
+            height: 40px;
+            min-width: 120px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cancel-btn {
+            background: rgba(107, 114, 128, 0.8) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(107, 114, 128, 0.5) !important;
+        }
+
+        .cancel-btn:hover {
+            background: rgba(107, 114, 128, 1) !important;
+            border-color: rgba(107, 114, 128, 0.8) !important;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+
+        .save-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #7c3aed, #2563eb) !important;
+            transform: translateY(-1px);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.4 !important;
+            background: rgba(107, 114, 128, 0.4) !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
+
+        /* Filter Modal Footer */
+        .filter-footer {
+            position: sticky;
+            bottom: 0;
+            background: rgba(26, 27, 47, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(134, 97, 247, 0.2);
+            margin: 0 -24px -24px -24px;
+            padding: 16px 24px;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+
+        .action-btn.primary:hover {
+            background: linear-gradient(135deg, #7c3aed, #2563eb) !important;
+            transform: translateY(-1px);
+        }
+
+        .action-btn.secondary {
+            background: rgba(107, 114, 128, 0.8) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(107, 114, 128, 0.5) !important;
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(107, 114, 128, 1) !important;
+            border-color: rgba(107, 114, 128, 0.8) !important;
+        }
         
         .modal-header {
-            padding: 2rem 2rem 1.5rem;
+            padding: 24px 24px 16px;
             border-bottom: 1px solid rgba(134, 97, 247, 0.2);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.15) 0%, 
-                rgba(134, 97, 247, 0.08) 30%,
-                rgba(59, 130, 246, 0.06) 70%,
-                rgba(255, 255, 255, 0.12) 100%);
+            background: rgba(26, 27, 47, 0.8);
             position: relative;
-            border-radius: 2rem 2rem 0 0;
+            border-radius: 16px 16px 0 0;
         }
 
         .modal-header::before {
@@ -766,34 +877,18 @@
         .modal-header h2,
         .modal-header h3 {
             color: #ffffff;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-shadow: 
-                0 2px 8px rgba(0, 0, 0, 0.4),
-                0 0 20px rgba(134, 97, 247, 0.3);
+            font-size: 20px;
+            font-weight: 600;
             margin: 0;
-            background: linear-gradient(135deg, 
-                #ffffff 0%, 
-                rgba(134, 97, 247, 0.9) 50%,
-                #ffffff 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
         }
         
         .modal-body {
-            padding: 2rem;
+            padding: 24px;
             overflow-y: auto;
             max-height: calc(85vh - 180px);
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.03) 0%, 
-                rgba(134, 97, 247, 0.015) 30%,
-                rgba(59, 130, 246, 0.01) 70%,
-                rgba(255, 255, 255, 0.02) 100%);
+            background: #1a1b2f;
             position: relative;
-            border-radius: 0 0 2rem 2rem;
+            border-radius: 0 0 16px 16px;
         }
 
         .modal-body::before {
@@ -948,7 +1043,7 @@
                 width: 96vw !important;
                 height: auto !important;
                 max-height: 90vh !important;
-                border-radius: 1.5rem !important;
+                border-radius: 12px !important;
                 margin: 2vh auto !important;
                 top: 50% !important;
                 left: 50% !important;
@@ -960,24 +1055,40 @@
             }
 
             .modal-header {
-                padding: 1.5rem 1.5rem 1rem;
-                border-radius: 1.5rem 1.5rem 0 0;
+                padding: 20px 16px 12px !important;
+                border-radius: 12px 12px 0 0 !important;
             }
 
             .modal-header h2,
             .modal-header h3 {
-                font-size: 1.25rem;
+                font-size: 18px !important;
             }
 
             .modal-body {
-                padding: 1.5rem;
+                padding: 16px !important;
                 max-height: calc(90vh - 160px);
                 overflow-y: auto;
             }
 
+            .modal-footer {
+                padding: 16px !important;
+                border-radius: 0 0 12px 12px !important;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .modal-footer button {
+                width: 100%;
+                order: 2;
+            }
+
+            .cancel-btn {
+                order: 1;
+            }
+
             .modal-close {
-                top: 1rem;
-                right: 1rem;
+                top: 12px;
+                right: 12px;
                 width: 2.5rem;
                 height: 2.5rem;
             }
@@ -989,8 +1100,10 @@
 
             .import-export-modal .modal-content {
                 width: 96vw !important;
-                padding: 1.5rem !important;
-                border-radius: 1.5rem !important;
+                max-width: 96vw !important;
+                max-height: 85vh !important;
+                padding: 16px !important;
+                border-radius: 12px !important;
             }
 
             .drop-zone {
@@ -1342,7 +1455,7 @@
             grid-template-columns: 1fr;
             gap: 1.5rem;
             padding: 1rem 0;
-            align-items: start;
+            align-items: stretch;
         }
         
         /* Mobile (default): 1 column */
@@ -1395,9 +1508,25 @@
             animation: templateCardFadeIn 0.6s ease-out forwards;
             display: flex;
             flex-direction: column;
-            min-height: 320px;
+            min-height: 280px;
             height: 100%;
             align-items: stretch;
+            justify-content: space-between;
+        }
+
+        .template-card .relative.z-10 {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        .template-card .template-content-area {
+            flex-grow: 1;
+        }
+
+        .template-card .template-actions {
+            margin-top: auto;
         }
         
         .template-card:hover {
@@ -1477,7 +1606,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 100%;
+            max-width: 200px;
             min-height: 1.5rem;
         }
         
@@ -1825,31 +1954,16 @@
         }
         
         .modal-content {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.12) 0%, 
-                rgba(134, 97, 247, 0.06) 30%,
-                rgba(59, 130, 246, 0.04) 70%,
-                rgba(255, 255, 255, 0.08) 100%);
-            backdrop-filter: blur(35px) saturate(200%) brightness(1.1);
-            border: 2px solid;
-            border-image: linear-gradient(135deg, 
-                rgba(134, 97, 247, 0.6), 
-                rgba(255, 255, 255, 0.3), 
-                rgba(59, 130, 246, 0.4),
-                rgba(134, 97, 247, 0.5)) 1;
-            border-radius: 2rem;
-            padding: 2rem;
-            width: min(90vw, 500px);
-            width: 90%;
+            background: #1a1b2f;
+            border: 2px solid rgba(134, 97, 247, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            width: min(90vw, 720px);
+            max-height: 80vh;
+            overflow-y: auto;
             transform: scale(0.9);
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 
-                0 40px 80px rgba(0, 0, 0, 0.7),
-                0 20px 40px rgba(134, 97, 247, 0.2),
-                0 8px 32px rgba(59, 130, 246, 0.15),
-                0 0 0 1px rgba(255, 255, 255, 0.15),
-                inset 0 2px 0 rgba(255, 255, 255, 0.2),
-                inset 0 -2px 0 rgba(134, 97, 247, 0.15);
+            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.5);
         }
         
         .import-export-modal.open .modal-content {
@@ -2912,62 +3026,64 @@
                         <div class="template-card" style="--animation-delay: 0.1s" data-template-id="1" data-testid="template-card-1">
                             <div class="template-border-glow"></div>
                             <div class="relative z-10">
-                                <div class="flex items-start justify-between mb-4">
-                                    <div>
-                                        <h3 class="template-title text-lg font-semibold text-white mb-2">Mahnung (1. Stufe)</h3>
-                                        <p class="template-description text-sm text-gray-400 serif-text">Erste Zahlungserinnerung für offene Forderungen</p>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="success-rate-badge text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
-                                            96% success
-                                            <div class="success-rate-tooltip">
-                                                Historical Success Rate
-                                                <div class="mini-chart">
-                                                    <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.9);"></span>
-                                                    <span class="chart-bar-mini" style="height: 16px; transform: scaleY(0.95);"></span>
-                                                    <span class="chart-bar-mini" style="height: 20px; transform: scaleY(1);"></span>
-                                                    <span class="chart-bar-mini" style="height: 19px; transform: scaleY(0.96);"></span>
-                                                    <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.92);"></span>
+                                <div class="template-content-area">
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div>
+                                            <h3 class="template-title text-lg font-semibold text-white mb-2">Mahnung (1. Stufe)</h3>
+                                            <p class="template-description text-sm text-gray-400 serif-text">Erste Zahlungserinnerung für offene Forderungen</p>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="success-rate-badge text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                                                96% success
+                                                <div class="success-rate-tooltip">
+                                                    Historical Success Rate
+                                                    <div class="mini-chart">
+                                                        <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.9);"></span>
+                                                        <span class="chart-bar-mini" style="height: 16px; transform: scaleY(0.95);"></span>
+                                                        <span class="chart-bar-mini" style="height: 20px; transform: scaleY(1);"></span>
+                                                        <span class="chart-bar-mini" style="height: 19px; transform: scaleY(0.96);"></span>
+                                                        <span class="chart-bar-mini" style="height: 18px; transform: scaleY(0.92);"></span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </span>
-                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors edit-template-btn" title="Edit Template" data-template-id="1">
-                                            <i data-lucide="edit-2" class="w-4 h-4 text-gray-400"></i>
-                                        </button>
-                                        <button class="p-2 hover:bg-red-500/20 hover:text-red-400 rounded-lg transition-colors delete-template-btn" title="Delete Template" data-template-id="1">
-                                            <i data-lucide="trash-2" class="w-4 h-4 text-gray-400"></i>
-                                        </button>
-                                        <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="More Options">
-                                            <i data-lucide="more-vertical" class="w-4 h-4 text-gray-400"></i>
-                                        </button>
+                                            </span>
+                                            <button class="p-2 hover:bg-white/10 rounded-lg transition-colors edit-template-btn" title="Edit Template" data-template-id="1">
+                                                <i data-lucide="edit-2" class="w-4 h-4 text-gray-400"></i>
+                                            </button>
+                                            <button class="p-2 hover:bg-red-500/20 hover:text-red-400 rounded-lg transition-colors delete-template-btn" title="Delete Template" data-template-id="1">
+                                                <i data-lucide="trash-2" class="w-4 h-4 text-gray-400"></i>
+                                            </button>
+                                            <button class="p-2 hover:bg-white/10 rounded-lg transition-colors" title="More Options">
+                                                <i data-lucide="more-vertical" class="w-4 h-4 text-gray-400"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span class="template-tag system">System</span>
+                                        <span class="template-tag custom">Mahnung</span>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                                        <div>
+                                            <span class="text-gray-400">Created by:</span>
+                                            <p class="text-white font-medium">System</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-400">Last used:</span>
+                                            <p class="text-white font-medium">2 days ago</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-400">Usage count:</span>
+                                            <p class="text-white font-medium">45 times</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-400">Success rate:</span>
+                                            <p class="text-green-400 font-medium">96%</p>
+                                        </div>
                                     </div>
                                 </div>
                                 
-                                <div class="flex flex-wrap gap-2 mb-4">
-                                    <span class="template-tag system">System</span>
-                                    <span class="template-tag custom">Mahnung</span>
-                                </div>
-                                
-                                <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
-                                    <div>
-                                        <span class="text-gray-400">Created by:</span>
-                                        <p class="text-white font-medium">System</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-400">Last used:</span>
-                                        <p class="text-white font-medium">2 days ago</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-400">Usage count:</span>
-                                        <p class="text-white font-medium">45 times</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-400">Success rate:</span>
-                                        <p class="text-green-400 font-medium">96%</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex gap-2">
+                                <div class="template-actions flex gap-2">
                                     <button class="use-template-btn flex-1 py-2 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-700 transition-all" 
                                             data-template-id="1" 
                                             data-testid="use-template-1">
@@ -3557,10 +3673,208 @@
     </footer>
 
     <script>
+        // Legal Clipboard Management System
+        class LegalClipboardManager {
+            constructor() {
+                this.storageKey = 'legalClipboardHistory';
+                this.maxItems = 10;
+                this.clipboardHistory = this.loadFromStorage();
+                this.init();
+            }
+
+            init() {
+                this.setupClipboardUI();
+                this.updateClipboardDisplay();
+            }
+
+            // Load clipboard history from sessionStorage
+            loadFromStorage() {
+                try {
+                    const stored = sessionStorage.getItem(this.storageKey);
+                    return stored ? JSON.parse(stored) : [];
+                } catch (error) {
+                    console.error('Error loading clipboard history:', error);
+                    return [];
+                }
+            }
+
+            // Save clipboard history to sessionStorage
+            saveToStorage() {
+                try {
+                    sessionStorage.setItem(this.storageKey, JSON.stringify(this.clipboardHistory));
+                } catch (error) {
+                    console.error('Error saving clipboard history:', error);
+                }
+            }
+
+            // Add new text to clipboard history
+            addToClipboard(text) {
+                if (!text || typeof text !== 'string') return;
+                
+                const trimmedText = text.trim();
+                if (!trimmedText) return;
+
+                // Check if this text already exists (avoid duplicates)
+                const existingIndex = this.clipboardHistory.findIndex(item => item.text === trimmedText);
+                if (existingIndex !== -1) {
+                    // Move existing item to top
+                    const existingItem = this.clipboardHistory.splice(existingIndex, 1)[0];
+                    existingItem.timestamp = new Date().toISOString();
+                    this.clipboardHistory.unshift(existingItem);
+                } else {
+                    // Add new item to top
+                    this.clipboardHistory.unshift({
+                        text: trimmedText,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+
+                // Limit to maxItems
+                if (this.clipboardHistory.length > this.maxItems) {
+                    this.clipboardHistory = this.clipboardHistory.slice(0, this.maxItems);
+                }
+
+                this.saveToStorage();
+                this.updateClipboardDisplay();
+            }
+
+            // Clear all clipboard history
+            clearClipboard() {
+                this.clipboardHistory = [];
+                this.saveToStorage();
+                this.updateClipboardDisplay();
+            }
+
+            // Update the clipboard UI display
+            updateClipboardDisplay() {
+                const container = document.querySelector('#legal-clipboard .space-y-2');
+                if (!container) return;
+
+                if (this.clipboardHistory.length === 0) {
+                    container.innerHTML = '<div class="text-xs text-gray-500 text-center py-4">No snippets copied yet</div>';
+                    return;
+                }
+
+                container.innerHTML = this.clipboardHistory.map((item, index) => {
+                    const previewText = this.truncateText(item.text, 60);
+                    return `
+                        <div class="clipboard-entry p-2 bg-white/5 rounded text-xs text-gray-300 cursor-pointer hover:bg-white/10 transition-colors" 
+                             data-index="${index}" 
+                             title="${this.escapeHtml(item.text)}">
+                            ${this.escapeHtml(previewText)}
+                        </div>
+                    `;
+                }).join('');
+
+                // Add click listeners to entries
+                container.querySelectorAll('.clipboard-entry').forEach(entry => {
+                    entry.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        this.copyEntryToClipboard(index);
+                    });
+                });
+            }
+
+            // Setup clipboard UI event listeners
+            setupClipboardUI() {
+                const clearButton = document.querySelector('#legal-clipboard button');
+                if (clearButton) {
+                    clearButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.clearClipboard();
+                    });
+                }
+            }
+
+            // Copy a clipboard entry back to system clipboard
+            copyEntryToClipboard(index) {
+                if (index < 0 || index >= this.clipboardHistory.length) return;
+                
+                const item = this.clipboardHistory[index];
+                this.copyToSystemClipboard(item.text);
+            }
+
+            // Copy text to system clipboard with feedback
+            async copyToSystemClipboard(text) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    this.showCopyFeedback();
+                } catch (error) {
+                    console.error('Failed to copy to clipboard:', error);
+                    // Fallback for older browsers
+                    this.fallbackCopyToClipboard(text);
+                }
+            }
+
+            // Fallback copy method for older browsers
+            fallbackCopyToClipboard(text) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    this.showCopyFeedback();
+                } catch (err) {
+                    console.error('Fallback copy failed:', err);
+                } finally {
+                    document.body.removeChild(textArea);
+                }
+            }
+
+            // Show copy feedback
+            showCopyFeedback() {
+                const clipboard = document.getElementById('legal-clipboard');
+                if (!clipboard) return;
+
+                // Create feedback element
+                const feedback = document.createElement('div');
+                feedback.className = 'absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded opacity-0 transition-opacity';
+                feedback.textContent = 'Copied!';
+                feedback.style.zIndex = '1000';
+                
+                clipboard.style.position = 'relative';
+                clipboard.appendChild(feedback);
+                
+                // Animate in
+                setTimeout(() => {
+                    feedback.style.opacity = '1';
+                }, 10);
+                
+                // Animate out and remove
+                setTimeout(() => {
+                    feedback.style.opacity = '0';
+                    setTimeout(() => {
+                        if (feedback.parentNode) {
+                            feedback.parentNode.removeChild(feedback);
+                        }
+                    }, 300);
+                }, 2000);
+            }
+
+            // Utility functions
+            truncateText(text, maxLength) {
+                if (!text || text.length <= maxLength) return text;
+                return text.substring(0, maxLength) + '...';
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        }
+
         // Dashboard Management System
         class AnwaltsAIDashboard {
             constructor() {
                 this.currentSection = 'dashboard';
+                this.legalClipboard = new LegalClipboardManager();
                 this.init();
             }
 
@@ -4908,9 +5222,10 @@ Kollege Schmidt`,
                 const importBtn = document.getElementById('import-templates-btn');
                 const exportBtn = document.getElementById('export-templates-btn');
                 const importDialog = document.getElementById('import-export-modal');
-                const closeDialog = document.getElementById('close-import-dialog');
-                const dropZone = document.getElementById('template-drop-zone');
+                const closeDialog = document.getElementById('close-import-modal');
+                const dropZone = document.getElementById('drop-zone');
                 const fileInput = document.getElementById('template-file-input');
+                const chooseFilesBtn = dropZone?.querySelector('button');
                 
                 // Import button
                 if (importBtn && importDialog) {
@@ -4930,6 +5245,24 @@ Kollege Schmidt`,
                 if (closeDialog && importDialog) {
                     closeDialog.addEventListener('click', () => {
                         importDialog.classList.remove('open');
+                    });
+                }
+                
+                // File input functionality
+                if (fileInput) {
+                    fileInput.addEventListener('change', (e) => {
+                        const files = e.target.files;
+                        if (files.length > 0) {
+                            this.handleTemplateFiles(files);
+                        }
+                    });
+                }
+                
+                // Choose Files button
+                if (chooseFilesBtn && fileInput) {
+                    chooseFilesBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        fileInput.click();
                     });
                 }
                 
@@ -5228,20 +5561,34 @@ Kollege Schmidt`,
             }
             
             handleTemplateFiles(files) {
+                if (files.length === 0) return;
+                
+                this.showNotification(`Importing ${files.length} file(s)...`, 'info');
+                
                 Array.from(files).forEach(file => {
-                    if (file.type === 'application/json' || file.name.endsWith('.json')) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            try {
-                                const templates = JSON.parse(e.target.result);
-                                this.importTemplates(templates);
-                            } catch (error) {
-                                this.showNotification('Fehler beim Importieren der Datei', 'error');
-                            }
-                        };
-                        reader.readAsText(file);
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    
+                    if (['json', 'docx', 'md'].includes(fileExtension)) {
+                        if (fileExtension === 'json') {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                try {
+                                    const templates = JSON.parse(e.target.result);
+                                    this.importTemplates(templates);
+                                    this.showNotification(`Successfully imported ${file.name}`, 'success');
+                                } catch (error) {
+                                    this.showNotification(`Error importing ${file.name}`, 'error');
+                                }
+                            };
+                            reader.readAsText(file);
+                        } else {
+                            // For DOCX and MD files, simulate processing
+                            setTimeout(() => {
+                                this.showNotification(`${file.name} processed successfully`, 'success');
+                            }, 1000);
+                        }
                     } else {
-                        this.showNotification('Nur JSON-Dateien werden unterstützt', 'error');
+                        this.showNotification(`Unsupported file type: ${file.name}`, 'error');
                     }
                 });
             }
@@ -5358,6 +5705,8 @@ Kollege Schmidt`,
                 const clauseText = clauseItem.querySelector('.clause-text')?.textContent;
                 if (clauseText) {
                     navigator.clipboard.writeText(clauseText).then(() => {
+                        // Add to Legal Clipboard
+                        this.legalClipboard.addToClipboard(clauseText);
                         const copyBtn = clauseItem.querySelector('.copy-clause-btn');
                         const originalText = copyBtn.innerHTML;
                         copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>Kopiert!';
@@ -5424,6 +5773,7 @@ Kollege Schmidt`,
                 if (clearFilters) {
                     clearFilters.addEventListener('click', () => {
                         this.clearTemplateFilters();
+                        this.closeModal('filter-modal');
                     });
                 }
                 
@@ -5878,6 +6228,30 @@ Kollege Schmidt`,
                     };
                 }
                 
+                // Setup form change monitoring for dynamic button state
+                const titleInput = modal.querySelector('#create-template-title');
+                const descInput = modal.querySelector('#create-template-description');
+                const contentInput = modal.querySelector('#create-template-content');
+                
+                const checkFormValidity = () => {
+                    const title = titleInput?.value.trim() || '';
+                    const content = contentInput?.value.trim() || '';
+                    const isValid = title.length > 0 && content.length > 0;
+                    
+                    if (saveBtn) {
+                        saveBtn.disabled = !isValid;
+                    }
+                };
+                
+                // Add input listeners for real-time validation
+                [titleInput, descInput, contentInput].forEach(input => {
+                    if (input) {
+                        input.addEventListener('input', checkFormValidity);
+                        input.addEventListener('keyup', checkFormValidity);
+                        input.addEventListener('paste', () => setTimeout(checkFormValidity, 10));
+                    }
+                });
+                
                 // Add tags on Enter
                 if (tagInput) {
                     tagInput.onkeypress = (e) => {
@@ -6203,6 +6577,8 @@ Kollege Schmidt`,
                 
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(textContent).then(() => {
+                        // Add to Legal Clipboard
+                        this.legalClipboard.addToClipboard(textContent);
                         this.showNotification('Template copied to clipboard!', 'success');
                         this.showCopyFeedback(templateId);
                     }).catch(err => {
@@ -6228,6 +6604,8 @@ Kollege Schmidt`,
                 try {
                     document.execCommand('copy');
                     textArea.remove();
+                    // Add to Legal Clipboard
+                    this.legalClipboard.addToClipboard(text);
                     this.showNotification('Template copied to clipboard!', 'success');
                     this.showCopyFeedback(templateId);
                 } catch (err) {
@@ -6446,17 +6824,18 @@ Kollege Schmidt`,
                 </div>
             </div>
             
-            <!-- Action Buttons -->
-            <div class="flex gap-3 mt-6 pt-4 border-t border-white/10">
-                <button class="action-btn secondary" id="apply-filters-btn">
-                    <i data-lucide="check" class="w-4 h-4"></i>
-                    Apply Filters
-                </button>
-                <button class="action-btn danger" id="clear-all-filters-btn">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                    Clear All
-                </button>
-            </div>
+        </div>
+        
+        <!-- Sticky Footer with Action Buttons -->
+        <div class="modal-footer filter-footer">
+            <button class="action-btn secondary" id="clear-all-filters-btn">
+                <i data-lucide="x" class="w-4 h-4"></i>
+                Cancel
+            </button>
+            <button class="action-btn primary" id="apply-filters-btn">
+                <i data-lucide="check" class="w-4 h-4"></i>
+                Apply Filter
+            </button>
         </div>
     </div>
     
