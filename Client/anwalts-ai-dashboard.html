@@ -3685,6 +3685,21 @@
             init() {
                 this.setupClipboardUI();
                 this.updateClipboardDisplay();
+                this.setupEventListeners();
+            }
+
+            // Setup global event listeners for legal copy events
+            setupEventListeners() {
+                window.addEventListener('legal-copy', (event) => {
+                    this.addToClipboard(event.detail);
+                });
+            }
+
+            // Shared clipboard handler that can be called from anywhere
+            registerClipboardSnippet(text) {
+                this.addToClipboard(text);
+                // Dispatch custom event for other components that might need to know
+                window.dispatchEvent(new CustomEvent('legal-copy', { detail: text }));
             }
 
             // Load clipboard history from sessionStorage
@@ -3876,6 +3891,11 @@
                 this.currentSection = 'dashboard';
                 this.legalClipboard = new LegalClipboardManager();
                 this.init();
+                
+                // Expose shared clipboard handler globally
+                window.registerClipboardSnippet = (text) => {
+                    this.legalClipboard.registerClipboardSnippet(text);
+                };
             }
 
             // Utility function to truncate text with ellipsis
@@ -5705,8 +5725,8 @@ Kollege Schmidt`,
                 const clauseText = clauseItem.querySelector('.clause-text')?.textContent;
                 if (clauseText) {
                     navigator.clipboard.writeText(clauseText).then(() => {
-                        // Add to Legal Clipboard
-                        this.legalClipboard.addToClipboard(clauseText);
+                        // Dispatch legal copy event
+                        window.dispatchEvent(new CustomEvent('legal-copy', { detail: clauseText }));
                         const copyBtn = clauseItem.querySelector('.copy-clause-btn');
                         const originalText = copyBtn.innerHTML;
                         copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>Kopiert!';
@@ -6577,8 +6597,8 @@ Kollege Schmidt`,
                 
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(textContent).then(() => {
-                        // Add to Legal Clipboard
-                        this.legalClipboard.addToClipboard(textContent);
+                        // Dispatch legal copy event
+                        window.dispatchEvent(new CustomEvent('legal-copy', { detail: textContent }));
                         this.showNotification('Template copied to clipboard!', 'success');
                         this.showCopyFeedback(templateId);
                     }).catch(err => {
@@ -6604,8 +6624,8 @@ Kollege Schmidt`,
                 try {
                     document.execCommand('copy');
                     textArea.remove();
-                    // Add to Legal Clipboard
-                    this.legalClipboard.addToClipboard(text);
+                    // Dispatch legal copy event
+                    window.dispatchEvent(new CustomEvent('legal-copy', { detail: text }));
                     this.showNotification('Template copied to clipboard!', 'success');
                     this.showCopyFeedback(templateId);
                 } catch (err) {
@@ -6676,6 +6696,55 @@ Kollege Schmidt`,
         function switchSection(section) {
             if (window.dashboard) {
                 window.dashboard.switchSection(section);
+            }
+        }
+
+        // Global utility function for copying text with Legal Clipboard integration
+        function copyTextWithLegalClipboard(text, showNotification = true) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text).then(() => {
+                    // Dispatch legal copy event
+                    window.dispatchEvent(new CustomEvent('legal-copy', { detail: text }));
+                    if (showNotification && window.dashboard) {
+                        window.dashboard.showNotification('Copied to clipboard!', 'success');
+                    }
+                    return true;
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    return fallbackCopyWithLegalClipboard(text, showNotification);
+                });
+            } else {
+                return fallbackCopyWithLegalClipboard(text, showNotification);
+            }
+        }
+
+        // Fallback copy function with Legal Clipboard integration
+        function fallbackCopyWithLegalClipboard(text, showNotification = true) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                textArea.remove();
+                // Dispatch legal copy event
+                window.dispatchEvent(new CustomEvent('legal-copy', { detail: text }));
+                if (showNotification && window.dashboard) {
+                    window.dashboard.showNotification('Copied to clipboard!', 'success');
+                }
+                return Promise.resolve(true);
+            } catch (err) {
+                console.error('Fallback copy failed: ', err);
+                textArea.remove();
+                if (showNotification && window.dashboard) {
+                    window.dashboard.showNotification('Failed to copy', 'error');
+                }
+                return Promise.resolve(false);
             }
         }
 
