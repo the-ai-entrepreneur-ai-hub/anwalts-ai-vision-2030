@@ -97,7 +97,14 @@
       "Bash(git config:*)",
       "Bash(git commit:*)",
       "Bash(git remote set-url:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(git restore:*)",
+      "Bash(claude agents list)",
+      "Bash(claude agents create bmad-scrum-master \"Enhanced Agile project management agent for BMAD-METHOD framework. Excels at sprint planning, backlog management, team coordination, progress tracking, scrum ceremonies, velocity management, risk management, metrics reporting, stakeholder communication, and process optimization. Now enhanced with Legal Clipboard integration patterns, event-driven architecture, and component-based development experience from AnwaltsAI implementation. Integrates with other BMAD agents to facilitate efficient development cycles using comprehensive planning and context engineering.\")",
+      "Bash(claude agents create bmad-architect \"System architecture specialist for BMAD-METHOD framework enhanced with real-world implementation experience. Transforms detailed requirements into implementable system designs including technology stack selection, design patterns, scalability planning, security architecture, and performance optimization. Expert in event-driven architectures, modal systems, clipboard integration patterns, and component-based development from AnwaltsAI project experience. Creates technical blueprints with component diagrams, API specifications, and deployment architectures.\")",
+      "Bash(claude agents create bmad-developer \"Full-stack development specialist for BMAD-METHOD framework with proven JavaScript/HTML/CSS expertise. Excels at implementing complex UI components, event systems, clipboard functionality, modal interfaces, and real-time data management. Expert in sessionStorage, event dispatching, DOM manipulation, responsive design, and integration patterns. Transforms context-engineered stories into production-ready code with proper error handling, user feedback, and accessibility considerations.\")",
+      "Bash(claude agents create bmad-context-engineer \"Context transformation specialist implementing BMAD-METHOD''s context-engineered development with real-world experience. Converts architectural designs into hyper-detailed development stories with complete implementation guidance. Expert in breaking down complex features like clipboard systems, search functionality, modal interfaces, and form handling. Ensures cross-file coordination and eliminates context loss through AI-optimized development contexts and dependency orchestration.\")",
+      "Bash(claude agents create bmad-quality-assurance \"Quality assurance specialist for BMAD-METHOD framework with hands-on testing experience. Develops comprehensive testing strategies, generates automated test cases, establishes quality gates, implements security testing, and ensures compliance verification. Expert in debugging integration issues, event system testing, UI component validation, and cross-browser compatibility. Provides continuous quality monitoring with AI-powered test generation and risk-based testing prioritization.\")"
     ],
     "deny": []
   }
