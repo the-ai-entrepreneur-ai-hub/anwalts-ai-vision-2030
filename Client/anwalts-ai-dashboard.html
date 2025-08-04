@@ -2986,36 +2986,36 @@
                                 <i data-lucide="layers" class="w-5 h-5 text-teal-400"></i>
                                 <h3 class="text-lg font-semibold text-white">Clause Library</h3>
                             </div>
-                            <button class="text-sm text-teal-400 hover:text-teal-300 transition-colors">View All</button>
+                            <button class="text-sm text-teal-400 hover:text-teal-300 transition-colors" id="view-all-clauses-btn">View All</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div class="clause-item">
+                            <div class="clause-item" data-clause-id="1">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-white">Standardgewährleistung</span>
-                                    <i data-lucide="copy" class="w-4 h-4 text-gray-400 hover:text-white cursor-pointer"></i>
+                                    <span class="clause-title text-sm font-medium text-white">Standardgewährleistung</span>
+                                    <i data-lucide="copy" class="copy-clause-btn w-4 h-4 text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
                                 </div>
-                                <p class="text-xs text-gray-400 mt-1">Für alle Vertragsarten anwendbar</p>
+                                <p class="clause-description text-xs text-gray-400 mt-1">Für alle Vertragsarten anwendbar</p>
                             </div>
-                            <div class="clause-item">
+                            <div class="clause-item" data-clause-id="2">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-white">Zahlungsfristen</span>
-                                    <i data-lucide="copy" class="w-4 h-4 text-gray-400 hover:text-white cursor-pointer"></i>
+                                    <span class="clause-title text-sm font-medium text-white">Zahlungsfristen</span>
+                                    <i data-lucide="copy" class="copy-clause-btn w-4 h-4 text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
                                 </div>
-                                <p class="text-xs text-gray-400 mt-1">Standard 14 Tage Zahlungsziel</p>
+                                <p class="clause-description text-xs text-gray-400 mt-1">Standard 14 Tage Zahlungsziel</p>
                             </div>
-                            <div class="clause-item">
+                            <div class="clause-item" data-clause-id="3">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-white">Datenschutzklausel</span>
-                                    <i data-lucide="copy" class="w-4 h-4 text-gray-400 hover:text-white cursor-pointer"></i>
+                                    <span class="clause-title text-sm font-medium text-white">Datenschutzklausel</span>
+                                    <i data-lucide="copy" class="copy-clause-btn w-4 h-4 text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
                                 </div>
-                                <p class="text-xs text-gray-400 mt-1">DSGVO-konforme Standardklausel</p>
+                                <p class="clause-description text-xs text-gray-400 mt-1">DSGVO-konforme Standardklausel</p>
                             </div>
-                            <div class="clause-item">
+                            <div class="clause-item" data-clause-id="4">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-white">Gerichtsstandsklausel</span>
-                                    <i data-lucide="copy" class="w-4 h-4 text-gray-400 hover:text-white cursor-pointer"></i>
+                                    <span class="clause-title text-sm font-medium text-white">Gerichtsstandsklausel</span>
+                                    <i data-lucide="copy" class="copy-clause-btn w-4 h-4 text-gray-400 hover:text-white cursor-pointer transition-colors"></i>
                                 </div>
-                                <p class="text-xs text-gray-400 mt-1">Deutsches Recht, Gerichtsstand München</p>
+                                <p class="clause-description text-xs text-gray-400 mt-1">Deutsches Recht, Gerichtsstand München</p>
                             </div>
                         </div>
                     </div>
@@ -3882,12 +3882,32 @@
             constructor() {
                 this.currentSection = 'dashboard';
                 this.legalClipboard = new LegalClipboardManager();
+                this.clauseLibrary = this.initializeClauseLibrary();
                 this.init();
                 
                 // Expose shared clipboard handler globally
                 window.registerClipboardSnippet = (text) => {
                     this.legalClipboard.registerClipboardSnippet(text);
                 };
+            }
+
+            // Initialize clause library with default clauses
+            initializeClauseLibrary() {
+                const defaultClauses = [
+                    { id: 1, title: "Standardgewährleistung", description: "Für alle Vertragsarten anwendbar" },
+                    { id: 2, title: "Zahlungsfristen", description: "Standard 14 Tage Zahlungsziel" },
+                    { id: 3, title: "Datenschutzklausel", description: "DSGVO-konforme Standardklausel" },
+                    { id: 4, title: "Gerichtsstandsklausel", description: "Deutsches Recht, Gerichtsstand München" }
+                ];
+                
+                // Load from sessionStorage or use defaults
+                const stored = sessionStorage.getItem('clauseLibrary');
+                return stored ? JSON.parse(stored) : defaultClauses;
+            }
+
+            // Save clause library to sessionStorage
+            saveClauseLibrary() {
+                sessionStorage.setItem('clauseLibrary', JSON.stringify(this.clauseLibrary));
             }
 
             // Utility function to truncate text with ellipsis
@@ -3905,6 +3925,7 @@
                 this.setupEmailPortal();
                 this.setupTemplatePortal();
                 this.setupModals();
+                this.setupClauseLibraryModal();
                 this.setupKeyboardShortcuts();
                 lucide.createIcons();
             }
@@ -5714,20 +5735,37 @@ Kollege Schmidt`,
             }
             
             copyClauseToClipboard(clauseItem) {
-                const clauseText = clauseItem.querySelector('.clause-text')?.textContent;
-                if (clauseText) {
+                const titleElement = clauseItem.querySelector('.clause-title');
+                const descriptionElement = clauseItem.querySelector('.clause-description');
+                
+                if (titleElement && descriptionElement) {
+                    const title = titleElement.textContent.trim();
+                    const description = descriptionElement.textContent.trim();
+                    const clauseText = `${title} — ${description}`;
+                    
                     navigator.clipboard.writeText(clauseText).then(() => {
                         // Dispatch legal copy event
                         window.dispatchEvent(new CustomEvent('legal-copy', { detail: clauseText }));
+                        
                         const copyBtn = clauseItem.querySelector('.copy-clause-btn');
                         const originalText = copyBtn.innerHTML;
-                        copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>Kopiert!';
+                        copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>';
+                        copyBtn.classList.add('text-green-400');
+                        copyBtn.classList.remove('text-gray-400');
                         
                         setTimeout(() => {
                             copyBtn.innerHTML = originalText;
+                            copyBtn.classList.remove('text-green-400');
+                            copyBtn.classList.add('text-gray-400');
+                            
+                            // Re-initialize lucide icons
+                            if (window.lucide) window.lucide.createIcons();
                         }, 2000);
                         
-                        this.showNotification('Klausel in Zwischenablage kopiert!', 'success');
+                        this.showNotification('Clause copied to clipboard!', 'success');
+                    }).catch(err => {
+                        console.error('Failed to copy clause: ', err);
+                        this.showNotification('Failed to copy clause', 'error');
                     });
                 }
             }
@@ -5752,6 +5790,215 @@ Kollege Schmidt`,
                 this.setupFilterModal();
                 this.setupEmailModal();
                 this.setupModalOverlay();
+            }
+
+            // Clause Library Modal System
+            setupClauseLibraryModal() {
+                const viewAllBtn = document.getElementById('view-all-clauses-btn');
+                const modal = document.getElementById('clause-library-modal');
+                const closeBtn = document.getElementById('clause-library-modal-close');
+                const overlay = document.getElementById('modal-overlay');
+                const searchInput = document.getElementById('clause-search-input');
+                const newClauseForm = document.getElementById('new-clause-form');
+
+                // Open modal
+                if (viewAllBtn) {
+                    viewAllBtn.addEventListener('click', () => {
+                        this.openClauseLibraryModal();
+                    });
+                }
+
+                // Close modal
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        this.closeClauseLibraryModal();
+                    });
+                }
+
+                // Search functionality
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        this.filterClauses(e.target.value);
+                    });
+                }
+
+                // New clause form
+                if (newClauseForm) {
+                    newClauseForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.addNewClause();
+                    });
+                }
+
+                // Close on overlay click
+                if (overlay) {
+                    overlay.addEventListener('click', () => {
+                        if (modal.classList.contains('active')) {
+                            this.closeClauseLibraryModal();
+                        }
+                    });
+                }
+            }
+
+            openClauseLibraryModal() {
+                const modal = document.getElementById('clause-library-modal');
+                const overlay = document.getElementById('modal-overlay');
+                
+                if (modal && overlay) {
+                    overlay.classList.add('active');
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Populate clauses
+                    this.populateAllClauses();
+                    
+                    // Focus search input
+                    setTimeout(() => {
+                        const searchInput = document.getElementById('clause-search-input');
+                        if (searchInput) searchInput.focus();
+                    }, 100);
+                }
+            }
+
+            closeClauseLibraryModal() {
+                const modal = document.getElementById('clause-library-modal');
+                const overlay = document.getElementById('modal-overlay');
+                
+                if (modal && overlay) {
+                    overlay.classList.remove('active');
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    // Clear search
+                    const searchInput = document.getElementById('clause-search-input');
+                    if (searchInput) searchInput.value = '';
+                    
+                    // Reset form
+                    const form = document.getElementById('new-clause-form');
+                    if (form) form.reset();
+                }
+            }
+
+            populateAllClauses(filteredClauses = null) {
+                const container = document.getElementById('all-clauses-container');
+                if (!container) return;
+
+                const clauses = filteredClauses || this.clauseLibrary;
+                
+                if (clauses.length === 0) {
+                    container.innerHTML = '<div class="text-center text-gray-400 py-8">No clauses found</div>';
+                    return;
+                }
+
+                container.innerHTML = clauses.map(clause => `
+                    <div class="clause-item bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors" data-clause-id="${clause.id}">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <span class="clause-title text-sm font-medium text-white block mb-1">${this.escapeHtml(clause.title)}</span>
+                                <p class="clause-description text-xs text-gray-400">${this.escapeHtml(clause.description)}</p>
+                            </div>
+                            <div class="flex items-center gap-2 ml-4">
+                                <button class="copy-clause-btn p-2 hover:bg-white/10 rounded-lg transition-colors" title="Copy clause">
+                                    <i data-lucide="copy" class="w-4 h-4 text-gray-400 hover:text-white"></i>
+                                </button>
+                                <button class="delete-clause-btn p-2 hover:bg-red-500/20 rounded-lg transition-colors" title="Delete clause" data-clause-id="${clause.id}">
+                                    <i data-lucide="trash-2" class="w-4 h-4 text-gray-400 hover:text-red-400"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Setup event listeners for the new clause items
+                this.setupModalClauseActions();
+            }
+
+            setupModalClauseActions() {
+                const clauseItems = document.querySelectorAll('#all-clauses-container .clause-item');
+                clauseItems.forEach(item => {
+                    const copyBtn = item.querySelector('.copy-clause-btn');
+                    const deleteBtn = item.querySelector('.delete-clause-btn');
+
+                    if (copyBtn) {
+                        copyBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            this.copyClauseToClipboard(item);
+                        });
+                    }
+
+                    if (deleteBtn) {
+                        deleteBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const clauseId = parseInt(deleteBtn.dataset.clauseId);
+                            this.deleteClause(clauseId);
+                        });
+                    }
+                });
+
+                // Re-initialize lucide icons
+                if (window.lucide) window.lucide.createIcons();
+            }
+
+            filterClauses(searchTerm) {
+                if (!searchTerm.trim()) {
+                    this.populateAllClauses();
+                    return;
+                }
+
+                const filtered = this.clauseLibrary.filter(clause => 
+                    clause.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    clause.description.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+
+                this.populateAllClauses(filtered);
+            }
+
+            addNewClause() {
+                const titleInput = document.getElementById('new-clause-title');
+                const descriptionInput = document.getElementById('new-clause-description');
+
+                if (!titleInput || !descriptionInput) return;
+
+                const title = titleInput.value.trim();
+                const description = descriptionInput.value.trim();
+
+                if (!title || !description) {
+                    this.showNotification('Please fill in both title and description', 'error');
+                    return;
+                }
+
+                // Generate new ID
+                const newId = Math.max(...this.clauseLibrary.map(c => c.id), 0) + 1;
+
+                // Add to library
+                const newClause = { id: newId, title, description };
+                this.clauseLibrary.push(newClause);
+                this.saveClauseLibrary();
+
+                // Clear form
+                titleInput.value = '';
+                descriptionInput.value = '';
+
+                // Refresh display
+                this.populateAllClauses();
+
+                // Show success message
+                this.showNotification('New clause added successfully!', 'success');
+            }
+
+            deleteClause(clauseId) {
+                if (confirm('Are you sure you want to delete this clause?')) {
+                    this.clauseLibrary = this.clauseLibrary.filter(clause => clause.id !== clauseId);
+                    this.saveClauseLibrary();
+                    this.populateAllClauses();
+                    this.showNotification('Clause deleted successfully', 'success');
+                }
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
             }
             
             
@@ -6897,6 +7144,63 @@ Kollege Schmidt`,
                 <i data-lucide="check" class="w-4 h-4"></i>
                 Apply Filter
             </button>
+        </div>
+    </div>
+    
+    <!-- Clause Library Modal -->
+    <div class="glassmorphic-modal clause-library-modal" id="clause-library-modal">
+        <button class="modal-close" id="clause-library-modal-close" aria-label="Close clause library">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        
+        <div class="modal-header">
+            <h3 class="text-lg font-semibold text-white">All Clauses</h3>
+        </div>
+        
+        <div class="modal-body">
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                    <input type="text" 
+                           class="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400" 
+                           placeholder="Search clauses by title or description..." 
+                           id="clause-search-input">
+                </div>
+            </div>
+            
+            <!-- Clauses List -->
+            <div class="space-y-3 max-h-96 overflow-y-auto" id="all-clauses-container">
+                <!-- Clauses will be populated here -->
+            </div>
+            
+            <!-- Create New Clause Section -->
+            <div class="mt-8 pt-6 border-t border-white/10">
+                <h4 class="text-md font-semibold text-white mb-4">Create New Clause</h4>
+                <form id="new-clause-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Clause Title</label>
+                        <input type="text" 
+                               class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400" 
+                               placeholder="Enter clause title..." 
+                               id="new-clause-title" 
+                               required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Clause Description</label>
+                        <textarea class="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 resize-none" 
+                                  placeholder="Enter clause description..." 
+                                  id="new-clause-description" 
+                                  rows="3" 
+                                  required></textarea>
+                    </div>
+                    <button type="submit" 
+                            class="w-full py-2 bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg text-white font-medium hover:from-teal-600 hover:to-teal-700 transition-all">
+                        <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>
+                        Add Clause
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
     
