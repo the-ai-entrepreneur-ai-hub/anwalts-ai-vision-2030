@@ -3,7 +3,7 @@
  * Handles all backend communication with proper error handling and authentication
  */
 class AnwaltsAIApiClient {
-    constructor(baseUrl = 'http://localhost:5001') {
+    constructor(baseUrl = 'http://localhost:8000') {
         this.baseUrl = baseUrl;
         this.authToken = localStorage.getItem('anwalts_auth_token');
     }
@@ -19,7 +19,7 @@ class AnwaltsAIApiClient {
                 password
             });
             
-            if (response.success && response.token) {
+            if (response.token) {
                 this.authToken = response.token;
                 localStorage.setItem('anwalts_auth_token', response.token);
                 localStorage.setItem('anwalts_user', JSON.stringify(response.user));
@@ -29,6 +29,22 @@ class AnwaltsAIApiClient {
         } catch (error) {
             console.error('Login error:', error);
             throw new Error('Anmeldung fehlgeschlagen');
+        }
+    }
+
+    async register(email, name, password, role = 'assistant') {
+        try {
+            const response = await this.post('/auth/register', {
+                email,
+                name,
+                password,
+                role
+            });
+            
+            return response;
+        } catch (error) {
+            console.error('Registration error:', error);
+            throw new Error('Registrierung fehlgeschlagen');
         }
     }
     
@@ -57,24 +73,47 @@ class AnwaltsAIApiClient {
     // DOCUMENT GENERATION ENDPOINTS
     // =========================
     
-    async generateDocument(prompt, templateId = null, uploadedFile = null) {
+    async generateDocument(title, documentType, templateContent = '', variables = {}, templateId = null) {
         try {
-            const formData = new FormData();
-            formData.append('prompt', prompt);
-            
-            if (templateId) {
-                formData.append('template_id', templateId);
-            }
-            
-            if (uploadedFile) {
-                formData.append('file', uploadedFile);
-            }
-            
-            const response = await this.postFormData('/generate-document', formData);
+            const response = await this.post('/ai/generate-document', {
+                title,
+                document_type: documentType,
+                template_content: templateContent,
+                variables,
+                template_id: templateId
+            });
             return response;
         } catch (error) {
             console.error('Document generation error:', error);
             throw new Error('Dokumentenerstellung fehlgeschlagen');
+        }
+    }
+
+    async generateEmailResponse(originalEmail, responseType = 'professional', keyPoints = []) {
+        try {
+            const response = await this.post('/ai/generate-email', {
+                original_email: originalEmail,
+                response_type: responseType,
+                key_points: keyPoints
+            });
+            return response;
+        } catch (error) {
+            console.error('Email response generation error:', error);
+            throw new Error('E-Mail-Antwort konnte nicht generiert werden');
+        }
+    }
+
+    async generateClause(clauseType, purpose, specificRequirements = []) {
+        try {
+            const response = await this.post('/ai/generate-clause', {
+                clause_type: clauseType,
+                purpose,
+                specific_requirements: specificRequirements
+            });
+            return response;
+        } catch (error) {
+            console.error('Clause generation error:', error);
+            throw new Error('Klauselerstellung fehlgeschlagen');
         }
     }
     
@@ -202,6 +241,110 @@ class AnwaltsAIApiClient {
     }
 
     // =========================
+    // CLAUSE LIBRARY ENDPOINTS
+    // =========================
+    
+    async getClauses(category = null, language = 'de') {
+        try {
+            let url = '/clauses';
+            const params = new URLSearchParams();
+            if (category) params.append('category', category);
+            if (language) params.append('language', language);
+            if (params.toString()) url += '?' + params.toString();
+            
+            const response = await this.get(url);
+            return response;
+        } catch (error) {
+            console.error('Clauses fetch error:', error);
+            throw new Error('Klauseln konnten nicht geladen werden');
+        }
+    }
+    
+    async saveClause(category, title, content, tags = [], language = 'de') {
+        try {
+            const response = await this.post('/clauses', {
+                category,
+                title,
+                content,
+                tags,
+                language
+            });
+            return response;
+        } catch (error) {
+            console.error('Clause save error:', error);
+            throw new Error('Klausel konnte nicht gespeichert werden');
+        }
+    }
+    
+    async updateClause(clauseId, updates) {
+        try {
+            const response = await this.put(`/clauses/${clauseId}`, updates);
+            return response;
+        } catch (error) {
+            console.error('Clause update error:', error);
+            throw new Error('Klausel konnte nicht aktualisiert werden');
+        }
+    }
+    
+    async deleteClause(clauseId) {
+        try {
+            const response = await this.delete(`/clauses/${clauseId}`);
+            return response;
+        } catch (error) {
+            console.error('Clause delete error:', error);
+            throw new Error('Klausel konnte nicht gelöscht werden');
+        }
+    }
+    
+    async toggleClauseFavorite(clauseId) {
+        try {
+            const response = await this.post(`/clauses/${clauseId}/toggle-favorite`);
+            return response;
+        } catch (error) {
+            console.error('Clause favorite toggle error:', error);
+            throw new Error('Favorit-Status konnte nicht geändert werden');
+        }
+    }
+
+    // =========================
+    // CLIPBOARD MANAGEMENT ENDPOINTS
+    // =========================
+    
+    async getClipboardEntries() {
+        try {
+            const response = await this.get('/clipboard');
+            return response;
+        } catch (error) {
+            console.error('Clipboard fetch error:', error);
+            throw new Error('Zwischenablage konnte nicht geladen werden');
+        }
+    }
+    
+    async saveToClipboard(content, sourceType = 'manual', metadata = {}) {
+        try {
+            const response = await this.post('/clipboard', {
+                content,
+                source_type: sourceType,
+                metadata
+            });
+            return response;
+        } catch (error) {
+            console.error('Clipboard save error:', error);
+            throw new Error('Inhalt konnte nicht in die Zwischenablage gespeichert werden');
+        }
+    }
+    
+    async deleteFromClipboard(entryId) {
+        try {
+            const response = await this.delete(`/clipboard/${entryId}`);
+            return response;
+        } catch (error) {
+            console.error('Clipboard delete error:', error);
+            throw new Error('Zwischenablage-Eintrag konnte nicht gelöscht werden');
+        }
+    }
+
+    // =========================
     // ANALYTICS & DASHBOARD ENDPOINTS
     // =========================
     
@@ -257,13 +400,13 @@ class AnwaltsAIApiClient {
     // HEALTH CHECK ENDPOINT
     // =========================
     
-    async healthCheck() {
+    async getUserDocuments(limit = 10) {
         try {
-            const response = await this.get(`/dashboard/activity?limit=${limit}`);
+            const response = await this.get(`/documents?limit=${limit}`);
             return response;
         } catch (error) {
-            console.error('Recent activity error:', error);
-            return { activities: [] };
+            console.error('Documents fetch error:', error);
+            return [];
         }
     }
 
