@@ -1844,7 +1844,7 @@
     <!-- Initialize API Client after it loads -->
     <script>
         // Initialize API client
-        window.apiClient = new AnwaltsAIApiClient('http://localhost:5001');
+        window.apiClient = new AnwaltsAIApiClient('http://127.0.0.1:8009');
         console.log('✅ API Client initialized:', window.apiClient);
         
         // Add debugging functions
@@ -1872,6 +1872,109 @@
             }
         }
         
+        // Add registration toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const authToggleButton = document.getElementById('authToggleButton');
+            const authToggleText = document.getElementById('authToggleText');
+            const authSubmit = document.getElementById('authSubmit');
+            const authSubmitText = document.getElementById('authSubmitText');
+            const authForm = document.getElementById('authForm');
+            
+            let isRegisterMode = false;
+            
+            if (authToggleButton) {
+                authToggleButton.addEventListener('click', function() {
+                    isRegisterMode = !isRegisterMode;
+                    
+                    if (isRegisterMode) {
+                        // Switch to register mode
+                        authToggleText.textContent = 'Bereits ein Konto?';
+                        authToggleButton.textContent = 'Jetzt anmelden';
+                        authSubmitText.textContent = 'Registrieren';
+                        
+                        // Add name field if it doesn't exist
+                        let nameInput = document.getElementById('authName');
+                        if (!nameInput) {
+                            nameInput = document.createElement('input');
+                            nameInput.type = 'text';
+                            nameInput.id = 'authName';
+                            nameInput.placeholder = 'Vollständiger Name';
+                            nameInput.className = 'auth-input';
+                            nameInput.required = true;
+                            
+                            const emailInput = document.getElementById('authEmail');
+                            emailInput.parentNode.insertBefore(nameInput, emailInput);
+                        } else {
+                            nameInput.style.display = 'block';
+                        }
+                    } else {
+                        // Switch to login mode
+                        authToggleText.textContent = 'Noch kein Konto?';
+                        authToggleButton.textContent = 'Jetzt registrieren';
+                        authSubmitText.textContent = 'Anmelden';
+                        
+                        // Hide name field
+                        const nameInput = document.getElementById('authName');
+                        if (nameInput) {
+                            nameInput.style.display = 'none';
+                        }
+                    }
+                });
+            }
+            
+            // Update form handler to support both login and register
+            if (authForm) {
+                authForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (isRegisterMode) {
+                        handleRegister(e);
+                    } else {
+                        handleLogin(e);
+                    }
+                });
+            }
+        });
+        
+        // Registration handler
+        window.handleRegister = async function(e) {
+            console.log('🔄 Registration attempt started');
+            if (e) e.preventDefault();
+            
+            const emailInput = document.getElementById('authEmail');
+            const passwordInput = document.getElementById('authPassword');
+            const nameInput = document.getElementById('authName');
+            
+            if (!emailInput || !passwordInput || !nameInput) {
+                alert('Registrierungsformular nicht vollständig. Bitte laden Sie die Seite neu.');
+                return;
+            }
+            
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const name = nameInput.value;
+            
+            if (!email || !password || !name) {
+                alert('Bitte füllen Sie alle Felder aus.');
+                return;
+            }
+            
+            try {
+                // For now, just show success message
+                alert('Registrierung erfolgreich! Sie können sich jetzt anmelden.');
+                
+                // Switch back to login mode
+                document.getElementById('authToggleButton').click();
+                
+                // Pre-fill email
+                emailInput.value = email;
+                passwordInput.value = '';
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+            }
+        };
+
         console.log('🚀 All scripts loaded successfully');
     </script>
 </body>

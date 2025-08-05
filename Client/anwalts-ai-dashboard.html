@@ -4129,13 +4129,15 @@
                 try {
                     // Call enhanced API server for document generation
                     const authToken = localStorage.getItem('anwalts_auth_token');
-                    const response = await fetch('http://localhost:5001/generate-document', {
+                    const response = await fetch('http://127.0.0.1:8009/api/ai/generate-document-simple', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${authToken}`,
                         },
                         body: JSON.stringify({
+                            title: objective || 'Neues Dokument',
+                            document_type: 'contract',
                             prompt: instructions || objective
                         })
                     });
@@ -4145,8 +4147,12 @@
                     }
                     
                     const data = await response.json();
+                    console.log('🔍 Dashboard received response:', data);
                     
                     if (data.success && data.document) {
+                        console.log('✅ Document data found:', data.document);
+                        console.log('📄 Document content length:', data.document.content?.length);
+                        
                         // Convert backend response to expected format for showRealGeneratedDocument
                         const mockStats = {
                             processing_time: data.document.processing_time,
@@ -4154,9 +4160,14 @@
                             tokens_used: data.document.tokens_used,
                             confidence: data.document.confidence
                         };
+                        console.log('📊 Stats prepared:', mockStats);
+                        
+                        console.log('🎯 Calling showRealGeneratedDocument...');
                         this.showRealGeneratedDocument(data.document.content, mockStats);
+                        console.log('✅ showRealGeneratedDocument called');
                     } else {
-                        throw new Error('Document generation failed');
+                        console.error('❌ Invalid response format:', data);
+                        throw new Error('Document generation failed - invalid response format');
                     }
                     
                 } catch (error) {
@@ -4173,16 +4184,36 @@
             }
 
             showRealGeneratedDocument(generatedContent, stats) {
+                console.log('🎨 showRealGeneratedDocument called with content length:', generatedContent?.length);
+                console.log('📊 Stats received:', stats);
+                
                 const placeholder = document.getElementById('document-placeholder');
                 const editor = document.getElementById('document-editor');
                 const content = document.getElementById('document-content');
                 const actions = document.getElementById('document-actions');
                 const wordCount = document.getElementById('word-count');
                 
+                console.log('🔍 DOM elements found:', {
+                    placeholder: !!placeholder,
+                    editor: !!editor,
+                    content: !!content,
+                    actions: !!actions,
+                    wordCount: !!wordCount
+                });
+                
                 // Hide placeholder, show editor
-                if (placeholder) placeholder.classList.add('hidden');
-                if (editor) editor.classList.remove('hidden');
-                if (actions) actions.classList.remove('hidden');
+                if (placeholder) {
+                    placeholder.classList.add('hidden');
+                    console.log('✅ Placeholder hidden');
+                }
+                if (editor) {
+                    editor.classList.remove('hidden');
+                    console.log('✅ Editor shown');
+                }
+                if (actions) {
+                    actions.classList.remove('hidden');
+                    console.log('✅ Actions shown');
+                }
                 
                 // Format the content for better display (preserve structure but improve readability)
                 const formattedContent = this.formatLegalDocument(generatedContent);
