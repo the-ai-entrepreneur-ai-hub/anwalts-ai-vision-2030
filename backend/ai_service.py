@@ -38,10 +38,11 @@ class AIService:
     def __init__(self):
         self.api_key = os.getenv("TOGETHER_API_KEY")
         self.base_url = "https://api.together.xyz/v1"
-        self.default_model = "meta-llama/Llama-3.1-70B-Instruct-Turbo"
+        self.default_model = os.getenv("DEFAULT_AI_MODEL", "deepseek-ai/DeepSeek-V3")
         
         # Model pricing per 1M tokens (approximate)
         self.model_pricing = {
+            "deepseek-ai/DeepSeek-V3": {"input": 0.27, "output": 1.10},
             "meta-llama/Llama-3.1-70B-Instruct-Turbo": {"input": 0.88, "output": 0.88},
             "meta-llama/Llama-3.1-8B-Instruct-Turbo": {"input": 0.18, "output": 0.18},
             "mixtral-8x7b-instruct-v0.1": {"input": 0.6, "output": 0.6},
@@ -100,7 +101,7 @@ class AIService:
         system_prompt = self.system_prompts.get(context, self.system_prompts["legal_document"])
         
         try:
-            async with httpx.AsyncClient(timeout=60.0) as client:
+            async with httpx.AsyncClient(timeout=120.0) as client:
                 response = await client.post(
                     f"{self.base_url}/chat/completions",
                     headers={
@@ -140,9 +141,13 @@ class AIService:
                     model_used=model
                 )
                 
-        except httpx.HTTPStatusError as e:
-            logger.error(f"Together API HTTP error: {e.response.status_code} - {e.response.text}")
-            raise Exception(f"AI service error: {e.response.status_code}")
+        except httpx.HTTPError as e:
+            logger.error(f"Together API HTTP error: {e}")
+            if hasattr(e, 'response') and e.response:
+                logger.error(f"Response status: {e.response.status_code} - {e.response.text}")
+                raise Exception(f"AI service error: {e.response.status_code}")
+            else:
+                raise Exception(f"AI service HTTP error: {str(e)}")
         except httpx.TimeoutException:
             logger.error("Together API timeout")
             raise Exception("AI service timeout")
