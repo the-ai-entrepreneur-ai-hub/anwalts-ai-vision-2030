@@ -84,55 +84,130 @@
             border-left: 3px solid #8b5cf6;
         }
 
-        /* Notification Sidebar */
+        /* Notification Sidebar - Enhanced Glassmorphism */
         .notification-sidebar {
             position: fixed;
-            top: 0;
-            right: -400px;
+            top: 5vh;
+            right: -420px;
             width: 400px;
-            height: 100vh;
-            background: linear-gradient(135deg, rgba(46, 42, 77, 0.95), rgba(24, 22, 45, 0.95));
-            backdrop-filter: blur(25px);
-            border-left: 1px solid rgba(134, 97, 247, 0.3);
+            height: 90vh;
+            max-width: calc(100vw - 2rem);
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.3), rgba(46, 42, 77, 0.2));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px 0 0 16px;
+            border-right: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
             z-index: 1000;
-            transition: right 0.3s ease;
-            overflow-y: auto;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
         }
         
         .notification-sidebar.open {
             right: 0;
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification-sidebar:not(.open) {
+            transform: translateX(20px);
+            opacity: 0;
+        }
+        
+        .notification-content {
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+        }
+        
+        .notification-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .notification-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .notification-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+        
+        .notification-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
         }
         
         .notification-item {
-            transition: all 0.3s ease;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            border-radius: 12px;
+            margin: 0 12px 8px 12px;
+            overflow: hidden;
+        }
+        
+        .notification-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(67, 56, 202, 0.02));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+        }
+        
+        .notification-item:hover::before {
+            opacity: 1;
         }
         
         .notification-item:hover {
-            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
         }
         
         .notification-item.unread {
-            background: rgba(139, 92, 246, 0.05);
-            border-left: 3px solid #8b5cf6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(67, 56, 202, 0.04));
+            border-left: 3px solid #00ffcc;
+            box-shadow: 0 2px 8px rgba(0, 255, 204, 0.1);
+        }
+        
+        .notification-unread-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ffcc;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
-        /* Settings Modal */
+        /* Settings Modal - Enhanced Glassmorphism */
         .settings-modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             z-index: 1001;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         
         .settings-modal.open {
@@ -141,50 +216,181 @@
         }
         
         .settings-modal-content {
-            background: linear-gradient(135deg, rgba(46, 42, 77, 0.95), rgba(24, 22, 45, 0.95));
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(134, 97, 247, 0.3);
-            border-radius: 1rem;
-            max-width: 500px;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            max-width: 600px;
             width: 90%;
             max-height: 80vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            height: auto;
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
         }
         
         .settings-modal.open .settings-modal-content {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
+        }
+        
+        .settings-content-inner {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+            padding-bottom: 0;
+        }
+        
+        .settings-content-inner::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .settings-content-inner::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+        
+        .settings-content-inner::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+        
+        .settings-content-inner::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Settings Modal Action Buttons */
+        .settings-actions {
+            position: sticky;
+            bottom: 0;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: auto;
+        }
+        
+        .settings-btn-cancel {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-medium: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .settings-btn-cancel:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .settings-btn-save {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            background: #7F5AF0;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(127, 90, 240, 0.3);
+        }
+        
+        .settings-btn-save:hover {
+            background: #6D47E8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(127, 90, 240, 0.4);
+        }
+        
+        .settings-btn-save:active {
+            transform: translateY(0);
+        }
+        
+        .settings-btn-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(127, 90, 240, 0.2);
+        }
+        
+        .settings-btn-save:disabled:hover {
+            background: #7F5AF0;
+            transform: none;
         }
 
-        /* Form Controls */
+        /* Enhanced Form Controls */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         .form-label {
             display: block;
-            color: #f3f4f6;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.875rem;
             font-weight: 500;
             margin-bottom: 0.5rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         
         .form-input, .form-select {
             width: 100%;
-            padding: 0.75rem;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 0.875rem 1rem;
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.2), rgba(255, 255, 255, 0.03));
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
+            border-radius: 12px;
             color: white;
             font-size: 0.875rem;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-input:hover, .form-select:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.05));
         }
         
         .form-input:focus, .form-select:focus {
             outline: none;
-            border-color: #8b5cf6;
-            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(139, 92, 246, 0.6);
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.08));
+            box-shadow: 
+                inset 0 1px 3px rgba(0, 0, 0, 0.2),
+                0 0 0 3px rgba(139, 92, 246, 0.1),
+                0 0 16px rgba(139, 92, 246, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        /* Enhanced Select Dropdown */
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 3rem;
+            cursor: pointer;
+        }
+        
+        .form-select option {
+            background: rgba(20, 20, 30, 0.95);
+            color: white;
+            padding: 0.5rem;
+            border: none;
+        }
+        
+        .form-select option:hover,
+        .form-select option:focus {
+            background: rgba(139, 92, 246, 0.2);
         }
         
         .form-switch {
@@ -240,9 +446,24 @@
             }
             
             .settings-modal-content {
-                margin: 1rem;
-                width: calc(100% - 2rem);
-                max-height: calc(100vh - 2rem);
+                margin: 0.5rem;
+                width: calc(100% - 1rem);
+                max-height: calc(100vh - 1rem);
+                max-width: none;
+            }
+            
+            .settings-actions {
+                padding: 1rem;
+                gap: 0.5rem;
+                flex-direction: column-reverse;
+            }
+            
+            .settings-btn-cancel,
+            .settings-btn-save {
+                width: 100%;
+                justify-content: center;
+                display: flex;
+                align-items: center;
             }
             
             .form-group {
@@ -7579,6 +7800,84 @@ Kollege Schmidt`,
             modal.classList.remove('open');
         }
         
+        // Cancel settings changes (new function for cancel button)
+        function cancelSettingsChanges() {
+            // Reset form to original values
+            populateSettingsForm();
+            closeSettingsModal();
+        }
+        
+        // Save settings changes (new function for save button)
+        async function saveSettingsChanges() {
+            try {
+                // Show loading state
+                const saveBtn = document.querySelector('.settings-btn-save');
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = 'Speichert...';
+                saveBtn.disabled = true;
+                
+                // Collect form data
+                const newSettings = {
+                    name: document.getElementById('userName').value,
+                    email: document.getElementById('userEmail').value,
+                    language: document.getElementById('userLanguage').value,
+                    theme: document.getElementById('userTheme').value,
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    browserNotifications: document.getElementById('browserNotifications').checked,
+                    aiUpdates: document.getElementById('aiUpdates').checked,
+                    aiModel: document.getElementById('aiModel').value,
+                    aiCreativity: parseInt(document.getElementById('aiCreativity').value),
+                    autoSave: document.getElementById('autoSave').checked
+                };
+                
+                // Send to backend API
+                const response = await apiClient.updateUserSettings(newSettings);
+                
+                if (response.success) {
+                    // Update current settings
+                    currentSettings = { ...currentSettings, ...newSettings };
+                    
+                    // Save to localStorage as backup
+                    localStorage.setItem('anwalts_settings', JSON.stringify(currentSettings));
+                    
+                    // Update profile data if changed
+                    if (newSettings.name !== currentSettings.name || newSettings.email !== currentSettings.email) {
+                        await apiClient.updateUserProfile({
+                            name: newSettings.name,
+                            email: newSettings.email
+                        });
+                        
+                        // Update localStorage user data
+                        const userData = localStorage.getItem('anwalts_user');
+                        if (userData) {
+                            const user = JSON.parse(userData);
+                            user.name = newSettings.name;
+                            user.email = newSettings.email;
+                            localStorage.setItem('anwalts_user', JSON.stringify(user));
+                        }
+                    }
+                    
+                    // Apply settings immediately
+                    applySettings(newSettings);
+                    
+                    // Close modal and show success
+                    closeSettingsModal();
+                    window.dashboard.showNotification('Einstellungen erfolgreich gespeichert', 'success');
+                } else {
+                    throw new Error(response.error || 'Unbekannter Fehler');
+                }
+                
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                window.dashboard.showNotification('Fehler beim Speichern der Einstellungen', 'error');
+            } finally {
+                // Reset button state
+                const saveBtn = document.querySelector('.settings-btn-save');
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+            }
+        }
+        
         // Load current user settings
         async function loadCurrentSettings() {
             try {
@@ -7905,25 +8204,32 @@ Kollege Schmidt`,
         </div>
     </div>
 
-    <!-- Notification Sidebar -->
+    <!-- Enhanced Notification Sidebar -->
     <div id="notificationSidebar" class="notification-sidebar">
-        <div class="p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-semibold text-white">Benachrichtigungen</h3>
-                <button onclick="toggleNotifications()" class="text-gray-400 hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            
-            <div class="flex justify-between items-center mb-4">
-                <span class="text-sm text-gray-400">Alle als gelesen markieren</span>
-                <button onclick="markAllAsRead()" class="text-sm text-purple-400 hover:text-purple-300">
-                    Markieren
-                </button>
-            </div>
-            
-            <div id="notificationsList" class="space-y-3">
-                <!-- Notifications will be loaded here -->
+        <div class="notification-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-400/30 flex items-center justify-center backdrop-blur-sm">
+                            <i data-lucide="bell" class="w-5 h-5 text-purple-300"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white">Benachrichtigungen</h3>
+                    </div>
+                    <button onclick="toggleNotifications()" class="text-gray-400 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-all">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <div class="flex justify-between items-center mb-6 p-3 rounded-lg bg-black/10 border border-white/5">
+                    <span class="text-sm text-gray-300">Alle als gelesen markieren</span>
+                    <button onclick="markAllAsRead()" class="text-sm text-purple-400 hover:text-purple-300 px-3 py-1 rounded-lg hover:bg-purple-500/10 transition-all">
+                        Markieren
+                    </button>
+                </div>
+                
+                <div id="notificationsList" class="space-y-2">
+                    <!-- Notifications will be loaded here -->
+                </div>
             </div>
         </div>
     </div>
@@ -7931,7 +8237,8 @@ Kollege Schmidt`,
     <!-- Settings Modal -->
     <div id="settingsModal" class="settings-modal">
         <div class="settings-modal-content">
-            <div class="p-6">
+            <div class="settings-content-inner">
+                <div class="p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-semibold text-white">Einstellungen</h3>
                     <button onclick="closeSettingsModal()" class="text-gray-400 hover:text-white">
@@ -8043,16 +8350,18 @@ Kollege Schmidt`,
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="flex justify-end gap-3 pt-6">
-                        <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 text-gray-400 hover:text-white transition-colors">
-                            Abbrechen
-                        </button>
-                        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-600 transition-all">
-                            Speichern
-                        </button>
-                    </div>
                 </form>
+                </div>
+                
+                <!-- Sticky Action Buttons -->
+                <div class="settings-actions">
+                    <button type="button" onclick="cancelSettingsChanges()" class="settings-btn-cancel">
+                        Abbrechen
+                    </button>
+                    <button type="button" onclick="saveSettingsChanges()" class="settings-btn-save">
+                        Speichern
+                    </button>
+                </div>
             </div>
         </div>
     </div>
