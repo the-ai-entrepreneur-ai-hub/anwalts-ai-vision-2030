@@ -1985,5 +1985,82 @@
 
         console.log('🚀 All scripts loaded successfully');
     </script>
+
+    <!-- Add spacing before footer -->
+    <div class="h-32"></div>
+
+    <!-- Floating Footer -->
+    <footer id="floatingFooter" class="fixed bottom-8 left-8 right-8 z-50 pointer-events-none transform translate-y-full transition-all duration-700 ease-out opacity-0">
+        <div class="bg-black/8 backdrop-blur-sm border border-white/5 rounded-2xl px-8 py-4 pointer-events-auto transition-all duration-300 hover:bg-black/12">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <!-- Core Features -->
+                <div class="flex flex-wrap items-center justify-center gap-8 text-center">
+                    <div class="text-white/80 hover:text-white transition-colors duration-300 cursor-pointer">
+                        <span class="text-sm font-medium">✨ KI-Powered</span>
+                    </div>
+                    <div class="text-white/80 hover:text-white transition-colors duration-300 cursor-pointer">
+                        <span class="text-sm font-medium">📄 Dokumente</span>
+                    </div>
+                    <div class="text-white/80 hover:text-white transition-colors duration-300 cursor-pointer">
+                        <span class="text-sm font-medium">📧 E-Mails</span>
+                    </div>
+                    <div class="text-white/80 hover:text-white transition-colors duration-300 cursor-pointer">
+                        <span class="text-sm font-medium">🛡️ DSGVO</span>
+                    </div>
+                </div>
+
+                <!-- Status & Branding -->
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                        <span class="text-green-400 text-sm font-medium">Online</span>
+                    </div>
+                    <div class="text-white/50 text-sm">© 2025 AnwaltsAI</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Footer scroll animation
+        let lastScrollY = window.scrollY;
+        const footer = document.getElementById('floatingFooter');
+        
+        function handleFooterVisibility() {
+            const currentScrollY = window.scrollY;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrollPercentage = (currentScrollY / (scrollHeight - clientHeight)) * 100;
+            
+            // Show footer when scrolled down 30% or more
+            if (scrollPercentage > 30) {
+                footer.classList.remove('translate-y-full', 'opacity-0');
+                footer.classList.add('translate-y-0', 'opacity-100');
+            } else {
+                footer.classList.add('translate-y-full', 'opacity-0');
+                footer.classList.remove('translate-y-0', 'opacity-100');
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+
+        // Throttled scroll listener
+        let ticking = false;
+        function updateFooter() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    handleFooterVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', updateFooter);
+        
+        // Initial check
+        handleFooterVisibility();
+    </script>
+
 </body>
 </html>

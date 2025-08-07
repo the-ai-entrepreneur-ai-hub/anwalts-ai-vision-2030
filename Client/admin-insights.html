@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - AnwaltsAI Insights & Analytics</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+    <link rel="apple-touch-icon" sizes="64x64" href="favicon-64x64.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'IBM Plex Sans', 'Inter', sans-serif; }
+        
+        body {
+            background: #12101c;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(46, 42, 77, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(134, 97, 247, 0.06) 0%, transparent 50%),
+                linear-gradient(135deg, #12101c 0%, #1a1830 50%, #0f0d1a 100%);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(67, 56, 202, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.2);
+        }
+        
+        .status-online {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(21, 128, 61, 0.1));
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+        
+        .status-warning {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(217, 119, 6, 0.1));
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+        
+        .status-error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(185, 28, 28, 0.1));
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .filter-button {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(67, 56, 202, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .filter-button:hover, .filter-button.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(67, 56, 202, 0.2));
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white">
+
+    <!-- Header -->
+    <header class="glass-card mx-4 mt-4 p-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-purple-400"></i>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                        Admin Panel
+                    </h1>
+                </div>
+                <p class="text-gray-400">Insights & Analytics für alle angeschlossenen Kanzleien</p>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="flex items-center gap-3">
+                <button id="refreshData" class="filter-button px-4 py-2 rounded-lg text-white flex items-center gap-2">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Aktualisieren</span>
+                </button>
+                <button id="exportReport" class="filter-button px-4 py-2 rounded-lg text-white flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Export</span>
+                </button>
+                <a href="anwalts-ai-dashboard.html" class="filter-button px-4 py-2 rounded-lg text-white flex items-center gap-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Zurück</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Filters -->
+    <div class="mx-4 mt-6">
+        <div class="glass-card p-6">
+            <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                <div class="flex flex-wrap gap-3">
+                    <select id="firmFilter" class="filter-button px-4 py-2 rounded-lg text-white bg-transparent">
+                        <option value="">Alle Kanzleien</option>
+                        <option value="kanzlei-muller">Kanzlei Müller & Partner</option>
+                        <option value="rechtsbuero-weber">Rechtsbüro Weber</option>
+                        <option value="law-office-schmidt">Law Office Schmidt</option>
+                    </select>
+                    
+                    <select id="timeFilter" class="filter-button px-4 py-2 rounded-lg text-white bg-transparent">
+                        <option value="24h">Letzte 24 Stunden</option>
+                        <option value="7d">Letzte 7 Tage</option>
+                        <option value="30d" selected>Letzte 30 Tage</option>
+                        <option value="90d">Letzte 90 Tage</option>
+                    </select>
+                    
+                    <button id="realTimeToggle" class="filter-button px-4 py-2 rounded-lg text-white flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                        <span>Live-Updates</span>
+                    </button>
+                </div>
+                
+                <div class="flex gap-3">
+                    <input type="text" id="searchLogs" placeholder="Logs durchsuchen..." 
+                           class="filter-button px-4 py-2 rounded-lg text-white bg-transparent placeholder-gray-500 min-w-0 w-full lg:w-64">
+                    <button class="filter-button px-4 py-2 rounded-lg text-white">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="mx-4 mt-6 pb-8">
+        <div class="grid grid-cols-1 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 gap-6">
+            
+            <!-- System Overview Section -->
+            <div class="2xl:col-span-4 xl:col-span-3 lg:col-span-2">
+                <div class="glass-card p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="monitor" class="w-6 h-6 text-blue-400"></i>
+                        <h2 class="text-xl font-semibold">System Overview</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <!-- Total Law Firms -->
+                        <div class="metric-card p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-sm">Angeschlossene Kanzleien</span>
+                                <i data-lucide="building" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">247</div>
+                            <div class="text-green-400 text-xs mt-1">+12 diese Woche</div>
+                        </div>
+                        
+                        <!-- Active Firms -->
+                        <div class="metric-card p-4 rounded-lg status-online">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-300 text-sm">Aktive Kanzleien</span>
+                                <i data-lucide="activity" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">231</div>
+                            <div class="text-green-300 text-xs mt-1">93.5% Online</div>
+                        </div>
+                        
+                        <!-- N8N Status -->
+                        <div class="metric-card p-4 rounded-lg status-online">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-300 text-sm">N8N Instances</span>
+                                <i data-lucide="server" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">247</div>
+                            <div class="text-green-300 text-xs mt-1">Alle Online</div>
+                        </div>
+                        
+                        <!-- API Latency -->
+                        <div class="metric-card p-4 rounded-lg status-warning">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-300 text-sm">Ø API Latenz</span>
+                                <i data-lucide="zap" class="w-5 h-5 text-yellow-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">125ms</div>
+                            <div class="text-yellow-300 text-xs mt-1">+5ms vs. gestern</div>
+                        </div>
+                    </div>
+                    
+                    <!-- System Health Chart -->
+                    <div class="chart-container">
+                        <canvas id="systemHealthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Security & Compliance -->
+            <div class="2xl:col-span-2 xl:col-span-3 lg:col-span-2">
+                <div class="glass-card p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-emerald-400"></i>
+                        <h2 class="text-xl font-semibold">Data Security & Compliance</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="metric-card p-4 rounded-lg status-online">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-300 text-sm">DSGVO Compliance</span>
+                                <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">98.7%</div>
+                            <div class="text-green-300 text-xs mt-1">244/247 Kanzleien</div>
+                        </div>
+                        
+                        <div class="metric-card p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-sm">Letzte Audits</span>
+                                <i data-lucide="calendar" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">156</div>
+                            <div class="text-blue-300 text-xs mt-1">In den letzten 30 Tagen</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Compliance Chart -->
+                    <div class="chart-container">
+                        <canvas id="complianceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LLM Insights -->
+            <div class="2xl:col-span-2">
+                <div class="glass-card p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="brain" class="w-6 h-6 text-purple-400"></i>
+                        <h2 class="text-xl font-semibold">LLM Insights</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="metric-card p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-sm">Legal Queries</span>
+                                <i data-lucide="message-square" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div class="text-xl font-bold text-white">847K</div>
+                            <div class="text-purple-300 text-xs mt-1">Heute verarbeitet</div>
+                        </div>
+                        
+                        <div class="metric-card p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-sm">Learning Signals</span>
+                                <i data-lucide="trending-up" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div class="text-xl font-bold text-white">12.3K</div>
+                            <div class="text-blue-300 text-xs mt-1">Neue Patterns</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Metrics -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300 text-sm">Model Performance</span>
+                            <span class="text-green-400 font-medium">94.2%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-green-400 h-2 rounded-full" style="width: 94.2%"></div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300 text-sm">Response Accuracy</span>
+                            <span class="text-blue-400 font-medium">96.8%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-blue-400 h-2 rounded-full" style="width: 96.8%"></div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-300 text-sm">Drift Detection</span>
+                            <span class="text-yellow-400 font-medium">2.1%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-yellow-400 h-2 rounded-full" style="width: 2.1%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Agent Usage -->
+            <div class="2xl:col-span-4 xl:col-span-3 lg:col-span-2">
+                <div class="glass-card p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="phone" class="w-6 h-6 text-green-400"></i>
+                        <h2 class="text-xl font-semibold">AI Agent Usage</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="metric-card p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-sm">Total Calls</span>
+                                <i data-lucide="phone-call" class="w-5 h-5 text-green-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">4,247</div>
+                            <div class="text-green-300 text-xs mt-1">Heute</div>
+                        </div>
+                        
+                        <div class="metric-card p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-sm">Ø Gesprächsdauer</span>
+                                <i data-lucide="clock" class="w-5 h-5 text-blue-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">4:32</div>
+                            <div class="text-blue-300 text-xs mt-1">Minuten</div>
+                        </div>
+                        
+                        <div class="metric-card p-4 rounded-lg status-warning">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-300 text-sm">Eskalationsrate</span>
+                                <i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-400"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white">8.3%</div>
+                            <div class="text-yellow-300 text-xs mt-1">An Menschen</div>
+                        </div>
+                        
+                        <div class="metric-card p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-400 text-sm">Top Intent</span>
+                                <i data-lucide="tag" class="w-5 h-5 text-purple-400"></i>
+                            </div>
+                            <div class="text-lg font-bold text-white">Terminbuchung</div>
+                            <div class="text-purple-300 text-xs mt-1">31.2% aller Calls</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Call Statistics Chart -->
+                    <div class="chart-container">
+                        <canvas id="callStatsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="glass-card p-8 text-center">
+            <div class="animate-spin w-8 h-8 border-4 border-purple-400 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p class="text-white">Daten werden aktualisiert...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="api-client.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Global variables
+        let systemHealthChart, complianceChart, callStatsChart;
+        let currentFirmFilter = '';
+        let currentTimeFilter = '30d';
+        let realTimeUpdates = true;
+        
+        // Initialize API Client
+        const apiClient = new AnwaltsAIApiClient();
+
+        // Initialize Charts
+        function initializeCharts() {
+            // System Health Chart
+            const systemHealthCtx = document.getElementById('systemHealthChart').getContext('2d');
+            systemHealthChart = new Chart(systemHealthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
+                    datasets: [{
+                        label: 'API Response Time (ms)',
+                        data: [120, 115, 130, 125, 140, 135, 128, 122],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Active Connections',
+                        data: [850, 920, 1100, 1250, 1180, 1050, 950, 800],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#f3f4f6' }
+                        }
+                    }
+                }
+            });
+
+            // Compliance Chart (Pie Chart)
+            const complianceCtx = document.getElementById('complianceChart').getContext('2d');
+            complianceChart = new Chart(complianceCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['DSGVO Compliant', 'Pending Review', 'Non-Compliant'],
+                    datasets: [{
+                        data: [244, 2, 1],
+                        backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                        borderColor: ['#065f46', '#92400e', '#991b1b'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#f3f4f6' }
+                        }
+                    }
+                }
+            });
+
+            // Call Statistics Chart
+            const callStatsCtx = document.getElementById('callStatsChart').getContext('2d');
+            callStatsChart = new Chart(callStatsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Terminbuchung', 'Beratungsanfrage', 'Dokumenteninfo', 'Kostenauskunft', 'Allgemeine Info'],
+                    datasets: [{
+                        label: 'Anzahl Calls',
+                        data: [1325, 892, 654, 421, 298],
+                        backgroundColor: 'rgba(139, 92, 246, 0.8)',
+                        borderColor: '#8b5cf6',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#f3f4f6' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('refreshData').addEventListener('click', function() {
+            refreshAllData();
+        });
+
+        document.getElementById('exportReport').addEventListener('click', function() {
+            exportReport();
+        });
+
+        document.getElementById('firmFilter').addEventListener('change', function() {
+            currentFirmFilter = this.value;
+            updateDashboard();
+        });
+
+        document.getElementById('timeFilter').addEventListener('change', function() {
+            currentTimeFilter = this.value;
+            updateDashboard();
+        });
+
+        document.getElementById('realTimeToggle').addEventListener('click', function() {
+            realTimeUpdates = !realTimeUpdates;
+            this.classList.toggle('status-online', realTimeUpdates);
+            if (realTimeUpdates) {
+                startRealTimeUpdates();
+            } else {
+                stopRealTimeUpdates();
+            }
+        });
+
+        // Functions
+        function refreshAllData() {
+            showLoading(true);
+            
+            // Simulate API calls
+            setTimeout(() => {
+                updateMetrics();
+                updateCharts();
+                showLoading(false);
+            }, 2000);
+        }
+
+        function updateDashboard() {
+            console.log('Updating dashboard with filters:', currentFirmFilter, currentTimeFilter);
+            refreshAllData();
+        }
+
+        function updateMetrics() {
+            // Update metric cards with new data
+            // This would typically fetch from your API
+            console.log('Metrics updated');
+        }
+
+        function updateCharts() {
+            // Update chart data
+            if (systemHealthChart) {
+                systemHealthChart.update();
+            }
+            if (complianceChart) {
+                complianceChart.update();
+            }
+            if (callStatsChart) {
+                callStatsChart.update();
+            }
+        }
+
+        function exportReport() {
+            // Implementation for PDF/CSV export
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.text('AnwaltsAI Admin Report', 20, 30);
+            doc.setFontSize(12);
+            doc.text(`Generated: ${new Date().toLocaleString('de-DE')}`, 20, 45);
+            doc.text(`Filter: ${currentFirmFilter || 'Alle Kanzleien'} | ${currentTimeFilter}`, 20, 55);
+            
+            // Add metrics
+            doc.text('System Overview:', 20, 75);
+            doc.text('- Angeschlossene Kanzleien: 247', 30, 85);
+            doc.text('- Aktive Kanzleien: 231 (93.5%)', 30, 95);
+            doc.text('- Durchschnittliche API Latenz: 125ms', 30, 105);
+            
+            doc.save('anwalts-ai-admin-report.pdf');
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
+        }
+
+        let realTimeInterval;
+
+        function startRealTimeUpdates() {
+            realTimeInterval = setInterval(() => {
+                updateMetrics();
+            }, 30000); // Update every 30 seconds
+        }
+
+        function stopRealTimeUpdates() {
+            if (realTimeInterval) {
+                clearInterval(realTimeInterval);
+            }
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            refreshAllData();
+            
+            // Start real-time updates by default
+            startRealTimeUpdates();
+        });
+    </script>
+
+</body>
+</html>

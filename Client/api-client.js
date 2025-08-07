@@ -498,6 +498,78 @@ class AnwaltsAIApiClient {
     }
 
     // =========================
+    // NOTIFICATIONS ENDPOINTS
+    // =========================
+    
+    async getNotifications(limit = 50, unreadOnly = false) {
+        try {
+            const params = new URLSearchParams();
+            params.append('limit', limit);
+            if (unreadOnly) params.append('unread', 'true');
+            
+            const response = await this.get(`/api/notifications?${params.toString()}`);
+            return response;
+        } catch (error) {
+            console.error('Notifications fetch error:', error);
+            throw new Error('Benachrichtigungen konnten nicht geladen werden');
+        }
+    }
+    
+    async markNotificationAsRead(notificationId) {
+        try {
+            const response = await this.post(`/api/notifications/${notificationId}/read`);
+            return response;
+        } catch (error) {
+            console.error('Mark notification as read error:', error);
+            throw new Error('Benachrichtigung konnte nicht als gelesen markiert werden');
+        }
+    }
+    
+    async markAllNotificationsAsRead() {
+        try {
+            const response = await this.post('/api/notifications/mark-all-read');
+            return response;
+        } catch (error) {
+            console.error('Mark all notifications as read error:', error);
+            throw new Error('Benachrichtigungen konnten nicht als gelesen markiert werden');
+        }
+    }
+
+    // =========================
+    // USER SETTINGS ENDPOINTS
+    // =========================
+    
+    async getUserSettings() {
+        try {
+            const response = await this.get('/api/user/settings');
+            return response;
+        } catch (error) {
+            console.error('Settings fetch error:', error);
+            throw new Error('Benutzereinstellungen konnten nicht geladen werden');
+        }
+    }
+    
+    async updateUserSettings(settings) {
+        try {
+            const response = await this.post('/api/user/settings', settings);
+            return response;
+        } catch (error) {
+            console.error('Settings update error:', error);
+            throw new Error('Benutzereinstellungen konnten nicht gespeichert werden');
+        }
+    }
+    
+    async updateUserProfile(profileData) {
+        try {
+            const response = await this.put('/api/user/profile', profileData);
+            return response;
+        } catch (error) {
+            console.error('Profile update error:', error);
+            throw new Error('Profil konnte nicht aktualisiert werden');
+        }
+    }
+
+    // =========================
     // HEALTH CHECK & CONNECTIVITY
     // =========================
     

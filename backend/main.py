@@ -767,6 +767,239 @@ Dieses Dokument dient nur zu Testzwecken.
         }
     }
 
+# =========================
+# NOTIFICATIONS ENDPOINTS
+# =========================
+
+@app.get("/api/notifications")
+async def get_notifications(
+    limit: int = 50,
+    unread: bool = False,
+    user_id: str = Depends(auth_service.get_current_user_id)
+):
+    """Get user notifications"""
+    try:
+        # For demo purposes, return mock notifications
+        # In real implementation, query database for user-specific notifications
+        mock_notifications = [
+            {
+                "id": 1,
+                "title": "Dokument erstellt",
+                "message": "Ihr Kaufvertrag wurde erfolgreich generiert.",
+                "type": "success",
+                "timestamp": datetime.utcnow() - timedelta(minutes=5),
+                "read": False,
+                "icon": "file-check"
+            },
+            {
+                "id": 2,
+                "title": "E-Mail verarbeitet",
+                "message": "Neue E-Mail von Mandant Müller eingetroffen.",
+                "type": "info",
+                "timestamp": datetime.utcnow() - timedelta(minutes=15),
+                "read": False,
+                "icon": "mail"
+            },
+            {
+                "id": 3,
+                "title": "Template gespeichert",
+                "message": "Neue Vorlage \"Mietvertrag\" wurde hinzugefügt.",
+                "type": "info",
+                "timestamp": datetime.utcnow() - timedelta(hours=1),
+                "read": True,
+                "icon": "bookmark"
+            },
+            {
+                "id": 4,
+                "title": "System Update",
+                "message": "AnwaltsAI wurde auf Version 2.1.0 aktualisiert.",
+                "type": "warning",
+                "timestamp": datetime.utcnow() - timedelta(days=1),
+                "read": True,
+                "icon": "alert-circle"
+            }
+        ]
+        
+        if unread:
+            mock_notifications = [n for n in mock_notifications if not n['read']]
+            
+        if limit:
+            mock_notifications = mock_notifications[:limit]
+            
+        return {
+            "success": True,
+            "notifications": mock_notifications,
+            "total": len(mock_notifications),
+            "unread_count": len([n for n in mock_notifications if not n['read']])
+        }
+        
+    except Exception as e:
+        logger.error(f"Get notifications error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fehler beim Laden der Benachrichtigungen"
+        )
+
+@app.post("/api/notifications/{notification_id}/read")
+async def mark_notification_read(
+    notification_id: int,
+    user_id: str = Depends(auth_service.get_current_user_id)
+):
+    """Mark a notification as read"""
+    try:
+        # In real implementation, update notification in database
+        logger.info(f"Marking notification {notification_id} as read for user {user_id}")
+        
+        return {
+            "success": True,
+            "message": "Benachrichtigung als gelesen markiert"
+        }
+        
+    except Exception as e:
+        logger.error(f"Mark notification read error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fehler beim Markieren der Benachrichtigung"
+        )
+
+@app.post("/api/notifications/mark-all-read")
+async def mark_all_notifications_read(
+    user_id: str = Depends(auth_service.get_current_user_id)
+):
+    """Mark all notifications as read for user"""
+    try:
+        # In real implementation, update all user notifications in database
+        logger.info(f"Marking all notifications as read for user {user_id}")
+        
+        return {
+            "success": True,
+            "message": "Alle Benachrichtigungen als gelesen markiert"
+        }
+        
+    except Exception as e:
+        logger.error(f"Mark all notifications read error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fehler beim Markieren aller Benachrichtigungen"
+        )
+
+# =========================
+# USER SETTINGS ENDPOINTS
+# =========================
+
+@app.get("/api/user/settings")
+async def get_user_settings(
+    user_id: str = Depends(auth_service.get_current_user_id)
+):
+    """Get user settings"""
+    try:
+        # In real implementation, fetch from database
+        # For now, return default settings
+        default_settings = {
+            "language": "de",
+            "theme": "dark",
+            "emailNotifications": True,
+            "browserNotifications": False,
+            "aiUpdates": True,
+            "aiModel": "deepseek-v3",
+            "aiCreativity": 70,
+            "autoSave": True
+        }
+        
+        return {
+            "success": True,
+            "settings": default_settings
+        }
+        
+    except Exception as e:
+        logger.error(f"Get user settings error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fehler beim Laden der Benutzereinstellungen"
+        )
+
+@app.post("/api/user/settings")
+async def update_user_settings(
+    settings: dict,
+    user_id: str = Depends(auth_service.get_current_user_id)
+):
+    """Update user settings"""
+    try:
+        # In real implementation, validate and save to database
+        logger.info(f"Updating settings for user {user_id}: {settings}")
+        
+        # Validate settings structure (simplified)
+        allowed_keys = {
+            'language', 'theme', 'emailNotifications', 'browserNotifications',
+            'aiUpdates', 'aiModel', 'aiCreativity', 'autoSave'
+        }
+        
+        invalid_keys = set(settings.keys()) - allowed_keys
+        if invalid_keys:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Ungültige Einstellungsschlüssel: {invalid_keys}"
+            )
+        
+        # In real implementation: await db.update_user_settings(user_id, settings)
+        
+        return {
+            "success": True,
+            "message": "Benutzereinstellungen erfolgreich aktualisiert",
+            "settings": settings
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update user settings error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fehler beim Speichern der Benutzereinstellungen"
+        )
+
+@app.put("/api/user/profile")
+async def update_user_profile(
+    profile_data: dict,
+    user_id: str = Depends(auth_service.get_current_user_id)
+):
+    """Update user profile information"""
+    try:
+        # In real implementation, validate and update user profile
+        logger.info(f"Updating profile for user {user_id}: {profile_data}")
+        
+        # Validate required fields
+        if 'name' in profile_data and not profile_data['name'].strip():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Name darf nicht leer sein"
+            )
+        
+        if 'email' in profile_data:
+            email = profile_data['email'].strip()
+            if not email or '@' not in email:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Gültige E-Mail-Adresse erforderlich"
+                )
+        
+        # In real implementation: await db.update_user_profile(user_id, profile_data)
+        
+        return {
+            "success": True,
+            "message": "Profil erfolgreich aktualisiert",
+            "profile": profile_data
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Update user profile error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fehler beim Aktualisieren des Profils"
+        )
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
