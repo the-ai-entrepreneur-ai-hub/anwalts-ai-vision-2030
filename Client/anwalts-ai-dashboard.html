@@ -70,6 +70,218 @@
             border-right: 3px solid #8b5cf6;
         }
         
+        /* Admin Panel Visibility */
+        .admin-only {
+            display: none;
+        }
+        
+        .user-admin .admin-only {
+            display: flex;
+        }
+        
+        .admin-only:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(67, 56, 202, 0.15)) !important;
+            border-left: 3px solid #8b5cf6;
+        }
+
+        /* Notification Sidebar */
+        .notification-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(46, 42, 77, 0.95), rgba(24, 22, 45, 0.95));
+            backdrop-filter: blur(25px);
+            border-left: 1px solid rgba(134, 97, 247, 0.3);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .notification-sidebar.open {
+            right: 0;
+        }
+        
+        .notification-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .notification-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .notification-item.unread {
+            background: rgba(139, 92, 246, 0.05);
+            border-left: 3px solid #8b5cf6;
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .settings-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .settings-modal-content {
+            background: linear-gradient(135deg, rgba(46, 42, 77, 0.95), rgba(24, 22, 45, 0.95));
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(134, 97, 247, 0.3);
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .settings-modal.open .settings-modal-content {
+            transform: scale(1);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            color: #f3f4f6;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .form-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .form-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .form-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #374151;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+        
+        .form-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .form-slider {
+            background-color: #8b5cf6;
+        }
+        
+        input:checked + .form-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .notification-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .settings-modal-content {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+                max-height: calc(100vh - 2rem);
+            }
+            
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-input, .form-select {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Accessibility Improvements */
+        .notification-item:focus,
+        .form-input:focus,
+        .form-select:focus,
+        button:focus {
+            outline: 2px solid #8b5cf6;
+            outline-offset: 2px;
+        }
+
+        .notification-sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: #8b5cf6 transparent;
+        }
+
+        .notification-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notification-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .notification-sidebar::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 3px;
+        }
+        
         /* Section Management */
         .section-content {
             display: none;
@@ -2237,10 +2449,11 @@
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <button class="glass-card p-2 rounded-lg hover:bg-white/10">
+                    <button id="notificationBtn" class="glass-card p-2 rounded-lg hover:bg-white/10 relative" onclick="toggleNotifications()">
                         <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">3</span>
                     </button>
-                    <button class="glass-card p-2 rounded-lg hover:bg-white/10">
+                    <button id="settingsBtn" class="glass-card p-2 rounded-lg hover:bg-white/10" onclick="openSettingsModal()">
                         <i data-lucide="settings" class="w-5 h-5"></i>
                     </button>
                     <div class="flex items-center gap-3">
@@ -2285,6 +2498,12 @@
                     <div class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg" data-section="templates">
                         <i data-lucide="bookmark" class="w-5 h-5"></i>
                         <span>Templates</span>
+                    </div>
+                    
+                    <!-- Admin Panel (Admin Only) -->
+                    <div class="nav-item admin-only flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer hover:bg-purple-600/20 transition-all" onclick="window.location.href='admin-insights.html'">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-purple-400"></i>
+                        <span class="text-purple-300">Admin Panel</span>
                     </div>
                 </nav>
             </div>
@@ -7130,15 +7349,369 @@ Kollege Schmidt`,
             }
         }
 
+        // Check user role and show admin panel if needed
+        function checkAdminAccess() {
+            try {
+                const userData = localStorage.getItem('anwalts_user');
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    console.log('User data:', user);
+                    
+                    // Check if user has admin role
+                    if (user.role === 'admin' || user.role === 'Administrator') {
+                        document.body.classList.add('user-admin');
+                        console.log('✅ Admin access granted - Admin Panel visible');
+                    } else {
+                        console.log('ℹ️ User is not admin - Admin Panel hidden');
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking admin access:', error);
+            }
+        }
+
+        // =================
+        // NOTIFICATION SYSTEM
+        // =================
+        
+        let notifications = [];
+        let unreadCount = 0;
+        
+        // Toggle notification sidebar
+        function toggleNotifications() {
+            const sidebar = document.getElementById('notificationSidebar');
+            sidebar.classList.toggle('open');
+            
+            if (sidebar.classList.contains('open')) {
+                loadNotifications();
+            }
+        }
+        
+        // Load notifications from backend
+        async function loadNotifications() {
+            try {
+                // In a real implementation, this would fetch from /api/notifications
+                const mockNotifications = [
+                    {
+                        id: 1,
+                        title: 'Dokument erstellt',
+                        message: 'Ihr Kaufvertrag wurde erfolgreich generiert.',
+                        type: 'success',
+                        timestamp: new Date(Date.now() - 300000), // 5 minutes ago
+                        read: false,
+                        icon: 'file-check'
+                    },
+                    {
+                        id: 2,
+                        title: 'E-Mail verarbeitet',
+                        message: 'Neue E-Mail von Mandant Müller eingetroffen.',
+                        type: 'info',
+                        timestamp: new Date(Date.now() - 900000), // 15 minutes ago
+                        read: false,
+                        icon: 'mail'
+                    },
+                    {
+                        id: 3,
+                        title: 'Template gespeichert',
+                        message: 'Neue Vorlage "Mietvertrag" wurde hinzugefügt.',
+                        type: 'info',
+                        timestamp: new Date(Date.now() - 3600000), // 1 hour ago
+                        read: true,
+                        icon: 'bookmark'
+                    },
+                    {
+                        id: 4,
+                        title: 'System Update',
+                        message: 'AnwaltsAI wurde auf Version 2.1.0 aktualisiert.',
+                        type: 'warning',
+                        timestamp: new Date(Date.now() - 86400000), // 1 day ago
+                        read: true,
+                        icon: 'alert-circle'
+                    }
+                ];
+                
+                notifications = mockNotifications;
+                unreadCount = notifications.filter(n => !n.read).length;
+                
+                updateNotificationBadge();
+                renderNotifications();
+                
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                window.dashboard.showNotification('Benachrichtigungen konnten nicht geladen werden', 'error');
+            }
+        }
+        
+        // Render notifications in sidebar
+        function renderNotifications() {
+            const notificationsList = document.getElementById('notificationsList');
+            
+            if (notifications.length === 0) {
+                notificationsList.innerHTML = `
+                    <div class="text-center py-8">
+                        <i data-lucide="bell-off" class="w-12 h-12 text-gray-500 mx-auto mb-4"></i>
+                        <p class="text-gray-400">Keine Benachrichtigungen</p>
+                    </div>
+                `;
+            } else {
+                notificationsList.innerHTML = notifications.map(notification => `
+                    <div class="notification-item p-4 rounded-lg border border-gray-600 ${notification.read ? '' : 'unread'}" 
+                         onclick="markAsRead(${notification.id})">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="w-8 h-8 rounded-lg ${getNotificationColor(notification.type)} flex items-center justify-center">
+                                    <i data-lucide="${notification.icon}" class="w-4 h-4 text-white"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-medium text-white mb-1">${notification.title}</h4>
+                                <p class="text-sm text-gray-400 mb-2">${notification.message}</p>
+                                <span class="text-xs text-gray-500">${formatTimestamp(notification.timestamp)}</span>
+                            </div>
+                            ${!notification.read ? '<div class="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0 mt-2"></div>' : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Re-initialize Lucide icons
+            if (window.lucide) window.lucide.createIcons();
+        }
+        
+        // Get notification color based on type
+        function getNotificationColor(type) {
+            switch (type) {
+                case 'success': return 'bg-green-500';
+                case 'warning': return 'bg-yellow-500';
+                case 'error': return 'bg-red-500';
+                default: return 'bg-blue-500';
+            }
+        }
+        
+        // Format timestamp for display
+        function formatTimestamp(timestamp) {
+            const now = new Date();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Gerade eben';
+            if (minutes < 60) return `vor ${minutes} Min`;
+            if (hours < 24) return `vor ${hours} Std`;
+            return `vor ${days} Tag${days > 1 ? 'en' : ''}`;
+        }
+        
+        // Mark notification as read
+        async function markAsRead(notificationId) {
+            try {
+                const notification = notifications.find(n => n.id === notificationId);
+                if (notification && !notification.read) {
+                    notification.read = true;
+                    unreadCount--;
+                    
+                    // In a real implementation, this would call /api/notifications/{id}/read
+                    updateNotificationBadge();
+                    renderNotifications();
+                }
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+        }
+        
+        // Mark all notifications as read
+        async function markAllAsRead() {
+            try {
+                notifications.forEach(n => n.read = true);
+                unreadCount = 0;
+                
+                // In a real implementation, this would call /api/notifications/mark-all-read
+                updateNotificationBadge();
+                renderNotifications();
+                
+                window.dashboard.showNotification('Alle Benachrichtigungen als gelesen markiert', 'success');
+            } catch (error) {
+                console.error('Error marking all as read:', error);
+            }
+        }
+        
+        // Update notification badge
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+        
+        // =================
+        // SETTINGS MODAL
+        // =================
+        
+        let currentSettings = {
+            name: '',
+            email: '',
+            role: '',
+            language: 'de',
+            theme: 'dark',
+            emailNotifications: true,
+            browserNotifications: false,
+            aiUpdates: true,
+            aiModel: 'deepseek-v3',
+            aiCreativity: 70,
+            autoSave: true
+        };
+        
+        // Open settings modal
+        function openSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            modal.classList.add('open');
+            
+            // Load current settings
+            loadCurrentSettings();
+        }
+        
+        // Close settings modal
+        function closeSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            modal.classList.remove('open');
+        }
+        
+        // Load current user settings
+        async function loadCurrentSettings() {
+            try {
+                // Get user data from localStorage
+                const userData = localStorage.getItem('anwalts_user');
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    currentSettings.name = user.name || '';
+                    currentSettings.email = user.email || '';
+                    currentSettings.role = user.role || '';
+                }
+                
+                // In a real implementation, fetch from /api/user/settings
+                // For now, load from localStorage or use defaults
+                const savedSettings = localStorage.getItem('anwalts_settings');
+                if (savedSettings) {
+                    currentSettings = { ...currentSettings, ...JSON.parse(savedSettings) };
+                }
+                
+                // Populate form fields
+                populateSettingsForm();
+                
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                window.dashboard.showNotification('Einstellungen konnten nicht geladen werden', 'error');
+            }
+        }
+        
+        // Populate settings form with current values
+        function populateSettingsForm() {
+            document.getElementById('userName').value = currentSettings.name || '';
+            document.getElementById('userEmail').value = currentSettings.email || '';
+            document.getElementById('userRole').value = currentSettings.role || '';
+            document.getElementById('userLanguage').value = currentSettings.language || 'de';
+            document.getElementById('userTheme').value = currentSettings.theme || 'dark';
+            document.getElementById('emailNotifications').checked = currentSettings.emailNotifications || false;
+            document.getElementById('browserNotifications').checked = currentSettings.browserNotifications || false;
+            document.getElementById('aiUpdates').checked = currentSettings.aiUpdates || true;
+            document.getElementById('aiModel').value = currentSettings.aiModel || 'deepseek-v3';
+            document.getElementById('aiCreativity').value = currentSettings.aiCreativity || 70;
+            document.getElementById('autoSave').checked = currentSettings.autoSave || true;
+        }
+        
+        // Save settings
+        async function saveSettings(event) {
+            event.preventDefault();
+            
+            try {
+                // Get form values
+                const formData = new FormData(event.target);
+                const newSettings = {
+                    name: document.getElementById('userName').value,
+                    email: document.getElementById('userEmail').value,
+                    language: document.getElementById('userLanguage').value,
+                    theme: document.getElementById('userTheme').value,
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    browserNotifications: document.getElementById('browserNotifications').checked,
+                    aiUpdates: document.getElementById('aiUpdates').checked,
+                    aiModel: document.getElementById('aiModel').value,
+                    aiCreativity: parseInt(document.getElementById('aiCreativity').value),
+                    autoSave: document.getElementById('autoSave').checked
+                };
+                
+                // In a real implementation, this would POST to /api/user/settings
+                localStorage.setItem('anwalts_settings', JSON.stringify(newSettings));
+                
+                // Update user data in localStorage if name/email changed
+                const userData = localStorage.getItem('anwalts_user');
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    if (newSettings.name) user.name = newSettings.name;
+                    if (newSettings.email) user.email = newSettings.email;
+                    localStorage.setItem('anwalts_user', JSON.stringify(user));
+                }
+                
+                currentSettings = { ...currentSettings, ...newSettings };
+                
+                // Apply settings immediately if possible
+                applySettings(newSettings);
+                
+                // Close modal and show success
+                closeSettingsModal();
+                window.dashboard.showNotification('Einstellungen erfolgreich gespeichert', 'success');
+                
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                window.dashboard.showNotification('Fehler beim Speichern der Einstellungen', 'error');
+            }
+        }
+        
+        // Apply settings immediately where possible
+        function applySettings(settings) {
+            // Apply language changes (would require page reload in real app)
+            if (settings.language !== currentSettings.language) {
+                console.log('Language change would require page reload:', settings.language);
+            }
+            
+            // Apply theme changes (simplified - real implementation would be more complex)
+            if (settings.theme !== currentSettings.theme) {
+                console.log('Theme change:', settings.theme);
+                // In a real app, you'd apply theme changes here
+            }
+            
+            // Enable browser notifications if requested
+            if (settings.browserNotifications && 'Notification' in window) {
+                Notification.requestPermission();
+            }
+        }
+
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', () => {
             window.dashboard = new AnwaltsAIDashboard();
+            
+            // Check admin access
+            checkAdminAccess();
             
             // Setup sign out button
             const signOutBtn = document.getElementById('signout-btn');
             if (signOutBtn) {
                 signOutBtn.addEventListener('click', signOut);
             }
+            
+            // Setup settings form handler
+            const settingsForm = document.getElementById('settingsForm');
+            if (settingsForm) {
+                settingsForm.addEventListener('submit', saveSettings);
+            }
+            
+            // Load initial notifications
+            loadNotifications();
+            
+            // Auto-refresh notifications every 30 seconds
+            setInterval(loadNotifications, 30000);
         });
     </script>
     
@@ -7327,6 +7900,158 @@ Kollege Schmidt`,
                         <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>
                         Add Clause
                     </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Sidebar -->
+    <div id="notificationSidebar" class="notification-sidebar">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-white">Benachrichtigungen</h3>
+                <button onclick="toggleNotifications()" class="text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-sm text-gray-400">Alle als gelesen markieren</span>
+                <button onclick="markAllAsRead()" class="text-sm text-purple-400 hover:text-purple-300">
+                    Markieren
+                </button>
+            </div>
+            
+            <div id="notificationsList" class="space-y-3">
+                <!-- Notifications will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-modal-content">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold text-white">Einstellungen</h3>
+                    <button onclick="closeSettingsModal()" class="text-gray-400 hover:text-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <form id="settingsForm" class="space-y-6">
+                    <!-- Profile Settings -->
+                    <div class="border-b border-gray-600 pb-6">
+                        <h4 class="text-lg font-medium text-white mb-4">Profil</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" id="userName" class="form-input" placeholder="Ihr Name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">E-Mail</label>
+                            <input type="email" id="userEmail" class="form-input" placeholder="ihre.email@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Rolle</label>
+                            <input type="text" id="userRole" class="form-input" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Settings -->
+                    <div class="border-b border-gray-600 pb-6">
+                        <h4 class="text-lg font-medium text-white mb-4">Erscheinungsbild</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Sprache</label>
+                            <select id="userLanguage" class="form-select">
+                                <option value="de">Deutsch</option>
+                                <option value="en">English</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Theme</label>
+                            <select id="userTheme" class="form-select">
+                                <option value="dark">Dark Mode</option>
+                                <option value="light">Light Mode</option>
+                                <option value="auto">Auto</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="border-b border-gray-600 pb-6">
+                        <h4 class="text-lg font-medium text-white mb-4">Benachrichtigungen</h4>
+                        
+                        <div class="form-group flex items-center justify-between">
+                            <span class="form-label mb-0">E-Mail Benachrichtigungen</span>
+                            <label class="form-switch">
+                                <input type="checkbox" id="emailNotifications">
+                                <span class="form-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group flex items-center justify-between">
+                            <span class="form-label mb-0">Browser Benachrichtigungen</span>
+                            <label class="form-switch">
+                                <input type="checkbox" id="browserNotifications">
+                                <span class="form-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group flex items-center justify-between">
+                            <span class="form-label mb-0">AI Erfolgs-Updates</span>
+                            <label class="form-switch">
+                                <input type="checkbox" id="aiUpdates" checked>
+                                <span class="form-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- AI Settings -->
+                    <div class="pb-6">
+                        <h4 class="text-lg font-medium text-white mb-4">KI Einstellungen</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Bevorzugtes AI Model</label>
+                            <select id="aiModel" class="form-select">
+                                <option value="deepseek-v3">DeepSeek V3 (Empfohlen)</option>
+                                <option value="gpt-4">GPT-4</option>
+                                <option value="claude-3">Claude 3</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">AI Kreativitätsstufe</label>
+                            <input type="range" id="aiCreativity" min="0" max="100" value="70" class="w-full">
+                            <div class="flex justify-between text-xs text-gray-400 mt-1">
+                                <span>Konservativ</span>
+                                <span>Kreativ</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group flex items-center justify-between">
+                            <span class="form-label mb-0">Auto-Save Dokumente</span>
+                            <label class="form-switch">
+                                <input type="checkbox" id="autoSave" checked>
+                                <span class="form-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end gap-3 pt-6">
+                        <button type="button" onclick="closeSettingsModal()" class="px-4 py-2 text-gray-400 hover:text-white transition-colors">
+                            Abbrechen
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-medium hover:from-purple-600 hover:to-blue-600 transition-all">
+                            Speichern
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
