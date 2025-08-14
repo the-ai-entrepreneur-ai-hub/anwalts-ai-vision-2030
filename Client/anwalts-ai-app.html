@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+                                                                                                                                                                                                                                                                                                                                                                                                                               hhhhhhhhhhh<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anwalts-AI - Ihr KI-Partner für deutsche Rechtsdokumente</title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- Favicon - AnwaltsAI Glassmorphism Logo -->
+    <link rel="icon" type="image/svg+xml" href="images/anwalts-logo-badge.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
@@ -19,6 +19,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
+        
+        /* BLOCK 2: Cloud-like radial gradient background system */
+        .bg-cloud-system {
+            background-image: 
+                radial-gradient(600px 320px at 55% 28%, #eef2ff 0%, rgba(238,242,255,0.0) 60%),
+                radial-gradient(520px 300px at 85% 22%, #f1f5f9 0%, rgba(241,245,249,0.0) 60%),
+                radial-gradient(640px 360px at 18% 80%, #f8fafc 0%, rgba(248,250,252,0.0) 65%);
+        }
         
         /* TUNNEL SHADER BACKGROUND - AMAZING ANIMATION */
         #shader-canvas {
@@ -777,62 +785,46 @@
         }
     </style>
 </head>
-<body class="text-white antialiased overflow-x-hidden">
-    <!-- TUNNEL SHADER BACKGROUND - AMAZING ANIMATION -->
-    <canvas id="shader-canvas"></canvas>
+<body class="min-h-screen w-full bg-slate-50 text-slate-900 relative overflow-hidden">
+    <!-- Cloud-like radial gradient background system -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-90 bg-cloud-system"></div>
     
     <!-- Full Width Glass Navbar -->
-    <nav class="floating-navbar">
-        <div class="navbar-content">
+    <header class="relative z-10">
+        <nav class="floating-navbar">
+            <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
             <!-- Left Section: Logo only -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400/40 to-blue-500/30 flex items-center justify-center border border-purple-300/40 relative overflow-hidden shadow-lg">
-                    <!-- Professional Scales of Justice -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="text-white">
-                        <!-- Central Pillar -->
-                        <path d="M12 2v20"/>
-                        <!-- Top Cross Bar -->
-                        <path d="M7 6h10"/>
-                        <!-- Left Scale Chain -->
-                        <path d="M8 6v2"/>
-                        <!-- Right Scale Chain -->
-                        <path d="M16 6v2"/>
-                        <!-- Left Scale Pan -->
-                        <ellipse cx="8" cy="9" rx="3" ry="1" fill="currentColor" opacity="0.3"/>
-                        <path d="M5 9h6"/>
-                        <!-- Right Scale Pan -->
-                        <ellipse cx="16" cy="9" rx="3" ry="1" fill="currentColor" opacity="0.3"/>
-                        <path d="M13 9h6"/>
-                        <!-- Base -->
-                        <path d="M9 22h6"/>
-                        <path d="M10 20h4"/>
-                    </svg>
-                    <!-- Enhanced glow effect -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-purple-400/15 to-blue-400/15 rounded-xl"></div>
-                </div>
-                <span class="text-xl font-bold tracking-tight text-white font-['Playfair_Display'] 
-                       bg-gradient-to-r from-purple-200 via-white to-blue-200 bg-clip-text text-transparent
-                       drop-shadow-sm">Anwalts-AI</span>
+                <!-- AnwaltsAI Badge Logo -->
+                <object data="images/anwalts-logo-badge.svg" type="image/svg+xml" width="22" height="22" aria-label="AnwaltsAI Logo" class="filter drop-shadow-lg"></object>
+                <span class="font-semibold tracking-wide text-slate-900">ANWALTS.AI</span>
             </div>
             
             <!-- Center Section: Navigation -->
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#funktionen" class="text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/10">Funktionen</a>
-                <a href="#erfolgsgeschichten" class="text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/10">Erfolgsgeschichten</a>
-                <a href="#preise" class="text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/10">Preise</a>
-            </div>
+            <nav class="hidden md:flex items-center gap-8" aria-label="Primary">
+                <a class="hover:text-slate-900 transition text-sm text-slate-600" href="#features">Features</a>
+                <a class="hover:text-slate-900 transition text-sm text-slate-600" href="#pricing">Pricing</a>
+                <a class="hover:text-slate-900 transition text-sm text-slate-600" href="#changelog">Changelog</a>
+                <a class="hover:text-slate-900 transition text-sm text-slate-600" href="#contact">Contact</a>
+            </nav>
             
-            <!-- Right Section: Auth & CTA -->
-            <div class="hidden md:flex items-center gap-4">
-                <button class="text-sm font-medium text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/10" onclick="openAuthModal()">
-                    Anmelden
-                </button>
-                <button class="cta-with-lights bg-gradient-to-r from-purple-500/80 to-blue-500/80 hover:from-purple-500 hover:to-blue-500 text-white px-6 py-2.5 rounded-lg text-sm font-semibold border border-white/20 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]">
-                    Jetzt starten
-                </button>
+            <!-- Right Section: Get Template Button -->
+            <div class="flex items-center gap-3">
+                <a
+                    data-testid="btn-template"
+                    href="#get-template"
+                    class="relative inline-flex items-center gap-3 rounded-[28px] px-5 py-2.5 text-sm font-medium text-white border border-white/20"
+                    style="background: linear-gradient(135deg, #38487c, #3f508c); box-shadow: 0 14px 28px rgba(32,41,84,0.45), inset 0 1px 0 rgba(255,255,255,0.25);"
+                >
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M5 16L3 10l5.5-3L16 4l5.5 3L19 14l-5.5 3L6 20L5 16zm2.5-1.5L10 13l4 1.5-2.5 1.5-4-1.5z"/>
+                    </svg>
+                    Get Template
+                </a>
             </div>
-        </div>
-    </nav>
+            </div>
+        </nav>
+    </header>
 
     <!-- AUTHENTICATION MODAL -->
     <div class="auth-modal-overlay" id="authModal">
@@ -931,11 +923,16 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="content min-h-screen flex items-center pt-24 relative">
-        <div class="max-w-7xl mx-auto px-6 py-12 z-10 relative">
+    <main class="relative z-10">
+        <section class="mx-auto max-w-6xl px-6 pt-16 pb-24 md:pt-24">
             <div class="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
                 <!-- Left Content -->
                 <div class="space-y-8 slide-down-glow">
+                    <!-- AnwaltsAI App Logo -->
+                    <div class="flex justify-center lg:justify-start mb-8">
+                        <object data="images/anwalts-logo-app.svg" type="image/svg+xml" width="96" height="96" aria-label="AnwaltsAI App Logo" class="filter drop-shadow-2xl"></object>
+                    </div>
+                    
                     <div class="space-y-6">
                         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20">
                             <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -1252,7 +1249,24 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Form Section - Template Compliance -->
+        <div class="mx-auto mt-14 max-w-2xl">
+            <label class="mb-2 block text-sm text-slate-500">Vor- und Nachname</label>
+            <input
+                type="text"
+                placeholder="Max Mustermann"
+                class="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-slate-900 shadow-sm outline-none ring-0 focus:border-slate-300"
+            />
+            <label class="mb-2 mt-4 block text-sm text-slate-500">Telefonnummer</label>
+            <input
+                type="tel"
+                placeholder="+49 160 99801020"
+                class="w-full rounded-xl border border-slate-200 bg-white/90 px-4 py-3 text-slate-900 shadow-sm outline-none ring-0 focus:border-slate-300"
+            />
+        </div>
     </section>
+    </main>
 
     <!-- Testimonials Section -->
     <section class="content py-20 relative" id="erfolgsgeschichten">
