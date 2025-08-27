@@ -3,9 +3,23 @@
  * Handles all backend communication with proper error handling and authentication
  */
 class AnwaltsAIApiClient {
-    constructor(baseUrl = 'http://127.0.0.1:8009') {
-        this.baseUrl = baseUrl;
+    constructor(baseUrl = null) {
+        // Auto-detect environment and set appropriate base URL
+        if (baseUrl) {
+            this.baseUrl = baseUrl;
+        } else if (window.location.hostname === 'portal-anwalts.ai') {
+            // Production environment
+            this.baseUrl = 'https://portal-anwalts.ai/api';
+        } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            // Local development
+            this.baseUrl = 'http://127.0.0.1:8000';
+        } else {
+            // Default fallback for production
+            this.baseUrl = 'https://portal-anwalts.ai/api';
+        }
+        
         this.authToken = localStorage.getItem('anwalts_auth_token');
+        console.log(`🌐 API Client initialized for: ${this.baseUrl}`);
     }
 
     // =========================
@@ -35,14 +49,53 @@ class AnwaltsAIApiClient {
         }
     }
 
-    async register(email, name, password, role = 'assistant') {
+    async register(registrationData) {
         try {
-            const response = await this.post('/auth/register', {
-                email,
-                name,
-                password,
-                role
-            });
+            // Support both old format and new enhanced format
+            let payload = {};
+            
+            if (typeof registrationData === 'string') {
+                // Old format: register(email, name, password, role)
+                payload = {
+                    email: arguments[0],
+                    first_name: arguments[1]?.split(' ')[0] || '',
+                    last_name: arguments[1]?.split(' ').slice(1).join(' ') || '',
+                    password: arguments[2],
+                    role: arguments[3] || 'assistant'
+                };
+            } else {
+                // New enhanced format with full profile
+                payload = {
+                    // Required fields
+                    email: registrationData.email,
+                    password: registrationData.password,
+                    first_name: registrationData.first_name,
+                    last_name: registrationData.last_name,
+                    
+                    // Optional enhanced fields
+                    title: registrationData.title,
+                    company: registrationData.company || registrationData.law_firm,
+                    department: registrationData.department,
+                    position: registrationData.position,
+                    phone: registrationData.phone,
+                    mobile: registrationData.mobile,
+                    street_address: registrationData.street_address,
+                    city: registrationData.city,
+                    state: registrationData.state,
+                    postal_code: registrationData.postal_code,
+                    country: registrationData.country,
+                    specializations: registrationData.specializations || [],
+                    bar_number: registrationData.bar_number,
+                    law_firm: registrationData.law_firm,
+                    years_experience: registrationData.years_experience,
+                    language: registrationData.language || 'de',
+                    timezone: registrationData.timezone || 'Europe/Berlin',
+                    bio: registrationData.bio,
+                    role: registrationData.role || 'assistant'
+                };
+            }
+
+            const response = await this.post('/auth/register', payload);
             
             return response;
         } catch (error) {
@@ -127,8 +180,16 @@ class AnwaltsAIApiClient {
             const formData = new FormData();
             formData.append('file', file);
             
-            const response = await this.postFormData('/process-document', formData);
-            return response;
+            // Prefer main backend proxy for better architecture
+            try {
+                const response = await this.postFormData('/api/documents/upload', formData);
+                return response;
+            } catch (primaryError) {
+                console.warn('Primary upload endpoint failed, retrying legacy proxy...', primaryError);
+                // Fallback to legacy compatibility endpoint if available
+                const legacyResponse = await this.postFormData('/process-document', formData);
+                return legacyResponse;
+            }
         } catch (error) {
             console.error('Document processing error:', error);
             throw new Error('Dokumentenverarbeitung fehlgeschlagen');
@@ -682,9 +743,9 @@ class MockApiClient extends AnwaltsAIApiClient {
             user: {
                 id: 1,
                 email: email,
-                name: 'Dr. Anna Vogel',
-                role: 'Administrator',
-                initials: 'AV'
+                name: email.includes('@admin.') ? 'Administrator' : 'User',
+                role: email.includes('@admin.') ? 'Administrator' : 'User',
+                initials: email.substring(0, 2).toUpperCase()
             }
         };
     }

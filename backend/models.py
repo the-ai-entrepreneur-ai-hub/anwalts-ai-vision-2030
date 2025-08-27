@@ -36,6 +36,53 @@ class UserInDB(BaseModel):
     role: str
     password_hash: str
     is_active: bool = True
+    
+    # Enhanced profile fields
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    title: Optional[str] = None  # Dr., Prof., etc.
+    company: Optional[str] = None
+    department: Optional[str] = None
+    position: Optional[str] = None
+    
+    # Contact information
+    phone: Optional[str] = None
+    mobile: Optional[str] = None
+    fax: Optional[str] = None
+    
+    # Address information
+    street_address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    postal_code: Optional[str] = None
+    country: Optional[str] = "Deutschland"
+    
+    # Legal specializations
+    specializations: List[str] = []
+    bar_number: Optional[str] = None  # Anwaltsnummer
+    law_firm: Optional[str] = None
+    years_experience: Optional[int] = None
+    
+    # Profile settings
+    language: str = "de"
+    timezone: str = "Europe/Berlin"
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    
+    # Notification preferences
+    email_notifications: bool = True
+    browser_notifications: bool = False
+    ai_updates: bool = True
+    
+    # Professional settings
+    signature: Optional[str] = None
+    letterhead: Optional[str] = None
+    
+    # System fields
+    last_login: Optional[datetime] = None
+    login_count: int = 0
+    is_verified: bool = False
+    verification_token: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
@@ -103,10 +150,51 @@ class LoginRequest(BaseModel):
     password: str = Field(..., min_length=8)
 
 class UserCreate(BaseModel):
+    # Basic required fields
     email: EmailStr
-    name: str = Field(..., min_length=2, max_length=255)
     password: str = Field(..., min_length=8)
+    
+    # Enhanced profile fields
+    first_name: str = Field(..., min_length=2, max_length=100)
+    last_name: str = Field(..., min_length=2, max_length=100)
+    title: Optional[str] = Field(None, max_length=20)  # Dr., Prof., etc.
+    
+    # Professional information
+    company: Optional[str] = Field(None, max_length=255)
+    department: Optional[str] = Field(None, max_length=255)
+    position: Optional[str] = Field(None, max_length=255)
+    
+    # Contact information
+    phone: Optional[str] = Field(None, max_length=20)
+    mobile: Optional[str] = Field(None, max_length=20)
+    
+    # Address information
+    street_address: Optional[str] = Field(None, max_length=255)
+    city: Optional[str] = Field(None, max_length=100)
+    state: Optional[str] = Field(None, max_length=100)
+    postal_code: Optional[str] = Field(None, max_length=20)
+    country: str = Field(default="Deutschland", max_length=100)
+    
+    # Legal specializations
+    specializations: List[str] = Field(default=[])
+    bar_number: Optional[str] = Field(None, max_length=50)  # Anwaltsnummer
+    law_firm: Optional[str] = Field(None, max_length=255)
+    years_experience: Optional[int] = Field(None, ge=0, le=70)
+    
+    # Profile settings
+    language: str = Field(default="de", max_length=10)
+    timezone: str = Field(default="Europe/Berlin", max_length=50)
+    bio: Optional[str] = Field(None, max_length=1000)
+    
+    # System fields
     role: Optional[UserRole] = UserRole.ASSISTANT
+    
+    @property
+    def name(self) -> str:
+        """Generate full name from first_name and last_name"""
+        if self.title:
+            return f"{self.title} {self.first_name} {self.last_name}".strip()
+        return f"{self.first_name} {self.last_name}".strip()
 
 class TemplateCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
@@ -155,6 +243,40 @@ class UserResponse(BaseModel):
     email: str
     name: str
     role: str
+    
+    # Enhanced profile fields
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    title: Optional[str] = None
+    company: Optional[str] = None
+    department: Optional[str] = None
+    position: Optional[str] = None
+    
+    # Contact information
+    phone: Optional[str] = None
+    mobile: Optional[str] = None
+    
+    # Address information
+    city: Optional[str] = None
+    state: Optional[str] = None
+    country: Optional[str] = None
+    
+    # Legal specializations
+    specializations: List[str] = []
+    law_firm: Optional[str] = None
+    years_experience: Optional[int] = None
+    
+    # Profile settings
+    language: str = "de"
+    timezone: str = "Europe/Berlin"
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    
+    # Status
+    is_active: bool = True
+    is_verified: bool = False
+    last_login: Optional[datetime] = None
+    created_at: datetime
 
 class LoginResponse(BaseModel):
     token: str
@@ -203,6 +325,66 @@ class DocumentResponse(BaseModel):
     content: str
     document_type: str
     created_at: datetime
+
+# ============ PROFILE UPDATE MODELS ============
+
+class UserProfileUpdate(BaseModel):
+    # Personal information
+    first_name: Optional[str] = Field(None, min_length=2, max_length=100)
+    last_name: Optional[str] = Field(None, min_length=2, max_length=100)
+    title: Optional[str] = Field(None, max_length=20)
+    
+    # Professional information
+    company: Optional[str] = Field(None, max_length=255)
+    department: Optional[str] = Field(None, max_length=255)
+    position: Optional[str] = Field(None, max_length=255)
+    
+    # Contact information
+    phone: Optional[str] = Field(None, max_length=20)
+    mobile: Optional[str] = Field(None, max_length=20)
+    
+    # Address information
+    street_address: Optional[str] = Field(None, max_length=255)
+    city: Optional[str] = Field(None, max_length=100)
+    state: Optional[str] = Field(None, max_length=100)
+    postal_code: Optional[str] = Field(None, max_length=20)
+    country: Optional[str] = Field(None, max_length=100)
+    
+    # Legal specializations
+    specializations: Optional[List[str]] = None
+    bar_number: Optional[str] = Field(None, max_length=50)
+    law_firm: Optional[str] = Field(None, max_length=255)
+    years_experience: Optional[int] = Field(None, ge=0, le=70)
+    
+    # Profile settings
+    language: Optional[str] = Field(None, max_length=10)
+    timezone: Optional[str] = Field(None, max_length=50)
+    bio: Optional[str] = Field(None, max_length=1000)
+    
+    # Notification preferences
+    email_notifications: Optional[bool] = None
+    browser_notifications: Optional[bool] = None
+    ai_updates: Optional[bool] = None
+    
+    # Professional settings
+    signature: Optional[str] = Field(None, max_length=2000)
+    letterhead: Optional[str] = Field(None, max_length=500)
+
+class UserSettingsUpdate(BaseModel):
+    # Notification preferences
+    email_notifications: Optional[bool] = None
+    browser_notifications: Optional[bool] = None
+    ai_updates: Optional[bool] = None
+    
+    # UI preferences
+    language: Optional[str] = Field(None, max_length=10)
+    timezone: Optional[str] = Field(None, max_length=50)
+    theme: Optional[str] = Field(None, max_length=20)
+    
+    # AI preferences
+    ai_model: Optional[str] = Field(None, max_length=100)
+    ai_creativity: Optional[int] = Field(None, ge=0, le=100)
+    auto_save: Optional[bool] = None
 
 class HealthResponse(BaseModel):
     status: str

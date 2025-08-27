@@ -3,13 +3,14 @@ AnwaltsAI FastAPI Backend Server
 Complete backend with PostgreSQL, Redis, and Together AI integration
 """
 
-from fastapi import FastAPI, HTTPException, Depends, status, Request
+from fastapi import FastAPI, HTTPException, Depends, status, Request, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from contextlib import asynccontextmanager
 import uvicorn
 import os
+import httpx
 from typing import Optional, List, Dict, Any
 import logging
 from datetime import datetime, timedelta
@@ -33,6 +34,9 @@ db: Database = None
 ai_service: AIService = None
 cache_service: CacheService = None
 auth_service: AuthService = None
+
+# External services
+SANITIZER_URL = os.getenv("SANITIZER_URL", "http://127.0.0.1:5001")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -70,12 +74,17 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        # Production domain
+        "https://portal-anwalts.ai",
+        "https://www.portal-anwalts.ai",
+        # Development origins
         "http://localhost:3000", 
         "http://127.0.0.1:3000", 
         "http://localhost:5500",
         "http://127.0.0.1:5500",
         "http://localhost:8080",
         "http://127.0.0.1:8080",
+        # Development catch-all (remove in production)
         "*"
     ],
     allow_credentials=True,
@@ -217,7 +226,7 @@ async def login(request: dict):
 
 @app.post("/auth/register", response_model=UserResponse)
 async def register(user_data: UserCreate):
-    """Register new user"""
+    """Register new user with enhanced profile support"""
     try:
         # Check if user already exists
         existing_user = await db.get_user_by_email(user_data.email)
@@ -227,25 +236,75 @@ async def register(user_data: UserCreate):
                 detail="Email already registered"
             )
         
-        # Hash password and create user
+        # Hash password
         password_hash = auth_service.hash_password(user_data.password)
+        
+        # Create user with enhanced profile data
         user = await db.create_user(
             email=user_data.email,
-            name=user_data.name,
+            name=user_data.name,  # Use computed name property
             role=user_data.role or "assistant",
-            password_hash=password_hash
+            password_hash=password_hash,
+            # Enhanced profile fields
+            first_name=user_data.first_name,
+            last_name=user_data.last_name,
+            title=user_data.title,
+            company=user_data.company,
+            department=user_data.department,
+            position=user_data.position,
+            phone=user_data.phone,
+            mobile=user_data.mobile,
+            street_address=user_data.street_address,
+            city=user_data.city,
+            state=user_data.state,
+            postal_code=user_data.postal_code,
+            country=user_data.country,
+            specializations=user_data.specializations,
+            bar_number=user_data.bar_number,
+            law_firm=user_data.law_firm,
+            years_experience=user_data.years_experience,
+            language=user_data.language,
+            timezone=user_data.timezone,
+            bio=user_data.bio
         )
+        
+        logger.info(f"✅ Enhanced user registered: {user.email} ({user.first_name} {user.last_name})")
         
         return UserResponse(
             id=user.id,
             email=user.email,
             name=user.name,
-            role=user.role
+            role=user.role,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            title=user.title,
+            company=user.company,
+            department=user.department,
+            position=user.position,
+            phone=user.phone,
+            mobile=user.mobile,
+            city=user.city,
+            state=user.state,
+            country=user.country,
+            specializations=user.specializations,
+            law_firm=user.law_firm,
+            years_experience=user.years_experience,
+            language=user.language,
+            timezone=user.timezone,
+            avatar_url=user.avatar_url,
+            bio=user.bio,
+            is_active=user.is_active,
+            is_verified=user.is_verified,
+            last_login=user.last_login,
+            created_at=user.created_at
         )
+        
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Registration error: {e}")
+        import traceback
+        logger.error(f"Full traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Registration failed"
@@ -767,15 +826,63 @@ Dieses Dokument dient nur zu Testzwecken.
         }
     }
 
+# ============ DOCUMENT UPLOAD / SANITIZER PROXY ============
+
+@app.post("/api/documents/upload")
+async def upload_document(
+    file: UploadFile = File(...),
+    current_user: UserInDB = Depends(get_current_user)
+):
+    """Proxy document upload to secure sanitizer service.
+    Returns sanitizer JSON response directly for now (no DB persistence).
+    """
+    try:
+        file_bytes = await file.read()
+        async with httpx.AsyncClient(timeout=httpx.Timeout(90.0)) as client:
+            files = {
+                "file": (file.filename or "upload", file_bytes, file.content_type or "application/octet-stream")
+            }
+            resp = await client.post(f"{SANITIZER_URL}/process-document", files=files)
+        if resp.status_code >= 400:
+            logger.error(f"Sanitizer error {resp.status_code}: {resp.text[:500]}")
+            raise HTTPException(status_code=resp.status_code, detail="Sanitizer service error")
+        data = resp.json()
+        return data
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Upload proxy error: {e}")
+        return {"success": False, "error": "Upload processing failed"}
+
+
+@app.post("/process-document")
+async def process_document_legacy(
+    file: UploadFile = File(...),
+    current_user: UserInDB = Depends(get_current_user)
+):
+    """Legacy compatibility endpoint that proxies to sanitizer.
+    """
+    return await upload_document(file)
+
 # =========================
 # NOTIFICATIONS ENDPOINTS
 # =========================
+
+async def get_current_user_id(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
+    """Helper function to get current user ID"""
+    global auth_service
+    if not auth_service:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Authentication service not initialized"
+        )
+    return auth_service.get_current_user_id(credentials)
 
 @app.get("/api/notifications")
 async def get_notifications(
     limit: int = 50,
     unread: bool = False,
-    user_id: str = Depends(auth_service.get_current_user_id)
+    user_id: str = Depends(get_current_user_id)
 ):
     """Get user notifications"""
     try:
@@ -843,7 +950,7 @@ async def get_notifications(
 @app.post("/api/notifications/{notification_id}/read")
 async def mark_notification_read(
     notification_id: int,
-    user_id: str = Depends(auth_service.get_current_user_id)
+    user_id: str = Depends(get_current_user_id)
 ):
     """Mark a notification as read"""
     try:
@@ -864,7 +971,7 @@ async def mark_notification_read(
 
 @app.post("/api/notifications/mark-all-read")
 async def mark_all_notifications_read(
-    user_id: str = Depends(auth_service.get_current_user_id)
+    user_id: str = Depends(get_current_user_id)
 ):
     """Mark all notifications as read for user"""
     try:
@@ -889,7 +996,7 @@ async def mark_all_notifications_read(
 
 @app.get("/api/user/settings")
 async def get_user_settings(
-    user_id: str = Depends(auth_service.get_current_user_id)
+    user_id: str = Depends(get_current_user_id)
 ):
     """Get user settings"""
     try:
@@ -921,7 +1028,7 @@ async def get_user_settings(
 @app.post("/api/user/settings")
 async def update_user_settings(
     settings: dict,
-    user_id: str = Depends(auth_service.get_current_user_id)
+    user_id: str = Depends(get_current_user_id)
 ):
     """Update user settings"""
     try:
@@ -961,7 +1068,7 @@ async def update_user_settings(
 @app.put("/api/user/profile")
 async def update_user_profile(
     profile_data: dict,
-    user_id: str = Depends(auth_service.get_current_user_id)
+    user_id: str = Depends(get_current_user_id)
 ):
     """Update user profile information"""
     try:

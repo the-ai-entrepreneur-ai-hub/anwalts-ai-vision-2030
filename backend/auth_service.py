@@ -493,3 +493,37 @@ class AuthService:
             "Content-Security-Policy": "default-src 'self'",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         }
+    
+    # ============ DEPENDENCY INJECTION ============
+    
+    def get_current_user_id(self, credentials=None) -> str:
+        """Dependency function to get current user ID from JWT token"""
+        try:
+            if not credentials:
+                from fastapi import Depends, HTTPException, status
+                from fastapi.security import HTTPBearer
+                security = HTTPBearer()
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Missing authentication credentials"
+                )
+            
+            # Verify token and extract user ID
+            payload = self.verify_token(credentials.credentials)
+            user_id = payload.get("sub")
+            
+            if not user_id:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid token: missing user ID"
+                )
+            
+            return user_id
+            
+        except Exception as e:
+            logger.error(f"Get current user ID error: {e}")
+            from fastapi import HTTPException, status
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Authentication required"
+            )
