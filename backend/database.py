@@ -131,22 +131,85 @@ class Database:
         email: str, 
         name: str, 
         role: str, 
-        password_hash: str
+        password_hash: str,
+        **kwargs
     ) -> UserInDB:
-        """Create new user"""
+        """Create new user with enhanced profile fields"""
         try:
             async with self.get_connection() as conn:
-                row = await conn.fetchrow(
-                    """
-                    INSERT INTO users (email, name, role, password_hash)
-                    VALUES ($1, $2, $3, $4)
-                    RETURNING id, email, name, role, password_hash, is_active,
-                              created_at, updated_at
-                    """,
-                    email.lower(), name, role, password_hash
-                )
+                # Build dynamic query based on provided fields
+                base_fields = ['email', 'name', 'role', 'password_hash']
+                base_values = [email.lower(), name, role, password_hash]
                 
+                # Enhanced profile fields
+                profile_fields = {
+                    'first_name': kwargs.get('first_name'),
+                    'last_name': kwargs.get('last_name'),
+                    'title': kwargs.get('title'),
+                    'company': kwargs.get('company'),
+                    'department': kwargs.get('department'),
+                    'position': kwargs.get('position'),
+                    'phone': kwargs.get('phone'),
+                    'mobile': kwargs.get('mobile'),
+                    'fax': kwargs.get('fax'),
+                    'street_address': kwargs.get('street_address'),
+                    'city': kwargs.get('city'),
+                    'state': kwargs.get('state'),
+                    'postal_code': kwargs.get('postal_code'),
+                    'country': kwargs.get('country', 'Deutschland'),
+                    'specializations': kwargs.get('specializations', []),
+                    'bar_number': kwargs.get('bar_number'),
+                    'law_firm': kwargs.get('law_firm'),
+                    'years_experience': kwargs.get('years_experience'),
+                    'language': kwargs.get('language', 'de'),
+                    'timezone': kwargs.get('timezone', 'Europe/Berlin'),
+                    'avatar_url': kwargs.get('avatar_url'),
+                    'bio': kwargs.get('bio'),
+                    'email_notifications': kwargs.get('email_notifications', True),
+                    'browser_notifications': kwargs.get('browser_notifications', False),
+                    'ai_updates': kwargs.get('ai_updates', True),
+                    'signature': kwargs.get('signature'),
+                    'letterhead': kwargs.get('letterhead')
+                }
+                
+                # Filter out None values and add to query
+                additional_fields = []
+                additional_values = []
+                placeholder_idx = len(base_values) + 1
+                
+                for field, value in profile_fields.items():
+                    if value is not None:
+                        additional_fields.append(field)
+                        additional_values.append(value)
+                
+                all_fields = base_fields + additional_fields
+                all_values = base_values + additional_values
+                
+                # Generate placeholders
+                placeholders = ', '.join([f'${i+1}' for i in range(len(all_values))])
+                field_names = ', '.join(all_fields)
+                
+                # Return all available fields for UserInDB
+                returning_fields = """
+                    id, email, name, role, password_hash, is_active,
+                    first_name, last_name, title, company, department, position,
+                    phone, mobile, fax, street_address, city, state, postal_code, country,
+                    specializations, bar_number, law_firm, years_experience,
+                    language, timezone, avatar_url, bio,
+                    email_notifications, browser_notifications, ai_updates,
+                    signature, letterhead, last_login, login_count, is_verified,
+                    verification_token, created_at, updated_at
+                """
+                
+                query = f"""
+                    INSERT INTO users ({field_names})
+                    VALUES ({placeholders})
+                    RETURNING {returning_fields}
+                """
+                
+                row = await conn.fetchrow(query, *all_values)
                 return UserInDB(**dict(row))
+                
         except Exception as e:
             logger.error(f"Error creating user {email}: {e}")
             raise
