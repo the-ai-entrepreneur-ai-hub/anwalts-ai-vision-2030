@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=sqlite:///app/data/anwalts_ai.db
+      - AI_MODEL_PATH=/app/data/massive_legal_data
+      - DOMAIN=portal-anwalts.ai
+      - APP_URL=https://portal-anwalts.ai
+      - CORS_ORIGINS=https://portal-anwalts.ai,https://www.portal-anwalts.ai
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - anwalts-network
+    
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=https://portal-anwalts.ai/api
+      - REACT_APP_DOMAIN=portal-anwalts.ai
+    depends_on:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - anwalts-network
+    
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx-ssl.conf:/etc/nginx/nginx.conf:ro
+      - ./config/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+    networks:
+      - anwalts-network
+    
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - anwalts-network
+      
+  # SSL Certificate Management (Let's Encrypt)
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./config/ssl:/etc/letsencrypt
+      - ./config/certbot-webroot:/var/www/certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email info@portal-anwalts.ai --agree-tos --no-eff-email -d portal-anwalts.ai -d www.portal-anwalts.ai
+    networks:
+      - anwalts-network
+
+networks:
+  anwalts-network:
+    driver: bridge
+
+volumes:
+  data:
+  ssl:

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI - Dynamic User Display Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="Client/crypto-polyfill.js"></script>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">🧪 Dynamic User Display Test</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Test Control Panel -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-xl font-semibold mb-4">Test Controls</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block mb-2">User Name:</label>
+                        <input type="text" id="testUserName" value="Dr. Max Mustermann" 
+                               class="w-full p-2 bg-gray-700 rounded">
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2">User Role:</label>
+                        <input type="text" id="testUserRole" value="Administrator" 
+                               class="w-full p-2 bg-gray-700 rounded">
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2">User Email:</label>
+                        <input type="text" id="testUserEmail" value="admin@anwalts-ai.com" 
+                               class="w-full p-2 bg-gray-700 rounded">
+                    </div>
+                    
+                    <button onclick="updateTestUser()" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 p-2 rounded">
+                        Update User Data
+                    </button>
+                    
+                    <button onclick="clearUserData()" 
+                            class="w-full bg-red-600 hover:bg-red-700 p-2 rounded">
+                        Clear User Data
+                    </button>
+                </div>
+                
+                <div class="mt-6">
+                    <h3 class="font-semibold mb-2">Current localStorage:</h3>
+                    <pre id="localStorageDisplay" class="bg-gray-700 p-3 rounded text-xs overflow-auto">
+                    </pre>
+                </div>
+            </div>
+            
+            <!-- Display Test Area -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-xl font-semibold mb-4">Display Test</h2>
+                
+                <!-- Simulated Header -->
+                <div class="bg-gray-700 p-4 rounded-lg mb-4">
+                    <h3 class="font-semibold mb-3">Header User Info:</h3>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-sm font-bold user-initials">
+                            US
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-white user-name">User</p>
+                            <p class="text-xs text-gray-400 user-role">User</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Simulated Activity Item -->
+                <div class="bg-gray-700 p-4 rounded-lg mb-4">
+                    <h3 class="font-semibold mb-3">Activity Item:</h3>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-blue-400 user-name">User</span>
+                        <span class="text-xs text-gray-400">30 min ago</span>
+                    </div>
+                    <p class="text-sm text-gray-300 mt-1">Reviewed and approved AI response...</p>
+                </div>
+                
+                <!-- Simulated Document Info -->
+                <div class="bg-gray-700 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-3">Document Info:</h3>
+                    <div class="text-sm">
+                        <span class="text-gray-400">Created by:</span>
+                        <p class="text-white font-medium user-name">User</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 bg-green-800 p-4 rounded-lg">
+            <h2 class="text-lg font-semibold mb-2">✅ Test Results</h2>
+            <div id="testResults" class="text-sm">
+                Click "Update User Data" to test the dynamic display functionality.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Import the updateUserDisplay function from dashboard
+        function updateUserDisplay() {
+            try {
+                const userData = localStorage.getItem('anwalts_user');
+                if (!userData) {
+                    console.log('No user data found in localStorage');
+                    return;
+                }
+                
+                const user = JSON.parse(userData);
+                console.log('Updating user display with:', user);
+                
+                // Update all user-name elements
+                const userNameElements = document.querySelectorAll('.user-name');
+                userNameElements.forEach(element => {
+                    element.textContent = user.name || 'User';
+                });
+                
+                // Update all user-role elements
+                const userRoleElements = document.querySelectorAll('.user-role');
+                userRoleElements.forEach(element => {
+                    element.textContent = user.role || 'User';
+                });
+                
+                // Update user initials
+                const initialsElement = document.querySelector('.user-initials');
+                if (initialsElement && user.name) {
+                    const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                    initialsElement.textContent = initials;
+                }
+                
+                console.log('User display updated successfully');
+                
+                // Update test results
+                document.getElementById('testResults').innerHTML = `
+                    <div class="text-green-300">
+                        ✅ User display updated successfully!<br>
+                        📝 Name: ${user.name}<br>
+                        👤 Role: ${user.role}<br>
+                        🎯 Initials: ${user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'US'}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error updating user display:', error);
+                document.getElementById('testResults').innerHTML = `
+                    <div class="text-red-300">❌ Error: ${error.message}</div>
+                `;
+            }
+        }
+        
+        function updateTestUser() {
+            const name = document.getElementById('testUserName').value;
+            const role = document.getElementById('testUserRole').value;
+            const email = document.getElementById('testUserEmail').value;
+            
+            const userData = {
+                id: 1,
+                name: name,
+                role: role,
+                email: email
+            };
+            
+            localStorage.setItem('anwalts_user', JSON.stringify(userData));
+            updateLocalStorageDisplay();
+            updateUserDisplay();
+        }
+        
+        function clearUserData() {
+            localStorage.removeItem('anwalts_user');
+            updateLocalStorageDisplay();
+            
+            // Reset to defaults
+            document.querySelectorAll('.user-name').forEach(el => el.textContent = 'User');
+            document.querySelectorAll('.user-role').forEach(el => el.textContent = 'User');
+            document.querySelectorAll('.user-initials').forEach(el => el.textContent = 'US');
+            
+            document.getElementById('testResults').innerHTML = 'User data cleared. All displays reset to defaults.';
+        }
+        
+        function updateLocalStorageDisplay() {
+            const userData = localStorage.getItem('anwalts_user');
+            document.getElementById('localStorageDisplay').textContent = userData || '(empty)';
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLocalStorageDisplay();
+            updateUserDisplay();
+        });
+    </script>
+</body>
+</html>

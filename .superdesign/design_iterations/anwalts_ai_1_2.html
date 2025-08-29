@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #f3f4f6;
+            color: #111827;
+        }
+        .sidebar {
+            background-color: #ffffff;
+            border-right: 2px solid #111827;
+        }
+        .nav-item {
+            color: #4b5563;
+            transition: all 0.2s ease-out;
+            border: 2px solid transparent;
+        }
+        .nav-item:hover {
+            color: #111827;
+            background-color: #fde047;
+            border: 2px solid #111827;
+        }
+        .nav-item.active {
+            color: #111827;
+            background-color: #fde047;
+            border: 2px solid #111827;
+            box-shadow: 4px 4px 0 #111827;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0;
+            border: 2px solid #111827;
+            box-shadow: 4px 4px 0 #111827;
+            transition: all 0.2s ease-out;
+        }
+        .card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0 #111827;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 flex-shrink-0 flex flex-col space-y-6 p-6">
+            <div class="flex items-center space-x-3 px-2">
+                <i data-lucide="scale" class="text-yellow-500"></i>
+                <span class="text-2xl font-bold">Anwalts-AI</span>
+            </div>
+
+            <nav class="flex-1 space-y-3">
+                <a href="#" class="nav-item active flex items-center space-x-3 py-3 px-4 font-bold">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 font-bold">
+                    <i data-lucide="mail" class="w-6 h-6"></i>
+                    <span>Emails</span>
+                </a>
+                <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 font-bold">
+                    <i data-lucide="file-text" class="w-6 h-6"></i>
+                    <span>Document Generator</span>
+                </a>
+                <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 font-bold">
+                    <i data-lucide="bookmark" class="w-6 h-6"></i>
+                    <span>Templates</span>
+                </a>
+            </nav>
+
+            <div class="space-y-3">
+                 <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 font-bold">
+                    <i data-lucide="settings" class="w-6 h-6"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="flex items-center justify-between p-8 border-b-2 border-black">
+                <h1 class="text-4xl font-bold">Dashboard</h1>
+                <div class="flex items-center space-x-6">
+                    <button class="p-3 rounded-full hover:bg-yellow-300 border-2 border-black">
+                        <i data-lucide="search" class="w-6 h-6"></i>
+                    </button>
+                    <button class="p-3 rounded-full hover:bg-yellow-300 border-2 border-black">
+                        <i data-lucide="help-circle" class="w-6 h-6"></i>
+                    </button>
+                    <button class="p-3 rounded-full hover:bg-yellow-300 border-2 border-black">
+                        <i data-lucide="user" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="flex-1 p-10 overflow-y-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Document Generator Card -->
+                    <div class="card p-8 flex flex-col items-start text-left">
+                        <div class="p-4 rounded-none mb-5 bg-yellow-300 border-2 border-black">
+                            <i data-lucide="file-pen-line" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Document Generator</h3>
+                        <p>Create legal documents with ease.</p>
+                    </div>
+
+                    <!-- Mailbox Card -->
+                    <div class="card p-8 flex flex-col items-start text-left">
+                        <div class="p-4 rounded-none mb-5 bg-yellow-300 border-2 border-black">
+                            <i data-lucide="inbox" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Mailbox</h3>
+                        <p>View and manage your emails.</p>
+                    </div>
+
+                    <!-- Saved Templates Card -->
+                    <div class="card p-8 flex flex-col items-start text-left">
+                        <div class="p-4 rounded-none mb-5 bg-yellow-300 border-2 border-black">
+                            <i data-lucide="save" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Saved Templates</h3>
+                        <p>Access your previously saved templates.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "total_samples": 36,
+  "splits": {
+    "train": 28,
+    "validation": 3,
+    "test": 5
+  },
+  "format": "instruction_tuning",
+  "language": "german",
+  "domain": "legal",
+  "expansion_date": "2025-08-05T01:38:57.481397",
+  "sources": [
+    "unknown"
+  ]
+}

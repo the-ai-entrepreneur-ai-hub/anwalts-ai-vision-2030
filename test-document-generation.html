@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Document Generation</title>
+</head>
+<body>
+    <h1>Test Document Generation</h1>
+    <input type="text" id="doc-objective" placeholder="Document objective" value="Test contract">
+    <input type="text" id="doc-instructions" placeholder="Instructions" value="Create a simple test contract">
+    <button id="test-generate">Generate Document</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('test-generate').addEventListener('click', async () => {
+            console.log('🧪 Test button clicked');
+            
+            const objective = document.getElementById('doc-objective').value;
+            const instructions = document.getElementById('doc-instructions').value;
+            
+            console.log('📝 Values:', { objective, instructions });
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8009/api/ai/generate-document-simple', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: objective,
+                        document_type: 'contract',
+                        prompt: instructions
+                    })
+                });
+                
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                document.getElementById('result').innerHTML = `
+                    <h3>Result:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <h3>Error:</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

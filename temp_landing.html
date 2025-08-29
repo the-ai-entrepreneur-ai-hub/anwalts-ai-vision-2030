@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Anwalts‑AI – KI‑Assistent für juristische Arbeit</title>
+  <meta name="description" content="KI‑Assistent für Entwürfe, Recherche mit Quellen und Protokollierung – DSGVO‑konform, EU‑gehostet."/>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+  <a href="#start" class="skip-link">Zum Inhalt springen</a>
+  <header class="header transparent" id="site-header">
+    <div class="container nav">
+      <a href="/" aria-label="Anwalts‑AI Start" class="brand">Anwalts‑AI</a>
+      <nav id="nav-links" aria-label="Hauptnavigation">
+        <a href="/produkt.html">Produkt</a>
+        <a href="#loesungen">Lösungen</a>
+        <a href="/sicherheit.html">Sicherheit & Datenschutz</a>
+        <a href="#ressourcen">Ressourcen</a>
+        <a href="#unternehmen">Unternehmen</a>
+        <a href="#preise">Preise</a>
+        <a class="cta" href="#kontakt">Demo anfragen</a><a class="cta" href="#" onclick="openLogin()" style="margin-left:12px; background: linear-gradient(135deg, #8661f7, #6366f1);">Anmelden</a>
+      </nav>
+      <button id="mobile-nav" aria-label="Navigation umschalten" style="display:none">☰</button>
+    </div>
+  </header>
+
+  <main id="start">
+    <section class="hero" aria-label="Hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="badge">Für Kanzleien und Rechtsabteilungen</span>
+          <h1>KI‑Assistent für die juristische Arbeit – schnell, zitierfähig, DSGVO‑konform.</h1>
+          <p>Entwürfe mit Quellenangaben, revisionssichere Protokolle und Vorlagen – gehostet in der EU.</p>
+          <div class="actions-row">
+            <a class="cta" id="cta-demo" href="#kontakt">Demo anfragen</a>
+            <a class="cta secondary" id="cta-product" href="/produkt.html">Produkt ansehen</a><a class="cta" onclick="openLogin()" style="background: linear-gradient(135deg, #8661f7, #6366f1);">Jetzt anmelden</a>
+          </div>
+          <div class="trust-badges" aria-label="Vertrauensmerkmale">
+            <span class="trust-badge">DSGVO‑konform</span>
+            <span class="trust-badge">Hosting in EU/Deutschland</span>
+            <span class="trust-badge">SSO/SAML 2.0</span>
+            <span class="trust-badge">Audit‑Logs</span>
+          </div>
+        </div>
+        <div>
+          <div class="screenshot" aria-label="Produktansicht Platzhalter"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="logos">
+      <div class="container">
+        <h2 class="sr-only">Vertrauen</h2>
+        <div class="logos">
+          <div class="logo">Logo 1</div>
+          <div class="logo">Logo 2</div>
+          <div class="logo">Logo 3</div>
+          <div class="logo">Logo 4</div>
+          <div class="logo">Logo 5</div>
+          <div class="logo">Logo 6</div>
+        </div>
+        <div class="testimonial" style="margin-top:16px">
+          <p>„Unsere Kanzlei spart pro Vorgang 45 Minuten. Die Quellenbelege machen den Unterschied.“</p>
+          <p style="color:var(--color-muted)">RAin Dr. M. Beispiel, Partnerin</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="produkt">
+      <h2>Was Anwalts‑AI für Sie erledigt</h2>
+      <p class="lead">Strukturierte Unterstützung – von der Recherche bis zur Abnahme. Alle Ergebnisse mit Quellen.</p>
+      <div class="grid cols-3" style="margin-top:16px">
+        <div class="card elevated reveal"><h3>Entwürfe mit Quellen</h3><p>Verträge und Schriftsätze mit nachvollziehbaren Fundstellen. Export als DOCX/PDF.</p><p><a class="link-accent" href="/produkt.html">Mehr erfahren</a></p></div>
+        <div class="card elevated reveal"><h3>Versionierung & Protokoll</h3><p>Änderungen sichtbar, prüfbar und freigebbar – mit Checkliste.</p><p><a class="link-accent" href="/produkt.html">Mehr erfahren</a></p></div>
+        <div class="card elevated reveal"><h3>Vorlagen & Wissen</h3><p>Kanzlei‑Standards, Klauselbibliothek und Berechtigungen – zentral gepflegt.</p><p><a class="link-accent" href="/produkt.html">Mehr erfahren</a></p></div>
+      </div>
+    </section>
+
+    <section class="section" id="sicherheit">
+      <div class="container grid cols-2" style="gap:24px">
+        <div>
+          <h2>Sicherheit & Datenschutz</h2>
+          <p class="lead">DSGVO‑konform, AVV verfügbar, Datenverarbeitung in der EU. Verschlüsselung (TLS, at rest), SSO (SAML 2.0), rollenbasierte Freigaben, Audit‑Logs.</p>
+          <ul class="list" style="margin-top:8px">
+            <li>Datenstandort EU/Deutschland</li>
+            <li>Rollen & Rechte, Mandantentrennung</li>
+            <li>Protokollierung und Export von Prüfpfaden</li>
+          </ul>
+          <p style="margin-top:10px"><a class="cta secondary" href="/datenschutz.html">Details zur Verarbeitung</a></p>
+        </div>
+        <div aria-hidden="true" class="card" style="min-height:220px"></div>
+      </div>
+    </section>
+
+    <section class="section container" id="preise">
+      <h2>Preise</h2>
+      <p class="lead">Individuelle Pläne für Boutiquen bis Großkanzleien. Wir beraten Sie gern.</p>
+      <a class="cta" href="#kontakt">Preise anfragen</a>
+    </section>
+
+    <section class="section container faq" id="faq" aria-label="Häufige Fragen">
+      <h2>FAQ</h2>
+      <div class="faq-item" aria-expanded="false">
+        <button class="faq-button">Wie werden Quellen belegt?<span>+</span></button>
+        <div class="faq-panel">Jede Passage ist mit verlinkten Fundstellen dokumentiert; Export in DOCX/PDF mit Fußnoten.</div>
+      </div>
+      <div class="faq-item" aria-expanded="false">
+        <button class="faq-button">Welche Daten verlassen die EU?<span>+</span></button>
+        <div class="faq-panel">Keine. Verarbeitung und Speicherung ausschließlich in der EU/Deutschland.</div>
+      </div>
+      <div class="faq-item" aria-expanded="false">
+        <button class="faq-button">Bietet ihr On‑Premise an?<span>+</span></button>
+        <div class="faq-panel">Auf Anfrage für Enterprise‑Kunden.</div>
+      </div>
+    </section>
+
+    <section class="section container" id="kontakt">
+      <h2>Kontakt & Demo</h2>
+      <p class="lead">Buchen Sie eine Live‑Demo. Felder: Kanzlei/Firma, Name, berufliche E‑Mail, Rolle, Telefon (optional).</p>
+      <p>Schreiben Sie uns: kontakt@anwalts.ai</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div>© <span id="y"></span> Anwalts‑AI</div>
+      <div>
+        <a href="/impressum.html">Impressum</a>
+        <a href="/datenschutz.html">Datenschutz</a>
+        <a href="/agb.html">AGB</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="consent-banner" class="banner" role="region" aria-label="Cookie‑Hinweis">
+    <div class="container">
+      <div>Wir verwenden nur technisch notwendige Cookies. Details in der <a href="/datenschutz.html#cookies" class="link-accent">Datenschutzerklärung</a>.</div>
+      <div class="actions"><button id="consent-accept">Verstanden</button><button id="consent-more" class="secondary">Mehr erfahren</button></div>
+    </div>
+  </div>
+  <div class="floating-cta"><div class="container"><a class="cta" href="#kontakt">Demo anfragen</a><a class="cta" href="#" onclick="openLogin()" style="margin-left:12px; background: linear-gradient(135deg, #8661f7, #6366f1);">Anmelden</a></div></div>
+
+  <script src="/main.js"></script>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body>
+</html>
+
+<!-- Login Modal -->
+<div id="loginModal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.8);">
+  <div style="background:linear-gradient(135deg, #1a1830 0%, #12101c 100%); margin:10% auto; padding:30px; border:1px solid #8661f7; border-radius:12px; width:90%; max-width:400px; color:white; font-family: Inter, sans-serif;">
+    <span onclick="closeLogin()" style="color:#aaa; float:right; font-size:28px; font-weight:bold; cursor:pointer;">&times;</span>
+    <h2 style="color:white; margin-bottom:20px;">Bei AnwaltsAI anmelden</h2>
+    <form onsubmit="handleLogin(event)">
+      <input type="email" id="loginEmail" placeholder="E-Mail" required style="width:100%; padding:12px; margin:8px 0; border:1px solid #8661f7; border-radius:6px; background:#2a1f4a; color:white;">
+      <input type="password" id="loginPassword" placeholder="Passwort" required style="width:100%; padding:12px; margin:8px 0; border:1px solid #8661f7; border-radius:6px; background:#2a1f4a; color:white;">
+      <button type="submit" style="width:100%; padding:12px; margin:12px 0; background:linear-gradient(135deg, #8661f7, #6366f1); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">Anmelden</button>
+    </form>
+    <div style="text-align:center; margin-top:15px; padding:15px; border-top:1px solid #444;">
+      <p style="margin:5px 0; color:#aaa; font-size:14px;">Demo-Zugang:</p>
+      <button onclick="demoLogin()" style="padding:8px 16px; background:rgba(134,97,247,0.2); color:#8661f7; border:1px solid #8661f7; border-radius:6px; cursor:pointer; font-size:14px;">Als Demo-Admin anmelden</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openLogin() {
+    document.getElementById("loginModal").style.display = "block";
+  }
+  
+  function closeLogin() {
+    document.getElementById("loginModal").style.display = "none";
+  }
+  
+  function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    
+    if (email === "admin@anwalts-ai.com" && password === "admin123") {
+      localStorage.setItem("anwalts_ai_user", JSON.stringify({
+        email: email,
+        name: "Demo Administrator",
+        role: "admin",
+        loginTime: Date.now()
+      }));
+      window.location.href = "dashboard-content.html";
+    } else {
+      alert("Ungültige Anmeldedaten. Versuchen Sie: admin@anwalts-ai.com / admin123");
+    }
+  }
+  
+  function demoLogin() {
+    localStorage.setItem("anwalts_ai_user", JSON.stringify({
+      email: "admin@anwalts-ai.com",
+      name: "Demo Administrator", 
+      role: "admin",
+      loginTime: Date.now()
+    }));
+    window.location.href = "dashboard-content.html";
+  }
+  
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+    const modal = document.getElementById("loginModal");
+    if (event.target === modal) {
+      closeLogin();
+    }
+  }
+</script>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI – Professionelle KI-Lösung für Rechtsberatung</title>
+    <meta name="description" content="Professionelle KI-Plattform für Anwaltskanzleien. DSGVO-konform, EU-gehostet, mit Quellenbelegen und Audit-Protokollen.">
+    
+    <!-- Professional Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Professional Legal Design System -->
+    <link rel="stylesheet" href="professional-legal-design-system.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    
+    <style>
+        /* Additional custom styles for enhanced professionalism */
+        .law-scales-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--legal-primary-600);
+        }
+        
+        .professional-testimonial {
+            background: white;
+            border-left: 4px solid var(--legal-primary-600);
+            padding: var(--space-6);
+            margin: var(--space-8) 0;
+            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-lg);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-8);
+            margin: var(--space-12) 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--space-6);
+        }
+        
+        .stat-number {
+            font-size: var(--text-4xl);
+            font-weight: 700;
+            color: var(--legal-primary-700);
+            font-family: var(--font-family-serif);
+        }
+        
+        .stat-label {
+            color: var(--legal-charcoal-600);
+            font-size: var(--text-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: var(--space-2);
+        }
+        
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-top: var(--space-8);
+        }
+        
+        .security-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+            padding: var(--space-4);
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .security-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--legal-primary-100);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--legal-navy-200);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            text-align: center;
+            position: relative;
+            transition: var(--transition-base);
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--legal-primary-600);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--legal-primary-600);
+            color: white;
+            padding: var(--space-2) var(--space-6);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            font-weight: 600;
+        }
+        
+        .footer {
+            background: var(--legal-navy-900);
+            color: var(--legal-navy-200);
+            padding: var(--space-16) 0 var(--space-8);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-8);
+            margin-bottom: var(--space-12);
+        }
+        
+        .footer-section h4 {
+            color: white;
+            margin-bottom: var(--space-4);
+        }
+        
+        .footer-link {
+            color: var(--legal-navy-300);
+            text-decoration: none;
+            transition: var(--transition-base);
+            display: block;
+            margin-bottom: var(--space-2);
+        }
+        
+        .footer-link:hover {
+            color: var(--legal-primary-400);
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Legal Header -->
+    <header class="legal-header">
+        <nav class="legal-nav container">
+            <a href="/" class="legal-logo">
+                <svg class="law-scales-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L13.09 8.26L14 7L16 11L13 13L15 17L12 22L9 17L11 13L8 11L10 7L10.91 8.26L12 2Z"/>
+                </svg>
+                AnwaltsAI
+            </a>
+            
+            <div class="legal-nav-links">
+                <a href="#features" class="legal-nav-link">Funktionen</a>
+                <a href="#security" class="legal-nav-link">Sicherheit</a>
+                <a href="#pricing" class="legal-nav-link">Preise</a>
+                <a href="#about" class="legal-nav-link">Über uns</a>
+                <a href="/dashboard-content.html" class="btn btn-primary">Anmelden</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Professional Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    ✓ Für Anwaltskanzleien und Rechtsabteilungen
+                </div>
+                
+                <h1 class="hero-title">
+                    Professionelle KI-Lösung für die moderne Rechtsberatung
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Erstellen Sie Rechtsdokumente mit KI-Unterstützung, vollständigen Quellenangaben 
+                    und DSGVO-konformen Audit-Protokollen. Entwickelt für professionelle Anwaltskanzleien.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="#demo" class="btn btn-primary">Kostenlose Demo anfragen</a>
+                    <a href="#features" class="btn btn-secondary">Funktionen ansehen</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Aktive Kanzleien</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50k+</div>
+                    <div class="stat-label">Generierte Dokumente</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Verfügbarkeit</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support</div>
+                </div>
+            </div>
+            
+            <div class="trust-badges">
+                <span class="trust-badge">✓ DSGVO-konform</span>
+                <span class="trust-badge">✓ EU-Hosting</span>
+                <span class="trust-badge">✓ ISO 27001</span>
+                <span class="trust-badge">✓ SSO/SAML 2.0</span>
+                <span class="trust-badge">✓ Audit-Logs</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-16);">
+                <h2>Funktionen für professionelle Rechtsarbeit</h2>
+                <p class="lead">Entwickelt nach den Anforderungen führender Anwaltskanzleien</p>
+            </div>
+            
+            <div class="grid grid-cols-3">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Rechtsdokumente mit Quellenbelegen</h3>
+                    <p class="feature-description">
+                        Erstellen Sie Verträge, Schriftsätze und Gutachten mit nachvollziehbaren 
+                        Quellenangaben und rechtssicherer Dokumentation.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">DSGVO-konforme Verarbeitung</h3>
+                    <p class="feature-description">
+                        Vollständige Datenschutz-Compliance mit EU-Hosting, Verschlüsselung 
+                        und detaillierten Audit-Protokollen.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="m22 21-3-3"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Kanzlei-Integration</h3>
+                    <p class="feature-description">
+                        Nahtlose Integration in bestehende Kanzlei-Workflows mit SSO, 
+                        Rechteverwaltung und Mandantentrennung.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1v22"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Vorlagen & Klauselbibliothek</h3>
+                    <p class="feature-description">
+                        Umfassende Bibliothek mit bewährten Vertragsklauseln und 
+                        kanzlei-spezifischen Vorlagen.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Qualitätssicherung</h3>
+                    <p class="feature-description">
+                        Automatische Prüfungen, Versionskontrolle und 4-Augen-Prinzip 
+                        für höchste Qualitätsstandards.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Compliance & Reporting</h3>
+                    <p class="feature-description">
+                        Detaillierte Berichte, Compliance-Dashboards und automatisierte 
+                        Qualitätsprüfungen für Ihre Kanzlei.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="section" style="background-color: var(--legal-charcoal-50);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-12);">
+                <h2>Sicherheit auf Kanzlei-Niveau</h2>
+                <p class="lead">Enterprise-Security für sensible Rechtsdaten</p>
+            </div>
+            
+            <div class="security-grid">
+                <div class="security-item">
+                    <div class="security-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--legal-primary-600)">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>EU-Datenverarbeitung</h4>
+                        <p class="small">Alle Daten werden ausschließlich in europäischen Rechenzentren verarbeitet und gespeichert.</p>
+                    </div>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--legal-primary-600)">
+                            <path d="M12 1l3 6 6 1-4.5 4.5L18 19l-6-3-6 3 1.5-6.5L3 8l6-1z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>End-to-End Verschlüsselung</h4>
+                        <p class="small">TLS 1.3 für Datenübertragung, AES-256 für Speicherung, Zero-Knowledge-Architektur.</p>
+                    </div>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--legal-primary-600)">
+                            <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M8.5 11a4 4 0 100-8 4 4 0 000 8zM20 8v6M23 11h-6"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Rollenbasierte Zugriffe</h4>
+                        <p class="small">Detaillierte Rechteverwaltung, SSO-Integration und Mandantentrennung.</p>
+                    </div>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--legal-primary-600)">
+                            <path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4>Audit-Protokolle</h4>
+                        <p class="small">Lückenlose Dokumentation aller Aktionen für Compliance und Nachverfolgbarkeit.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="section">
+        <div class="container">
+            <div class="professional-testimonial">
+                <p style="font-size: var(--text-lg); font-style: italic; margin-bottom: var(--space-4);">
+                    "AnwaltsAI hat unsere Dokumentenerstellung revolutioniert. Die Qualität der generierten 
+                    Rechtsdokumente mit vollständigen Quellenangaben übertrifft unsere Erwartungen. 
+                    Unsere Kanzlei spart pro Vorgang durchschnittlich 45 Minuten."
+                </p>
+                <div style="display: flex; align-items: center; gap: var(--space-4);">
+                    <div style="width: 60px; height: 60px; background: var(--legal-primary-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--legal-primary-700);">
+                        DR
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--legal-navy-900);">
+                            Dr. Maria Rechtsanwältin
+                        </div>
+                        <div style="color: var(--legal-charcoal-600);">
+                            Partnerin, Müller & Partner Rechtsanwälte
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Produkt</h4>
+                    <a href="#features" class="footer-link">Funktionen</a>
+                    <a href="#security" class="footer-link">Sicherheit</a>
+                    <a href="#pricing" class="footer-link">Preise</a>
+                    <a href="#" class="footer-link">API-Dokumentation</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Unternehmen</h4>
+                    <a href="#about" class="footer-link">Über uns</a>
+                    <a href="#" class="footer-link">Karriere</a>
+                    <a href="#" class="footer-link">Presse</a>
+                    <a href="#" class="footer-link">Partner</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="#" class="footer-link">Dokumentation</a>
+                    <a href="#" class="footer-link">FAQ</a>
+                    <a href="#" class="footer-link">Support</a>
+                    <a href="#" class="footer-link">Status</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Rechtliches</h4>
+                    <a href="/datenschutz.html" class="footer-link">Datenschutz</a>
+                    <a href="/impressum.html" class="footer-link">Impressum</a>
+                    <a href="/agb.html" class="footer-link">AGB</a>
+                    <a href="#" class="footer-link">AVV</a>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid var(--legal-navy-700); padding-top: var(--space-8); text-align: center; color: var(--legal-navy-400);">
+                <p>&copy; 2025 AnwaltsAI. Alle Rechte vorbehalten. | Entwickelt für professionelle Anwaltskanzleien.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Professional smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Professional header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.legal-header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = 'var(--shadow-lg)';
+            } else {
+                header.style.boxShadow = 'var(--shadow-sm)';
+            }
+        });
+    </script>
+</body>
+</html>

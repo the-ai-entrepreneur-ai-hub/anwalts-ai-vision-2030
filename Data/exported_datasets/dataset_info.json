@@ -1,0 +1,54 @@
+{
+  "name": "German Legal Training Dataset",
+  "description": "Comprehensive German legal dataset for instruction tuning",
+  "total_samples": 9997,
+  "splits": {
+    "train": 7997,
+    "validation": 999,
+    "test": 1001
+  },
+  "language": "German",
+  "domain": "Legal",
+  "format": "Instruction tuning",
+  "created": "2025-08-05",
+  "categories": [
+    "arbeitsrecht",
+    "verwaltungsrecht",
+    "unknown",
+    "verfassungsrecht",
+    "strafrecht_case",
+    "verfassungsrecht_case",
+    "verwaltungsrecht_case",
+    "strafrecht",
+    "buergerliches_recht",
+    "buergerliches_recht_case",
+    "arbeitsrecht_case"
+  ],
+  "instruction_types": [
+    "definition",
+    "explanation",
+    "consequences",
+    "application",
+    "comparison"
+  ],
+  "legal_domains": [
+    "Bürgerliches Recht (Civil Law)",
+    "Strafrecht (Criminal Law)",
+    "Verfassungsrecht (Constitutional Law)",
+    "Verwaltungsrecht (Administrative Law)",
+    "Arbeitsrecht (Labor Law)"
+  ],
+  "export_formats": {
+    "jsonl": "Original format in massive_legal_data/",
+    "parquet": "Pandas/HuggingFace compatible in exported_datasets/parquet/",
+    "csv": "Standard CSV format in exported_datasets/csv/",
+    "huggingface": "HuggingFace Dataset format in exported_datasets/huggingface/",
+    "text": "Plain text format in exported_datasets/text/",
+    "combined": "Single file formats: combined_dataset.parquet, combined_dataset.csv"
+  },
+  "usage_examples": {
+    "pandas": "df = pd.read_parquet(\"exported_datasets/parquet/train.parquet\")",
+    "huggingface": "from datasets import load_from_disk; dataset = load_from_disk(\"exported_datasets/huggingface/train\")",
+    "transformers": "Use with any transformer library for German legal AI training"
+  }
+}

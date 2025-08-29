@@ -1,0 +1,24 @@
+{
+  "deployment_info": {
+    "package_name": "anwalts-ai-production",
+    "created": "2025-08-07T19:00:56.582722",
+    "total_files": 95,
+    "package_size_mb": 21.95,
+    "server_ip": "148.251.195.222",
+    "server_owner": "Dr. Markus Weigl, AIgenex GmbH"
+  },
+  "components": {
+    "backend": "FastAPI with fixed authentication",
+    "frontend": "AnwaltsAI Dashboard UI",
+    "database": "PostgreSQL with schema",
+    "cache": "Redis for sessions",
+    "dataset": "9,997 German legal examples",
+    "proxy": "Nginx with security headers",
+    "monitoring": "Health checks and logging"
+  },
+  "files": {
+    "archive_tar": "anwalts-ai-production-20250807_190042.tar.gz",
+    "archive_zip": "anwalts-ai-production-20250807_190042.zip",
+    "deployment_directory": "anwalts-ai-production"
+  }
+}

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI - Kanban View 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="anwalts_ai_theme_1.css">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--background, #f3f4f6);
+        }
+
+        .animated {
+            -webkit-animation-duration: 0.6s;
+            animation-duration: 0.6s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+
+        @-webkit-keyframes slideInRight {
+            from {
+                -webkit-transform: translate3d(50px, 0, 0);
+                transform: translate3d(50px, 0, 0);
+                opacity: 0;
+            }
+            to {
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                -webkit-transform: translate3d(50px, 0, 0);
+                transform: translate3d(50px, 0, 0);
+                opacity: 0;
+            }
+            to {
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+
+        .slideInRight {
+            -webkit-animation-name: slideInRight;
+            animation-name: slideInRight;
+        }
+
+        .kanban-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .kanban-column {
+            background-color: transparent;
+        }
+        
+        .kanban-column-header {
+            padding: 0 0 1rem 0;
+            border-bottom: 2px solid #000;
+            margin-bottom: 1.5rem;
+        }
+
+        .kanban-column-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .kanban-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .kanban-card {
+            display: flex;
+            background-color: var(--card, #fff);
+            border: 2px solid #000;
+            box-shadow: 5px 5px 0px #000;
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+        }
+
+        .kanban-card:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0px #000;
+        }
+        
+        .card-icon {
+            flex-shrink: 0;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid #000;
+        }
+        
+        .icon-yellow {
+            background-color: #fde047;
+        }
+        
+        .icon-pink {
+            background-color: #f9a8d4;
+        }
+
+        .card-content {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.875rem;
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .card-avatars {
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid #000;
+            margin-left: -10px;
+            background-color: #fff;
+        }
+        .avatar:first-child {
+            margin-left: 0;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <main class="kanban-grid">
+        <!-- Drafting Column -->
+        <div class="kanban-column">
+            <div class="kanban-column-header">
+                <h3 class="kanban-column-title">DRAFTING</h3>
+            </div>
+            <div class="kanban-cards">
+                <div class="kanban-card animated slideInRight" style="animation-delay: 0.1s;">
+                    <div class="card-icon icon-yellow">
+                        <i data-lucide="file-pen-line" class="w-7 h-7"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title">MSA for TechCorp</h4>
+                        <p class="card-subtitle">Client: Innovate Inc.</p>
+                        <div class="card-footer">
+                            <span>2h ago</span>
+                            <div class="card-avatars">
+                                <img class="avatar" src="https://i.pravatar.cc/28?u=a" alt="User 1">
+                                <img class="avatar" src="https://i.pravatar.cc/28?u=b" alt="User 2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kanban-card animated slideInRight" style="animation-delay: 0.2s;">
+                    <div class="card-icon icon-pink">
+                        <i data-lucide="gavel" class="w-7 h-7"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title">Motion to Dismiss</h4>
+                        <p class="card-subtitle">Client: Global Solutions</p>
+                        <div class="card-footer">
+                            <span>1d ago</span>
+                            <div class="card-avatars">
+                                <img class="avatar" src="https://i.pravatar.cc/28?u=c" alt="User 3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- In Review Column -->
+        <div class="kanban-column">
+            <div class="kanban-column-header">
+                <h3 class="kanban-column-title">IN REVIEW</h3>
+            </div>
+            <div class="kanban-cards">
+                <div class="kanban-card animated slideInRight" style="animation-delay: 0.3s;">
+                    <div class="card-icon icon-yellow">
+                        <i data-lucide="file-check-2" class="w-7 h-7"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title">Commercial Property Lease</h4>
+                        <p class="card-subtitle">Client: Retail Group</p>
+                        <div class="card-footer">
+                            <span>4h ago</span>
+                            <div class="card-avatars">
+                                <img class="avatar" src="https://i.pravatar.cc/28?u=a" alt="User 1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Finalized Column -->
+        <div class="kanban-column">
+            <div class="kanban-column-header">
+                <h3 class="kanban-column-title">FINALIZED</h3>
+            </div>
+            <div class="kanban-cards">
+                <div class="kanban-card animated slideInRight" style="animation-delay: 0.4s;">
+                    <div class="card-icon" style="background-color: #a7f3d0;">
+                        <i data-lucide="check-circle-2" class="w-7 h-7"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title">IP Assignment</h4>
+                        <p class="card-subtitle">Client: Creative Studios</p>
+                        <div class="card-footer">
+                            <span>1w ago</span>
+                            <div class="card-avatars">
+                                <img class="avatar" src="https://i.pravatar.cc/28?u=f" alt="User 6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

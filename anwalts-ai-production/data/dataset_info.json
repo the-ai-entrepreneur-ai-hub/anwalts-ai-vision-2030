@@ -1,0 +1,25 @@
+{
+  "name": "German Legal Dataset for AnwaltsAI",
+  "total_examples": 9997,
+  "splits": {
+    "train": 7997,
+    "validation": 999,
+    "test": 1001
+  },
+  "language": "German",
+  "domain": "Legal (5 areas covered)",
+  "formats": [
+    "JSONL",
+    "Parquet"
+  ],
+  "created": "2025-08-07T19:00:42.619651",
+  "files_included": [
+    "exported_datasets/parquet/train.parquet",
+    "exported_datasets/parquet/validation.parquet",
+    "exported_datasets/parquet/test.parquet",
+    "expanded_legal_data/train.jsonl",
+    "expanded_legal_data/validation.jsonl",
+    "expanded_legal_data/test.jsonl",
+    "expanded_legal_data/metadata.json"
+  ]
+}

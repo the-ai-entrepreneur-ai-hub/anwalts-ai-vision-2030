@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI - KI-gestützte Rechtshilfe für moderne Kanzleien</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="api-client.js"></script>
+    
+    <style>
+        * { font-family: 'Inter', 'IBM Plex Sans', sans-serif; }
+        
+        /* Professional Landing Page Styles */
+        .legal-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #334155 100%);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+        
+        .legal-blue {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+        
+        .trust-badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+        }
+        
+        .feature-icon {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 12px;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        /* Login Modal */
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.7); }
+    </style>
+</head>
+<body class="legal-gradient text-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="relative z-50 bg-slate-900/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 legal-blue rounded-lg flex items-center justify-center">
+                        <i data-lucide="scale" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">AnwaltsAI</h1>
+                        <p class="text-xs text-slate-400">Professional Legal Intelligence</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <a href="#features" class="text-slate-300 hover:text-white transition-colors">Features</a>
+                    <a href="#pricing" class="text-slate-300 hover:text-white transition-colors">Preise</a>
+                    <a href="#contact" class="text-slate-300 hover:text-white transition-colors">Kontakt</a>
+                    <button onclick="openLoginModal()" class="legal-blue px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
+                        Anmelden
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-emerald-600/20"></div>
+        <div class="relative z-10 max-w-6xl mx-auto text-center">
+            <div class="animate-fade-in-up" style="animation-delay: 0.1s; opacity: 0;">
+                <div class="inline-flex items-center space-x-2 bg-emerald-900/20 border border-emerald-600/30 rounded-full px-4 py-2 mb-8">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="text-emerald-300 text-sm font-medium">Jetzt verfügbar: KI-gestützte Dokumentenerstellung</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Rechtspraxis<br>
+                    <span class="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">neu definiert</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+                    AnwaltsAI revolutioniert die Art, wie Rechtsanwälte arbeiten. 
+                    Automatisierte Dokumentenerstellung, intelligente Recherche und KI-gestützte Mandantenbetreuung.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <button onclick="openLoginModal()" class="legal-blue px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                        Kostenfrei starten
+                    </button>
+                    <button class="border border-slate-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-slate-800 transition-all duration-200">
+                        Demo ansehen
+                    </button>
+                </div>
+                
+                <!-- Trust Indicators -->
+                <div class="mt-16 flex flex-wrap items-center justify-center space-x-8 text-slate-400">
+                    <div class="trust-badge px-4 py-2 flex items-center space-x-2">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
+                        <span class="font-medium">DSGVO-konform</span>
+                    </div>
+                    <div class="trust-badge px-4 py-2 flex items-center space-x-2">
+                        <i data-lucide="lock" class="w-5 h-5 text-emerald-400"></i>
+                        <span class="font-medium">Ende-zu-Ende verschlüsselt</span>
+                    </div>
+                    <div class="trust-badge px-4 py-2 flex items-center space-x-2">
+                        <i data-lucide="star" class="w-5 h-5 text-emerald-400"></i>
+                        <span class="font-medium">500+ Kanzleien vertrauen uns</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Funktionen für moderne Kanzleien</h2>
+                <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+                    Steigern Sie Ihre Produktivität mit KI-gestützten Tools, die speziell für die deutsche Rechtspraxis entwickelt wurden.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="feature-icon w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="file-text" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Automatische Dokumentenerstellung</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Erstellen Sie Verträge, Schreiben und Gutachten in Sekunden. 
+                        Unsere KI kennt deutsche Rechtsnormen und erstellt rechtssichere Dokumente.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="feature-icon w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="search" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Intelligente Rechtsrecherche</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Durchsuchen Sie Gesetze, Urteile und Kommentare mit natürlicher Sprache. 
+                        Erhalten Sie präzise Antworten auf komplexe Rechtsfragen.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="feature-icon w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="users" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Mandantenmanagement 2.0</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Automatisierte Kommunikation, intelligente Terminplanung und 
+                        KI-gestützte Fallanalyse für eine bessere Mandantenbetreuung.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="feature-icon w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Höchste Sicherheit</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        DSGVO-konforme Datenverarbeitung, Ende-zu-Ende-Verschlüsselung 
+                        und deutsche Server für maximalen Datenschutz.
+                    </p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="feature-icon w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="zap" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Workflow-Automatisierung</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Automatisieren Sie wiederkehrende Aufgaben, von der Rechnungsstellung 
+                        bis zur Fristenverwaltung - und sparen Sie wertvolle Zeit.
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="feature-icon w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="trending-up" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Analytics & Insights</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        Detaillierte Auswertungen Ihrer Kanzleitätigkeit, 
+                        Erfolgskennzahlen und datenbasierte Optimierungsvorschläge.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-24 px-4 bg-slate-800/50">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-16">Vertrauen Sie auf bewährte Ergebnisse</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="glass-card p-8">
+                    <div class="text-4xl font-bold text-blue-400 mb-2">500+</div>
+                    <div class="text-slate-300">Aktive Kanzleien</div>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="text-4xl font-bold text-emerald-400 mb-2">50k+</div>
+                    <div class="text-slate-300">Erstellte Dokumente</div>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="text-4xl font-bold text-purple-400 mb-2">95%</div>
+                    <div class="text-slate-300">Zeitersparnis</div>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="text-4xl font-bold text-orange-400 mb-2">4.9/5</div>
+                    <div class="text-slate-300">Kundenbewertung</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Transparente Preise</h2>
+            <p class="text-xl text-slate-300 mb-16 max-w-3xl mx-auto">
+                Wählen Sie das Paket, das am besten zu Ihrer Kanzlei passt. 
+                Alle Pläne beinhalten deutsche Server und DSGVO-Compliance.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Basic Plan -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Starter</h3>
+                    <div class="text-4xl font-bold mb-6">29€ <span class="text-lg text-slate-400">/Monat</span></div>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>500 KI-Dokumente/Monat</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Grundlegende Vorlagen</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>E-Mail-Support</span>
+                        </li>
+                    </ul>
+                    <button onclick="openLoginModal()" class="w-full border border-slate-600 py-3 rounded-lg font-medium hover:bg-slate-800 transition-colors">
+                        Jetzt starten
+                    </button>
+                </div>
+                
+                <!-- Professional Plan -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300 ring-2 ring-blue-500 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 px-4 py-1 rounded-full text-sm font-medium">
+                        Beliebt
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Professional</h3>
+                    <div class="text-4xl font-bold mb-6">89€ <span class="text-lg text-slate-400">/Monat</span></div>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>2.000 KI-Dokumente/Monat</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Alle Premium-Vorlagen</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Mandantenmanagement</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Priority Support</span>
+                        </li>
+                    </ul>
+                    <button onclick="openLoginModal()" class="w-full legal-blue py-3 rounded-lg font-medium hover:shadow-lg transition-all">
+                        Jetzt starten
+                    </button>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="glass-card p-8 hover:shadow-2xl transition-all duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Enterprise</h3>
+                    <div class="text-4xl font-bold mb-6">Individuell</div>
+                    <ul class="text-left space-y-3 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Unbegrenzte KI-Dokumente</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Custom Integrationen</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>Dedicated Support</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="check" class="w-5 h-5 text-emerald-400"></i>
+                            <span>On-Premise Option</span>
+                        </li>
+                    </ul>
+                    <button class="w-full border border-slate-600 py-3 rounded-lg font-medium hover:bg-slate-800 transition-colors">
+                        Kontakt aufnehmen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="py-16 px-4 bg-slate-900/90 border-t border-white/10">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 legal-blue rounded-lg flex items-center justify-center">
+                            <i data-lucide="scale" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-white">AnwaltsAI</h1>
+                            <p class="text-xs text-slate-400">Professional Legal Intelligence</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 mb-6">
+                        Die führende KI-Plattform für deutsche Rechtsanwälte. 
+                        Automatisieren Sie Ihre Rechtspraxis und konzentrieren Sie sich auf das Wesentliche.
+                    </p>
+                    <div class="flex space-x-4">
+                        <div class="trust-badge px-3 py-2">
+                            <span class="text-sm text-emerald-400 font-medium">🇩🇪 Made in Germany</span>
+                        </div>
+                        <div class="trust-badge px-3 py-2">
+                            <span class="text-sm text-emerald-400 font-medium">DSGVO-konform</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produkt</h4>
+                    <ul class="space-y-2 text-slate-300">
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition-colors">Preise</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Demo</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Integrationen</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontakt</h4>
+                    <ul class="space-y-2 text-slate-300">
+                        <li><a href="#" class="hover:text-white transition-colors">Support</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Beratung</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Datenschutz</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Impressum</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 text-center text-slate-400">
+                <p>&copy; 2024 AnwaltsAI. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeLoginModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-content relative rounded-2xl p-8 w-full max-w-md">
+                <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 legal-blue rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="scale" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">Bei AnwaltsAI anmelden</h2>
+                    <p class="text-slate-400">Zugang zu Ihrer professionellen KI-Rechtshilfe</p>
+                </div>
+                
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">E-Mail-Adresse</label>
+                        <input 
+                            type="email" 
+                            id="loginEmail"
+                            class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                            placeholder="ihre@kanzlei.de"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Passwort</label>
+                        <input 
+                            type="password" 
+                            id="loginPassword"
+                            class="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                            placeholder="••••••••"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-slate-600 bg-slate-800">
+                            <span class="ml-2 text-sm text-slate-400">Angemeldet bleiben</span>
+                        </label>
+                        <a href="#" class="text-sm text-blue-400 hover:underline">Passwort vergessen?</a>
+                    </div>
+                    
+                    <button 
+                        type="submit" 
+                        class="w-full legal-blue py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
+                    >
+                        Anmelden
+                    </button>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-slate-400">Noch kein Konto? 
+                        <a href="enhanced-registration.html" class="text-blue-400 hover:underline font-medium">Jetzt registrieren</a>
+                    </p>
+                </div>
+                
+                <!-- Demo Login -->
+                <div class="mt-6 pt-6 border-t border-slate-700">
+                    <p class="text-center text-sm text-slate-400 mb-4">Für Demo-Zwecke:</p>
+                    <button 
+                        onclick="loginAsDemo()"
+                        class="w-full border border-slate-600 py-2 rounded-lg text-sm hover:bg-slate-800 transition-colors"
+                    >
+                        Als Demo-Admin anmelden
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Initialize API client
+        const apiClient = new AnwaltsAIApiClient();
+        
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Modal functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Demo login function
+        async function loginAsDemo() {
+            try {
+                // Try API login first
+                const response = await apiClient.login('admin@anwalts-ai.com', 'admin123');
+                if (response.success || response.token) {
+                    window.location.href = 'anwalts-ai-dashboard.html';
+                } else {
+                    // Fallback to direct redirect for demo
+                    console.log('API login failed, using fallback');
+                    localStorage.setItem('demo_user', JSON.stringify({
+                        id: 'demo-user',
+                        email: 'admin@anwalts-ai.com',
+                        name: 'Demo Administrator',
+                        role: 'admin'
+                    }));
+                    window.location.href = 'anwalts-ai-dashboard.html';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                // Fallback to direct redirect for demo
+                localStorage.setItem('demo_user', JSON.stringify({
+                    id: 'demo-user',
+                    email: 'admin@anwalts-ai.com',
+                    name: 'Demo Administrator',
+                    role: 'admin'
+                }));
+                window.location.href = 'anwalts-ai-dashboard.html';
+            }
+        }
+        
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const response = await apiClient.login(email, password);
+                if (response.success || response.token) {
+                    window.location.href = 'anwalts-ai-dashboard.html';
+                } else {
+                    alert('Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                // For demo purposes, allow demo login even if backend is down
+                if (email === 'admin@anwalts-ai.com' && password === 'admin123') {
+                    localStorage.setItem('demo_user', JSON.stringify({
+                        id: 'demo-user',
+                        email: email,
+                        name: 'Demo Administrator',
+                        role: 'admin'
+                    }));
+                    window.location.href = 'anwalts-ai-dashboard.html';
+                } else {
+                    alert('Anmeldung fehlgeschlagen: ' + error.message);
+                }
+            }
+        });
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+            }
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

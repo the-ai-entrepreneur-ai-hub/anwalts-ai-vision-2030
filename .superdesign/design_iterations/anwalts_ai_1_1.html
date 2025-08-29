@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="anwalts_ai_theme_1.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(120deg, #f3e8ff, #e0c3fc);
+            color: var(--foreground);
+        }
+        .sidebar {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .nav-item {
+            color: var(--muted-foreground);
+            transition: all 0.2s ease-out;
+        }
+        .nav-item:hover {
+            color: var(--foreground);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .nav-item.active {
+            color: white;
+            background: linear-gradient(120deg, #a855f7, #d946ef);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: all 0.3s ease-out;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+        }
+        .header-gradient {
+            background: linear-gradient(to right, #a855f7, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 flex-shrink-0 flex flex-col space-y-6 p-6">
+            <div class="flex items-center space-x-3 px-2">
+                <i data-lucide="scale" class="text-purple-600"></i>
+                <span class="text-2xl font-bold text-gray-800">Anwalts-AI</span>
+            </div>
+
+            <nav class="flex-1 space-y-3">
+                <a href="#" class="nav-item active flex items-center space-x-3 py-3 px-4 rounded-lg">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                    <span class="font-semibold">Home</span>
+                </a>
+                <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 rounded-lg">
+                    <i data-lucide="mail" class="w-6 h-6"></i>
+                    <span class="font-semibold">Emails</span>
+                </a>
+                <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 rounded-lg">
+                    <i data-lucide="file-text" class="w-6 h-6"></i>
+                    <span class="font-semibold">Document Generator</span>
+                </a>
+                <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 rounded-lg">
+                    <i data-lucide="bookmark" class="w-6 h-6"></i>
+                    <span class="font-semibold">Templates</span>
+                </a>
+            </nav>
+
+            <div class="space-y-3">
+                 <a href="#" class="nav-item flex items-center space-x-3 py-3 px-4 rounded-lg">
+                    <i data-lucide="settings" class="w-6 h-6"></i>
+                    <span class="font-semibold">Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="flex items-center justify-between p-8 border-b border-gray-200">
+                <h1 class="text-4xl font-bold header-gradient">Dashboard</h1>
+                <div class="flex items-center space-x-6">
+                    <button class="p-3 rounded-full hover:bg-gray-200 text-gray-600">
+                        <i data-lucide="search" class="w-6 h-6"></i>
+                    </button>
+                    <button class="p-3 rounded-full hover:bg-gray-200 text-gray-600">
+                        <i data-lucide="help-circle" class="w-6 h-6"></i>
+                    </button>
+                    <button class="p-3 rounded-full hover:bg-gray-200 text-gray-600">
+                        <i data-lucide="user" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="flex-1 p-10 overflow-y-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Document Generator Card -->
+                    <div class="card p-8 flex flex-col items-start text-left">
+                        <div class="p-4 rounded-xl mb-5 bg-purple-100">
+                            <i data-lucide="file-pen-line" class="w-10 h-10 text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Document Generator</h3>
+                        <p class="text-gray-600">Create legal documents with ease.</p>
+                    </div>
+
+                    <!-- Mailbox Card -->
+                    <div class="card p-8 flex flex-col items-start text-left">
+                        <div class="p-4 rounded-xl mb-5 bg-purple-100">
+                            <i data-lucide="inbox" class="w-10 h-10 text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Mailbox</h3>
+                        <p class="text-gray-600">View and manage your emails.</p>
+                    </div>
+
+                    <!-- Saved Templates Card -->
+                    <div class="card p-8 flex flex-col items-start text-left">
+                        <div class="p-4 rounded-xl mb-5 bg-purple-100">
+                            <i data-lucide="save" class="w-10 h-10 text-purple-600"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Saved Templates</h3>
+                        <p class="text-gray-600">Access your previously saved templates.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

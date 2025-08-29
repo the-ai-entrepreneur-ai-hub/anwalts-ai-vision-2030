@@ -1,0 +1,63 @@
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    build-essential \
+    cmake \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional dependencies for model serving
+RUN pip install --no-cache-dir \
+    torch==2.1.0 --index-url https://download.pytorch.org/whl/cpu \
+    transformers==4.36.0 \
+    accelerate \
+    bitsandbytes \
+    optimum \
+    auto-gptq \
+    fastapi \
+    uvicorn \
+    pydantic \
+    redis \
+    prometheus-client
+
+# Copy application code
+COPY src/ ./src/
+COPY models/ ./models/
+COPY config/ ./config/
+
+# Create necessary directories
+RUN mkdir -p logs cache
+
+# Set environment variables for optimal CPU performance
+ENV OMP_NUM_THREADS=28
+ENV MKL_NUM_THREADS=28
+ENV OPENBLAS_NUM_THREADS=28
+ENV VECLIB_MAXIMUM_THREADS=28
+ENV NUMEXPR_NUM_THREADS=28
+
+# Optimize for Ryzen 9 7950X3D
+ENV PYTORCH_DISABLE_AVX512=0
+ENV TORCH_NUM_THREADS=28
+
+# Create non-root user
+RUN useradd -m -u 1000 modeluser && chown -R modeluser:modeluser /app
+USER modeluser
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Expose port
+EXPOSE 8000
+
+# Command to run the application
+CMD ["python", "-m", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]

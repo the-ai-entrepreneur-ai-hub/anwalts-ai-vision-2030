@@ -1,0 +1,415 @@
+/**
+ * AnwaltsAI Integration CSS
+ * Shared styles for seamless landing page ↔ dashboard integration
+ */
+
+/* ===== SHARED THEME VARIABLES ===== */
+:root {
+    /* Unified color palette for both pages */
+    --anwalts-primary: #3b82f6;
+    --anwalts-primary-dark: #2563eb;
+    --anwalts-primary-hover: #1d4ed8;
+    --anwalts-background: #f8fafc;
+    --anwalts-background-secondary: #f1f5f9;
+    --anwalts-text: #1e293b;
+    --anwalts-text-secondary: #64748b;
+    --anwalts-text-muted: #94a3b8;
+    
+    /* Glassmorphism effects */
+    --anwalts-glass-primary: rgba(248, 250, 252, 0.8);
+    --anwalts-glass-secondary: rgba(241, 245, 249, 0.6);
+    --anwalts-glass-accent: rgba(59, 130, 246, 0.1);
+    --anwalts-glass-border: rgba(59, 130, 246, 0.2);
+    
+    /* Shadows */
+    --anwalts-shadow-sm: 0 1px 2px rgba(59, 130, 246, 0.05);
+    --anwalts-shadow-md: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+    --anwalts-shadow-lg: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+    --anwalts-shadow-xl: 0 20px 25px -5px rgba(59, 130, 246, 0.1);
+    
+    /* Borders */
+    --anwalts-border-primary: #e2e8f0;
+    --anwalts-border-accent: #cbd5e1;
+    --anwalts-border-focus: rgba(59, 130, 246, 0.5);
+    
+    /* Spacing */
+    --anwalts-spacing-xs: 0.25rem;
+    --anwalts-spacing-sm: 0.5rem;
+    --anwalts-spacing-md: 1rem;
+    --anwalts-spacing-lg: 1.5rem;
+    --anwalts-spacing-xl: 2rem;
+    
+    /* Typography */
+    --anwalts-font-size-xs: 0.75rem;
+    --anwalts-font-size-sm: 0.875rem;
+    --anwalts-font-size-base: 1rem;
+    --anwalts-font-size-lg: 1.125rem;
+    --anwalts-font-size-xl: 1.25rem;
+    --anwalts-font-size-2xl: 1.5rem;
+    
+    /* Transitions */
+    --anwalts-transition-fast: 0.15s ease-in-out;
+    --anwalts-transition-base: 0.3s ease-in-out;
+    --anwalts-transition-slow: 0.5s ease-in-out;
+    
+    /* Z-index layers */
+    --anwalts-z-dropdown: 1000;
+    --anwalts-z-modal: 1050;
+    --anwalts-z-notification: 1100;
+    --anwalts-z-loader: 9999;
+}
+
+/* ===== SHARED COMPONENT STYLES ===== */
+
+/* Consistent Button System */
+.anwalts-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--anwalts-spacing-sm);
+    padding: var(--anwalts-spacing-sm) var(--anwalts-spacing-md);
+    border-radius: 0.5rem;
+    font-size: var(--anwalts-font-size-sm);
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all var(--anwalts-transition-base);
+    user-select: none;
+    white-space: nowrap;
+    min-height: 2.5rem;
+    outline: none;
+}
+
+.anwalts-btn-primary {
+    background: linear-gradient(135deg, var(--anwalts-primary), var(--anwalts-primary-dark));
+    color: white;
+    border: 1px solid var(--anwalts-glass-border);
+}
+
+.anwalts-btn-primary:hover {
+    background: linear-gradient(135deg, var(--anwalts-primary-hover), var(--anwalts-primary));
+    transform: translateY(-1px);
+    box-shadow: var(--anwalts-shadow-lg);
+}
+
+.anwalts-btn-secondary {
+    background: var(--anwalts-glass-secondary);
+    color: var(--anwalts-text);
+    border: 1px solid var(--anwalts-border-primary);
+}
+
+.anwalts-btn-secondary:hover {
+    background: var(--anwalts-glass-primary);
+    border-color: var(--anwalts-border-accent);
+    transform: translateY(-1px);
+    box-shadow: var(--anwalts-shadow-md);
+}
+
+.anwalts-btn:focus {
+    box-shadow: 0 0 0 3px var(--anwalts-border-focus);
+}
+
+/* Consistent Input System */
+.anwalts-input {
+    width: 100%;
+    padding: var(--anwalts-spacing-sm) var(--anwalts-spacing-md);
+    background: var(--anwalts-glass-secondary);
+    border: 1px solid var(--anwalts-border-primary);
+    border-radius: 0.5rem;
+    color: var(--anwalts-text);
+    font-size: var(--anwalts-font-size-base);
+    transition: all var(--anwalts-transition-base);
+    outline: none;
+    min-height: 2.5rem;
+}
+
+.anwalts-input:focus {
+    border-color: var(--anwalts-primary);
+    box-shadow: 0 0 0 3px var(--anwalts-border-focus);
+    background: var(--anwalts-glass-primary);
+}
+
+.anwalts-input::placeholder {
+    color: var(--anwalts-text-muted);
+}
+
+/* Consistent Card System */
+.anwalts-card {
+    background: var(--anwalts-glass-primary);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--anwalts-glass-border);
+    border-radius: 0.75rem;
+    padding: var(--anwalts-spacing-lg);
+    box-shadow: var(--anwalts-shadow-md);
+    transition: all var(--anwalts-transition-base);
+}
+
+.anwalts-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--anwalts-shadow-lg);
+    border-color: var(--anwalts-border-accent);
+}
+
+/* Modal System */
+.anwalts-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--anwalts-z-modal);
+}
+
+.anwalts-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(15, 23, 42, 0.6) 0%, 
+        var(--anwalts-glass-accent) 50%, 
+        rgba(15, 23, 42, 0.6) 100%);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.anwalts-modal-content {
+    background: var(--anwalts-glass-primary);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--anwalts-glass-border);
+    border-radius: 1rem;
+    box-shadow: var(--anwalts-shadow-xl);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+/* Notification System */
+.anwalts-notification {
+    position: fixed;
+    top: var(--anwalts-spacing-md);
+    right: var(--anwalts-spacing-md);
+    z-index: var(--anwalts-z-notification);
+    background: var(--anwalts-glass-primary);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--anwalts-glass-border);
+    border-radius: 0.5rem;
+    padding: var(--anwalts-spacing-md);
+    box-shadow: var(--anwalts-shadow-lg);
+    max-width: 300px;
+    transform: translateX(400px);
+    transition: transform var(--anwalts-transition-base);
+}
+
+.anwalts-notification.show {
+    transform: translateX(0);
+}
+
+/* Loader System */
+.anwalts-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--anwalts-spacing-xl);
+}
+
+@keyframes anwalts-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== PAGE TRANSITION EFFECTS ===== */
+.anwalts-page-transition {
+    transition: opacity var(--anwalts-transition-base), 
+                transform var(--anwalts-transition-base);
+}
+
+.anwalts-page-entering {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.anwalts-page-entered {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+.anwalts-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--anwalts-spacing-md);
+    padding-right: var(--anwalts-spacing-md);
+}
+
+@media (min-width: 640px) {
+    .anwalts-container { max-width: 640px; }
+}
+
+@media (min-width: 768px) {
+    .anwalts-container { max-width: 768px; }
+}
+
+@media (min-width: 1024px) {
+    .anwalts-container { max-width: 1024px; }
+}
+
+@media (min-width: 1280px) {
+    .anwalts-container { max-width: 1280px; }
+}
+
+/* Grid System */
+.anwalts-grid {
+    display: grid;
+    gap: var(--anwalts-spacing-lg);
+}
+
+.anwalts-grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+.anwalts-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.anwalts-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.anwalts-grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 767px) {
+    .anwalts-grid-cols-2,
+    .anwalts-grid-cols-3,
+    .anwalts-grid-cols-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Flexbox Utilities */
+.anwalts-flex { display: flex; }
+.anwalts-flex-col { flex-direction: column; }
+.anwalts-items-center { align-items: center; }
+.anwalts-justify-center { justify-content: center; }
+.anwalts-justify-between { justify-content: space-between; }
+
+/* Spacing Utilities */
+.anwalts-gap-xs { gap: var(--anwalts-spacing-xs); }
+.anwalts-gap-sm { gap: var(--anwalts-spacing-sm); }
+.anwalts-gap-md { gap: var(--anwalts-spacing-md); }
+.anwalts-gap-lg { gap: var(--anwalts-spacing-lg); }
+.anwalts-gap-xl { gap: var(--anwalts-spacing-xl); }
+
+/* Typography Utilities */
+.anwalts-text-xs { font-size: var(--anwalts-font-size-xs); }
+.anwalts-text-sm { font-size: var(--anwalts-font-size-sm); }
+.anwalts-text-base { font-size: var(--anwalts-font-size-base); }
+.anwalts-text-lg { font-size: var(--anwalts-font-size-lg); }
+.anwalts-text-xl { font-size: var(--anwalts-font-size-xl); }
+.anwalts-text-2xl { font-size: var(--anwalts-font-size-2xl); }
+
+.anwalts-text-primary { color: var(--anwalts-text); }
+.anwalts-text-secondary { color: var(--anwalts-text-secondary); }
+.anwalts-text-muted { color: var(--anwalts-text-muted); }
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+.anwalts-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus improvements */
+*:focus-visible {
+    outline: 2px solid var(--anwalts-primary);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .anwalts-card,
+    .anwalts-btn,
+    .anwalts-input {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .anwalts-btn,
+    .anwalts-modal,
+    .anwalts-notification {
+        display: none !important;
+    }
+    
+    .anwalts-card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        background: white !important;
+    }
+}
+
+/* ===== INTEGRATION-SPECIFIC STYLES ===== */
+
+/* Page transition overlay */
+#anwalts-transition-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--anwalts-z-loader);
+    pointer-events: none;
+}
+
+/* Theme indicator for development */
+.anwalts-theme-indicator {
+    position: fixed;
+    top: 10px;
+    right: 50px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--anwalts-primary);
+    z-index: var(--anwalts-z-notification);
+    opacity: 0.7;
+    transition: opacity var(--anwalts-transition-base);
+}
+
+.anwalts-theme-indicator:hover {
+    opacity: 1;
+}
+
+/* Integration status indicator */
+.anwalts-integration-status {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: var(--anwalts-spacing-xs) var(--anwalts-spacing-sm);
+    background: var(--anwalts-glass-primary);
+    border: 1px solid var(--anwalts-glass-border);
+    border-radius: 0.25rem;
+    font-size: var(--anwalts-font-size-xs);
+    color: var(--anwalts-text-secondary);
+    z-index: var(--anwalts-z-dropdown);
+    opacity: 0.8;
+    transition: opacity var(--anwalts-transition-base);
+}
+
+.anwalts-integration-status:hover {
+    opacity: 1;
+}

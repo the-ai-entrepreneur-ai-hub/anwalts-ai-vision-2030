@@ -1,0 +1,13 @@
+{
+  "total_samples": 36,
+  "splits": {
+    "train": 28,
+    "validation": 3,
+    "test": 5
+  },
+  "format": "instruction_tuning",
+  "language": "german",
+  "domain": "legal",
+  "template": "<s>[INST] {prompt} [/INST] {completion} </s>",
+  "description": "German legal dataset prepared for instruction tuning"
+}

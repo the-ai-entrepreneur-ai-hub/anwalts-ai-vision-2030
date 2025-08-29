@@ -1,0 +1,529 @@
+<!-- Enhanced Registration Form Component -->
+<div class="enhanced-registration-form" style="display: none;">
+    <h3 class="text-xl font-semibold text-white mb-6">Vollständige Registrierung</h3>
+    
+    <!-- Personal Information -->
+    <div class="registration-section">
+        <h4 class="text-lg font-medium text-white mb-4 flex items-center gap-2">
+            <i data-lucide="user" class="w-5 h-5"></i>
+            Persönliche Informationen
+        </h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Title -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userTitle">Titel (optional)</label>
+                <select id="userTitle" class="auth-form-input">
+                    <option value="">Titel wählen</option>
+                    <option value="Dr.">Dr.</option>
+                    <option value="Prof.">Prof.</option>
+                    <option value="Prof. Dr.">Prof. Dr.</option>
+                    <option value="RA">RA</option>
+                    <option value="RAin">RAin</option>
+                    <option value="StB">StB</option>
+                    <option value="StBin">StBin</option>
+                    <option value="WP">WP</option>
+                    <option value="vBP">vBP</option>
+                </select>
+            </div>
+            
+            <!-- First Name -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userFirstName">Vorname *</label>
+                <input type="text" id="userFirstName" class="auth-form-input" placeholder="Ihr Vorname" required>
+                <div class="auth-error" id="firstNameError"></div>
+            </div>
+            
+            <!-- Last Name -->
+            <div class="auth-form-group md:col-span-2">
+                <label class="auth-form-label" for="userLastName">Nachname *</label>
+                <input type="text" id="userLastName" class="auth-form-input" placeholder="Ihr Nachname" required>
+                <div class="auth-error" id="lastNameError"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Professional Information -->
+    <div class="registration-section">
+        <h4 class="text-lg font-medium text-white mb-4 flex items-center gap-2">
+            <i data-lucide="briefcase" class="w-5 h-5"></i>
+            Berufliche Informationen
+        </h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Law Firm -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userLawFirm">Kanzlei</label>
+                <input type="text" id="userLawFirm" class="auth-form-input" placeholder="Name der Kanzlei">
+            </div>
+            
+            <!-- Position -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userPosition">Position</label>
+                <input type="text" id="userPosition" class="auth-form-input" placeholder="Ihre Position">
+            </div>
+            
+            <!-- Bar Number -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userBarNumber">Anwaltsnummer</label>
+                <input type="text" id="userBarNumber" class="auth-form-input" placeholder="Ihre Anwaltsnummer">
+            </div>
+            
+            <!-- Years of Experience -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userExperience">Berufserfahrung (Jahre)</label>
+                <select id="userExperience" class="auth-form-input">
+                    <option value="">Wählen Sie aus</option>
+                    <option value="0">Berufsanfänger</option>
+                    <option value="1">1 Jahr</option>
+                    <option value="2">2 Jahre</option>
+                    <option value="3">3 Jahre</option>
+                    <option value="5">5 Jahre</option>
+                    <option value="10">10 Jahre</option>
+                    <option value="15">15 Jahre</option>
+                    <option value="20">20+ Jahre</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Specializations -->
+        <div class="auth-form-group">
+            <label class="auth-form-label">Rechtsgebiete (mehrere auswählbar)</label>
+            <div class="specializations-grid grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Zivilrecht">
+                    <span>Zivilrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Strafrecht">
+                    <span>Strafrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Arbeitsrecht">
+                    <span>Arbeitsrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Familienrecht">
+                    <span>Familienrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Handelsrecht">
+                    <span>Handelsrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Steuerrecht">
+                    <span>Steuerrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Immobilienrecht">
+                    <span>Immobilienrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="Versicherungsrecht">
+                    <span>Versicherungsrecht</span>
+                </label>
+                <label class="specialization-item">
+                    <input type="checkbox" class="specialization-checkbox" value="IT-Recht">
+                    <span>IT-Recht</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Information -->
+    <div class="registration-section">
+        <h4 class="text-lg font-medium text-white mb-4 flex items-center gap-2">
+            <i data-lucide="phone" class="w-5 h-5"></i>
+            Kontaktdaten
+        </h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Phone -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userPhone">Telefon</label>
+                <input type="tel" id="userPhone" class="auth-form-input" placeholder="+49 123 456789">
+            </div>
+            
+            <!-- Mobile -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userMobile">Mobil</label>
+                <input type="tel" id="userMobile" class="auth-form-input" placeholder="+49 170 123456">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Address Information -->
+    <div class="registration-section">
+        <h4 class="text-lg font-medium text-white mb-4 flex items-center gap-2">
+            <i data-lucide="map-pin" class="w-5 h-5"></i>
+            Adresse
+        </h4>
+        
+        <div class="grid grid-cols-1 gap-4">
+            <!-- Street Address -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userStreet">Straße und Hausnummer</label>
+                <input type="text" id="userStreet" class="auth-form-input" placeholder="Musterstraße 123">
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Postal Code -->
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="userPostalCode">PLZ</label>
+                    <input type="text" id="userPostalCode" class="auth-form-input" placeholder="12345">
+                </div>
+                
+                <!-- City -->
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="userCity">Stadt</label>
+                    <input type="text" id="userCity" class="auth-form-input" placeholder="Berlin">
+                </div>
+                
+                <!-- State -->
+                <div class="auth-form-group">
+                    <label class="auth-form-label" for="userState">Bundesland</label>
+                    <select id="userState" class="auth-form-input">
+                        <option value="">Bundesland wählen</option>
+                        <option value="Baden-Württemberg">Baden-Württemberg</option>
+                        <option value="Bayern">Bayern</option>
+                        <option value="Berlin">Berlin</option>
+                        <option value="Brandenburg">Brandenburg</option>
+                        <option value="Bremen">Bremen</option>
+                        <option value="Hamburg">Hamburg</option>
+                        <option value="Hessen">Hessen</option>
+                        <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
+                        <option value="Niedersachsen">Niedersachsen</option>
+                        <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+                        <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+                        <option value="Saarland">Saarland</option>
+                        <option value="Sachsen">Sachsen</option>
+                        <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
+                        <option value="Schleswig-Holstein">Schleswig-Holstein</option>
+                        <option value="Thüringen">Thüringen</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Preferences -->
+    <div class="registration-section">
+        <h4 class="text-lg font-medium text-white mb-4 flex items-center gap-2">
+            <i data-lucide="settings" class="w-5 h-5"></i>
+            Einstellungen
+        </h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Language -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userLanguage">Sprache</label>
+                <select id="userLanguage" class="auth-form-input">
+                    <option value="de">Deutsch</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            
+            <!-- Timezone -->
+            <div class="auth-form-group">
+                <label class="auth-form-label" for="userTimezone">Zeitzone</label>
+                <select id="userTimezone" class="auth-form-input">
+                    <option value="Europe/Berlin">Berlin (GMT+1)</option>
+                    <option value="Europe/Vienna">Wien (GMT+1)</option>
+                    <option value="Europe/Zurich">Zürich (GMT+1)</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Bio -->
+        <div class="auth-form-group">
+            <label class="auth-form-label" for="userBio">Kurze Beschreibung (optional)</label>
+            <textarea id="userBio" class="auth-form-input" rows="3" placeholder="Kurze berufliche Beschreibung oder Spezialisierung..."></textarea>
+        </div>
+        
+        <!-- Notification Preferences -->
+        <div class="notification-preferences">
+            <h5 class="text-md font-medium text-white mb-3">Benachrichtigungen</h5>
+            <div class="grid grid-cols-1 gap-3">
+                <label class="auth-checkbox-group">
+                    <input type="checkbox" class="auth-checkbox" id="emailNotifications" checked>
+                    <span>E-Mail-Benachrichtigungen</span>
+                </label>
+                <label class="auth-checkbox-group">
+                    <input type="checkbox" class="auth-checkbox" id="browserNotifications">
+                    <span>Browser-Benachrichtigungen</span>
+                </label>
+                <label class="auth-checkbox-group">
+                    <input type="checkbox" class="auth-checkbox" id="aiUpdates" checked>
+                    <span>KI-Updates und neue Features</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Enhanced Registration Form Styles */
+.enhanced-registration-form {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.enhanced-registration-form::-webkit-scrollbar {
+    width: 6px;
+}
+
+.enhanced-registration-form::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.enhanced-registration-form::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.5);
+    border-radius: 3px;
+}
+
+.enhanced-registration-form::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.7);
+}
+
+.registration-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.registration-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.specialization-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+}
+
+.specialization-item:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+.specialization-checkbox {
+    margin: 0;
+    accent-color: #8b5cf6;
+}
+
+.specialization-item span {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+}
+
+.notification-preferences {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+/* Form toggle styles */
+.form-toggle-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem;
+    border-radius: 8px;
+}
+
+.form-toggle-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.form-toggle-btn.active {
+    background: rgba(139, 92, 246, 0.3);
+    color: white;
+}
+
+.form-toggle-btn:hover {
+    color: white;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .enhanced-registration-form {
+        max-height: 60vh;
+    }
+    
+    .specializations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .registration-section h4 {
+        font-size: 1rem;
+    }
+}
+</style>
+
+<script>
+// Enhanced Registration Form Functions
+function toggleRegistrationForm() {
+    const basicForm = document.querySelector('.auth-modal .auth-form');
+    const enhancedForm = document.querySelector('.enhanced-registration-form');
+    const toggleButtons = document.querySelector('.form-toggle-buttons');
+    
+    if (!toggleButtons) {
+        // Create toggle buttons if they don't exist
+        createFormToggleButtons();
+    }
+    
+    if (enhancedForm.style.display === 'none') {
+        enhancedForm.style.display = 'block';
+        basicForm.style.display = 'none';
+        updateActiveToggle('enhanced');
+    } else {
+        enhancedForm.style.display = 'none';
+        basicForm.style.display = 'block';
+        updateActiveToggle('basic');
+    }
+}
+
+function createFormToggleButtons() {
+    const authModal = document.querySelector('.auth-modal .auth-modal-content');
+    const authHeader = authModal.querySelector('.auth-modal-header');
+    
+    const toggleButtons = document.createElement('div');
+    toggleButtons.className = 'form-toggle-buttons';
+    toggleButtons.innerHTML = `
+        <button type="button" class="form-toggle-btn active" data-form="basic">
+            Schnell-Registrierung
+        </button>
+        <button type="button" class="form-toggle-btn" data-form="enhanced">
+            Vollständige Registrierung
+        </button>
+    `;
+    
+    authHeader.parentNode.insertBefore(toggleButtons, authHeader.nextSibling);
+    
+    // Add event listeners
+    toggleButtons.addEventListener('click', (e) => {
+        if (e.target.classList.contains('form-toggle-btn')) {
+            const formType = e.target.dataset.form;
+            switchRegistrationForm(formType);
+        }
+    });
+}
+
+function switchRegistrationForm(formType) {
+    const basicForm = document.querySelector('.auth-modal .auth-form');
+    const enhancedForm = document.querySelector('.enhanced-registration-form');
+    
+    if (formType === 'enhanced') {
+        enhancedForm.style.display = 'block';
+        basicForm.style.display = 'none';
+    } else {
+        enhancedForm.style.display = 'none';
+        basicForm.style.display = 'block';
+    }
+    
+    updateActiveToggle(formType);
+}
+
+function updateActiveToggle(activeForm) {
+    const buttons = document.querySelectorAll('.form-toggle-btn');
+    buttons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.form === activeForm);
+    });
+}
+
+function collectEnhancedRegistrationData() {
+    const formData = {
+        // Basic fields
+        email: document.getElementById('authEmail')?.value,
+        password: document.getElementById('authPassword')?.value,
+        
+        // Enhanced fields
+        title: document.getElementById('userTitle')?.value,
+        first_name: document.getElementById('userFirstName')?.value,
+        last_name: document.getElementById('userLastName')?.value,
+        
+        // Professional information
+        law_firm: document.getElementById('userLawFirm')?.value,
+        position: document.getElementById('userPosition')?.value,
+        bar_number: document.getElementById('userBarNumber')?.value,
+        years_experience: parseInt(document.getElementById('userExperience')?.value) || null,
+        
+        // Contact information
+        phone: document.getElementById('userPhone')?.value,
+        mobile: document.getElementById('userMobile')?.value,
+        
+        // Address information
+        street_address: document.getElementById('userStreet')?.value,
+        city: document.getElementById('userCity')?.value,
+        state: document.getElementById('userState')?.value,
+        postal_code: document.getElementById('userPostalCode')?.value,
+        country: 'Deutschland',
+        
+        // Preferences
+        language: document.getElementById('userLanguage')?.value || 'de',
+        timezone: document.getElementById('userTimezone')?.value || 'Europe/Berlin',
+        bio: document.getElementById('userBio')?.value,
+        
+        // Notifications
+        email_notifications: document.getElementById('emailNotifications')?.checked || false,
+        browser_notifications: document.getElementById('browserNotifications')?.checked || false,
+        ai_updates: document.getElementById('aiUpdates')?.checked || false,
+        
+        // Specializations
+        specializations: Array.from(document.querySelectorAll('.specialization-checkbox:checked'))
+            .map(cb => cb.value)
+    };
+    
+    // Remove empty values
+    Object.keys(formData).forEach(key => {
+        if (formData[key] === '' || formData[key] === null || formData[key] === undefined) {
+            delete formData[key];
+        }
+    });
+    
+    return formData;
+}
+
+function validateEnhancedRegistration() {
+    const errors = [];
+    
+    // Required fields
+    const email = document.getElementById('authEmail')?.value;
+    const password = document.getElementById('authPassword')?.value;
+    const firstName = document.getElementById('userFirstName')?.value;
+    const lastName = document.getElementById('userLastName')?.value;
+    
+    if (!email) errors.push('E-Mail ist erforderlich');
+    if (!password || password.length < 8) errors.push('Passwort muss mindestens 8 Zeichen haben');
+    if (!firstName) errors.push('Vorname ist erforderlich');
+    if (!lastName) errors.push('Nachname ist erforderlich');
+    
+    return errors;
+}
+
+// Export functions for global use
+window.toggleRegistrationForm = toggleRegistrationForm;
+window.collectEnhancedRegistrationData = collectEnhancedRegistrationData;
+window.validateEnhancedRegistration = validateEnhancedRegistration;
+</script>
