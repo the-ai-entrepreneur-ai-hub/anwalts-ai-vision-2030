@@ -1,0 +1,254 @@
+/*
+ * GPU-Optimized Animations for AnwaltsAI
+ * Uses transform3d, will-change, and contain properties for maximum performance
+ */
+
+/* Force GPU acceleration for critical animations */
+.gpu-accelerated {
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    contain: layout style paint;
+}
+
+/* Optimized floating navbar with GPU acceleration */
+.floating-navbar {
+    will-change: transform, box-shadow;
+    transform: translate3d(0, 0, 0);
+    contain: layout style paint;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.floating-navbar.scrolled {
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* GPU-accelerated feature cards */
+.feature-card {
+    will-change: transform, opacity, filter;
+    transform: translate3d(0, 0, 0);
+    contain: layout style paint;
+    backface-visibility: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.4s ease,
+                filter 0.4s ease;
+}
+
+.feature-card:hover {
+    transform: translate3d(0, -8px, 0) scale(1.02);
+    filter: brightness(1.05);
+}
+
+/* Optimized stacked cards animation */
+.cards-section {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    contain: layout;
+    perspective: 1200px;
+    perspective-origin: 50% 50%;
+}
+
+.feature-card {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+/* GPU-accelerated dragging states */
+.dragging-left {
+    transform: translate3d(-40px, 0, 0) rotateY(-8deg) scale(1.02);
+    will-change: transform;
+}
+
+.dragging-right {
+    transform: translate3d(40px, 0, 0) rotateY(8deg) scale(1.02);
+    will-change: transform;
+}
+
+/* Optimized cloud animations */
+.cloud-background::before,
+.cloud-background::after {
+    will-change: transform;
+    contain: layout style paint;
+    backface-visibility: hidden;
+}
+
+@keyframes cloudFloat {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate3d(-20px, -10px, 0) rotate(1deg) scale(1.02);
+    }
+    50% {
+        transform: translate3d(-10px, -20px, 0) rotate(-1deg) scale(0.98);
+    }
+    75% {
+        transform: translate3d(20px, -5px, 0) rotate(0.5deg) scale(1.01);
+    }
+}
+
+/* GPU-accelerated modal animations */
+.auth-modal {
+    will-change: opacity, transform;
+    transform: translate3d(0, 0, 0);
+    contain: layout style paint;
+    backface-visibility: hidden;
+}
+
+.auth-modal-content {
+    will-change: transform, opacity;
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    backface-visibility: hidden;
+    contain: layout style paint;
+}
+
+.auth-modal.show .auth-modal-content {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    opacity: 1;
+}
+
+.auth-modal:not(.show) .auth-modal-content {
+    transform: translate3d(-50%, -50%, 0) scale(0.95);
+    opacity: 0;
+}
+
+/* Performance-optimized hover states */
+.nav-item,
+.btn,
+.card {
+    will-change: transform, box-shadow;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-item:hover,
+.btn:hover {
+    transform: translate3d(2px, 0, 0);
+}
+
+.card:hover {
+    transform: translate3d(0, -4px, 0);
+}
+
+/* GPU-optimized loading animations */
+@keyframes spin-gpu {
+    0% { transform: rotate3d(0, 0, 1, 0deg); }
+    100% { transform: rotate3d(0, 0, 1, 360deg); }
+}
+
+@keyframes pulse-gpu {
+    0%, 100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate3d(0, 0, 0) scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+.loading-spinner {
+    will-change: transform;
+    animation: spin-gpu 1s linear infinite;
+    contain: layout style paint;
+    backface-visibility: hidden;
+}
+
+/* Chart.js performance optimizations */
+.chart-container {
+    contain: layout style paint;
+    will-change: contents;
+}
+
+.chart-container canvas {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    contain: strict;
+}
+
+/* Mobile-specific GPU optimizations */
+@media (max-width: 768px) {
+    .mobile-optimized {
+        will-change: transform;
+        transform: translate3d(0, 0, 0);
+        contain: layout style;
+    }
+    
+    /* Reduce animation complexity on mobile */
+    .feature-card:hover {
+        transform: translate3d(0, -4px, 0);
+    }
+    
+    /* Simplify cloud animations on mobile */
+    .cloud-background::before,
+    .cloud-background::after {
+        animation-duration: 30s;
+        will-change: transform;
+    }
+}
+
+/* Performance monitoring */
+.perf-monitor {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.7;
+    will-change: contents;
+}
+
+/* Disable animations for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .feature-card,
+    .cloud-background::before,
+    .cloud-background::after,
+    .loading-spinner {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .feature-card:hover {
+        transform: none;
+    }
+}
+
+/* Force GPU compositing for critical elements */
+.critical-gpu {
+    will-change: transform, opacity, filter;
+    transform: translate3d(0, 0, 0);
+    contain: layout style paint;
+    isolation: isolate;
+}
+
+/* Optimized fade transitions */
+.fade-enter {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    will-change: transform, opacity;
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-exit {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}

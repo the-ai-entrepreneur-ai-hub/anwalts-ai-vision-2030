@@ -1,0 +1,199 @@
+version: '3.8'
+
+services:
+  # Primary German Legal AI Model Server
+  german-legal-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile.german-legal
+    container_name: german-legal-ai
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/models/disco-german-legal-7b
+      - QUANTIZED_MODEL_PATH=/models/disco-german-legal-7b-gptq
+      - MAX_CONTEXT_LENGTH=2048
+      - BATCH_SIZE=4
+      - NUM_THREADS=28
+      - TEMPERATURE=0.7
+      - TOP_P=0.9
+    volumes:
+      - ./models:/models:ro
+      - ./logs:/app/logs
+      - ./cache:/app/cache
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 32G
+          cpus: '28'
+        reservations:
+          memory: 16G
+          cpus: '14'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  # Alternative: Ollama Server (for easy deployment)
+  ollama-server:
+    image: ollama/ollama:latest
+    container_name: ollama-german-legal
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_NUM_PARALLEL=2
+      - OLLAMA_MAX_LOADED_MODELS=3
+      - OLLAMA_KEEP_ALIVE=24h
+    volumes:
+      - ./ollama_models:/root/.ollama
+      - ./ollama_logs:/var/log/ollama
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 64G
+          cpus: '28'
+        reservations:
+          memory: 32G
+          cpus: '14'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # vLLM Server (High Performance Option)
+  vllm-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.vllm
+    container_name: vllm-german-legal
+    ports:
+      - "8001:8000"
+    environment:
+      - MODEL=/models/disco-german-legal-7b
+      - MAX_MODEL_LEN=2048
+      - TENSOR_PARALLEL_SIZE=1
+      - GPU_MEMORY_UTILIZATION=0.9
+      - DISABLE_LOG_STATS=false
+    volumes:
+      - ./models:/models:ro
+      - ./vllm_logs:/app/logs
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 48G
+          cpus: '28'
+        reservations:
+          memory: 24G
+          cpus: '14'
+    profiles:
+      - vllm
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 180s
+
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: german-legal-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - german-legal-ai
+      - ollama-server
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '2'
+
+  # Redis for Caching
+  redis:
+    image: redis:7-alpine
+    container_name: german-legal-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: german-legal-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2'
+
+  # Grafana for Dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: german-legal-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '2'
+
+volumes:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

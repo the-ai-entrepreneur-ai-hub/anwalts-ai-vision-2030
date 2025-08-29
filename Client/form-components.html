@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Form Components - AnwaltsAI</title>
+    <link rel="stylesheet" href="anwalts-design-system.css">
+    <script src="form-validation-system.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg-primary, linear-gradient(135deg, #1a1a2e 0%, #16213e 100%));
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        /* Component Grid */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .component-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .component-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .component-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Form Patterns */
+        .form-pattern {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pattern-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        /* Enhanced Form Label */
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: #f87171;
+        }
+
+        /* Help Text */
+        .form-help {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.25rem;
+        }
+
+        /* Input Groups */
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-group-prepend,
+        .input-group-append {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+        }
+
+        .input-group-prepend {
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .input-group-append {
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .input-group .enhanced-field {
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+        }
+
+        .input-group:first-child .enhanced-field {
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px 0 0 8px;
+        }
+
+        .input-group:last-child .enhanced-field {
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Checkbox and Radio Enhancements */
+        .form-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .form-check-input[type="checkbox"] {
+            border-radius: 4px;
+        }
+
+        .form-check-input[type="radio"] {
+            border-radius: 50%;
+        }
+
+        .form-check-label {
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Switch Component */
+        .form-switch {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .switch-input {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            border: none;
+            outline: none;
+        }
+
+        .switch-input:checked {
+            background: #667eea;
+        }
+
+        .switch-input::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .switch-input:checked::after {
+            transform: translateX(24px);
+        }
+
+        /* File Upload Enhancement */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .file-upload-label:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .file-upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #667eea;
+        }
+
+        .file-upload-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-upload-hint {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        /* Progress Indicators */
+        .form-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .form-progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        /* Multi-step Form */
+        .form-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .form-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .form-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 60%;
+            width: 80%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: -1;
+        }
+
+        .form-step.completed::after {
+            background: #667eea;
+        }
+
+        .form-step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-step.active .form-step-number {
+            background: #667eea;
+            color: #ffffff;
+        }
+
+        .form-step.completed .form-step-number {
+            background: #4ade80;
+            color: #ffffff;
+        }
+
+        .form-step-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-step.active .form-step-label {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Floating Labels */
+        .floating-label {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .floating-label .floating-input {
+            padding: 1rem 1rem 0.5rem 1rem;
+        }
+
+        .floating-label .floating-label-text {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: transparent;
+            padding: 0 0.25rem;
+        }
+
+        .floating-label .floating-input:focus + .floating-label-text,
+        .floating-label .floating-input:not(:placeholder-shown) + .floating-label-text {
+            top: 0.75rem;
+            font-size: 0.8rem;
+            color: #667eea;
+            transform: translateY(0);
+        }
+
+        /* Button Groups */
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: flex-end;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .components-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .component-card {
+                padding: 1.5rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .input-group-prepend,
+            .input-group-append {
+                border-radius: 8px;
+                border: 2px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .input-group .enhanced-field {
+                border-radius: 8px;
+                border: 2px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .form-steps {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .form-step:not(:last-child)::after {
+                display: none;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Enhanced Form Components</h1>
+            <p class="page-subtitle">Real-time validation, accessibility features, and consistent UX patterns</p>
+        </div>
+
+        <!-- Components Grid -->
+        <div class="components-grid">
+            <!-- Basic Form Validation -->
+            <div class="component-card">
+                <h2 class="component-title">Basic Form Validation</h2>
+                <p class="component-description">Enhanced form fields with real-time validation, error states, and success feedback.</p>
+                
+                <form class="enhanced-form" id="basicValidationForm">
+                    <div class="form-field">
+                        <label class="form-label required" for="email">E-Mail-Adresse</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="enhanced-field"
+                            placeholder="ihre.email@example.com"
+                            data-validation="required|email"
+                            required
+                        >
+                        <div class="form-help">Wir verwenden Ihre E-Mail nur für wichtige Updates.</div>
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label required" for="password">Passwort</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="enhanced-field"
+                            placeholder="Mindestens 8 Zeichen"
+                            data-validation="required|minLength:{\"min\":8}"
+                            required
+                            minlength="8"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label" for="phone">Telefonnummer (Optional)</label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            class="enhanced-field"
+                            placeholder="+49 123 456 7890"
+                            data-validation="phone"
+                        >
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary">Abbrechen</button>
+                        <button type="submit" class="btn btn-primary">Registrieren</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Input Groups -->
+            <div class="component-card">
+                <h2 class="component-title">Input Groups</h2>
+                <p class="component-description">Enhanced input groups with prepend/append elements for better context.</p>
+                
+                <div class="form-pattern">
+                    <h3 class="pattern-title">URL Input</h3>
+                    <div class="form-field">
+                        <label class="form-label" for="website">Website</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend">https://</span>
+                            <input 
+                                type="text" 
+                                id="website" 
+                                name="website" 
+                                class="enhanced-field"
+                                placeholder="www.example.com"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-pattern">
+                    <h3 class="pattern-title">Price Input</h3>
+                    <div class="form-field">
+                        <label class="form-label" for="price">Preis</label>
+                        <div class="input-group">
+                            <input 
+                                type="number" 
+                                id="price" 
+                                name="price" 
+                                class="enhanced-field"
+                                placeholder="0.00"
+                                step="0.01"
+                                min="0"
+                            >
+                            <span class="input-group-append">EUR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-pattern">
+                    <h3 class="pattern-title">Search Input</h3>
+                    <div class="form-field">
+                        <label class="form-label" for="search">Suchen</label>
+                        <div class="input-group">
+                            <span class="input-group-prepend">🔍</span>
+                            <input 
+                                type="search" 
+                                id="search" 
+                                name="search" 
+                                class="enhanced-field"
+                                placeholder="Dokumente durchsuchen..."
+                            >
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-primary">Suchen</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Labels -->
+            <div class="component-card">
+                <h2 class="component-title">Floating Labels</h2>
+                <p class="component-description">Modern floating label inputs for cleaner form layouts.</p>
+                
+                <div class="floating-label">
+                    <input 
+                        type="text" 
+                        id="floatingName" 
+                        name="floatingName" 
+                        class="enhanced-field floating-input"
+                        placeholder=" "
+                    >
+                    <label class="floating-label-text" for="floatingName">Vollständiger Name</label>
+                </div>
+
+                <div class="floating-label">
+                    <input 
+                        type="email" 
+                        id="floatingEmail" 
+                        name="floatingEmail" 
+                        class="enhanced-field floating-input"
+                        placeholder=" "
+                    >
+                    <label class="floating-label-text" for="floatingEmail">E-Mail-Adresse</label>
+                </div>
+
+                <div class="floating-label">
+                    <textarea 
+                        id="floatingMessage" 
+                        name="floatingMessage" 
+                        class="enhanced-field floating-input"
+                        placeholder=" "
+                        rows="4"
+                    ></textarea>
+                    <label class="floating-label-text" for="floatingMessage">Nachricht</label>
+                </div>
+            </div>
+
+            <!-- File Upload -->
+            <div class="component-card">
+                <h2 class="component-title">File Upload</h2>
+                <p class="component-description">Enhanced file upload with drag-and-drop support and progress indication.</p>
+                
+                <div class="form-field">
+                    <label class="form-label" for="document">Dokument hochladen</label>
+                    <div class="file-upload">
+                        <input 
+                            type="file" 
+                            id="document" 
+                            name="document" 
+                            class="file-upload-input"
+                            accept=".pdf,.doc,.docx"
+                            multiple
+                        >
+                        <label for="document" class="file-upload-label">
+                            <div class="file-upload-icon">📎</div>
+                            <div class="file-upload-text">Dateien hier ablegen oder klicken zum Auswählen</div>
+                            <div class="file-upload-hint">PDF, DOC, DOCX bis 10MB</div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-progress" style="display: none;">
+                    <div class="form-progress-bar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Checkboxes and Radios -->
+            <div class="component-card">
+                <h2 class="component-title">Checkboxes & Radio Buttons</h2>
+                <p class="component-description">Enhanced checkbox and radio button styling with better accessibility.</p>
+                
+                <div class="form-pattern">
+                    <h3 class="pattern-title">Checkboxes</h3>
+                    <div class="form-check">
+                        <input type="checkbox" id="terms" name="terms" class="form-check-input">
+                        <label for="terms" class="form-check-label">
+                            Ich akzeptiere die <a href="#" style="color: #667eea;">Allgemeinen Geschäftsbedingungen</a>
+                        </label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="checkbox" id="newsletter" name="newsletter" class="form-check-input">
+                        <label for="newsletter" class="form-check-label">
+                            Newsletter abonnieren (optional)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-pattern">
+                    <h3 class="pattern-title">Radio Buttons</h3>
+                    <div class="form-check">
+                        <input type="radio" id="plan-basic" name="plan" value="basic" class="form-check-input">
+                        <label for="plan-basic" class="form-check-label">
+                            <strong>Basic Plan</strong> - 29€/Monat<br>
+                            <small style="color: rgba(255,255,255,0.6);">Bis zu 100 Dokumente</small>
+                        </label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input type="radio" id="plan-pro" name="plan" value="pro" class="form-check-input">
+                        <label for="plan-pro" class="form-check-label">
+                            <strong>Pro Plan</strong> - 59€/Monat<br>
+                            <small style="color: rgba(255,255,255,0.6);">Unbegrenzte Dokumente</small>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-pattern">
+                    <h3 class="pattern-title">Switch Toggle</h3>
+                    <div class="form-switch">
+                        <input type="checkbox" id="notifications" name="notifications" class="switch-input">
+                        <label for="notifications" class="form-check-label">
+                            E-Mail-Benachrichtigungen aktivieren
+                        </label>
+                    </div>
+                    
+                    <div class="form-switch">
+                        <input type="checkbox" id="twoFactor" name="twoFactor" class="switch-input">
+                        <label for="twoFactor" class="form-check-label">
+                            Zwei-Faktor-Authentifizierung
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-step Form -->
+            <div class="component-card" style="grid-column: 1 / -1;">
+                <h2 class="component-title">Multi-Step Form</h2>
+                <p class="component-description">Progressive form with step indicators and validation at each stage.</p>
+                
+                <form class="enhanced-form" id="multiStepForm">
+                    <!-- Steps Indicator -->
+                    <div class="form-steps">
+                        <div class="form-step active" data-step="1">
+                            <div class="form-step-number">1</div>
+                            <div class="form-step-label">Persönliche Daten</div>
+                        </div>
+                        <div class="form-step" data-step="2">
+                            <div class="form-step-number">2</div>
+                            <div class="form-step-label">Unternehmensdaten</div>
+                        </div>
+                        <div class="form-step" data-step="3">
+                            <div class="form-step-number">3</div>
+                            <div class="form-step-label">Bestätigung</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 -->
+                    <div class="form-step-content" data-step="1">
+                        <div class="components-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-field">
+                                <label class="form-label required" for="firstName">Vorname</label>
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    name="firstName" 
+                                    class="enhanced-field"
+                                    placeholder="Max"
+                                    data-validation="required|minLength:{\"min\":2}"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-field">
+                                <label class="form-label required" for="lastName">Nachname</label>
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    name="lastName" 
+                                    class="enhanced-field"
+                                    placeholder="Mustermann"
+                                    data-validation="required|minLength:{\"min\":2}"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label required" for="stepEmail">E-Mail-Adresse</label>
+                            <input 
+                                type="email" 
+                                id="stepEmail" 
+                                name="stepEmail" 
+                                class="enhanced-field"
+                                placeholder="max@example.com"
+                                data-validation="required|email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="form-step-content" data-step="2" style="display: none;">
+                        <div class="form-field">
+                            <label class="form-label required" for="company">Unternehmen</label>
+                            <input 
+                                type="text" 
+                                id="company" 
+                                name="company" 
+                                class="enhanced-field"
+                                placeholder="Mustermann Rechtsanwälte"
+                                data-validation="required|minLength:{\"min\":2}"
+                                required
+                            >
+                        </div>
+
+                        <div class="components-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-field">
+                                <label class="form-label required" for="position">Position</label>
+                                <select id="position" name="position" class="enhanced-field" required>
+                                    <option value="">Bitte auswählen</option>
+                                    <option value="partner">Partner</option>
+                                    <option value="associate">Associate</option>
+                                    <option value="assistant">Assistent</option>
+                                    <option value="other">Andere</option>
+                                </select>
+                            </div>
+
+                            <div class="form-field">
+                                <label class="form-label" for="employeeCount">Mitarbeiterzahl</label>
+                                <select id="employeeCount" name="employeeCount" class="enhanced-field">
+                                    <option value="">Bitte auswählen</option>
+                                    <option value="1-5">1-5</option>
+                                    <option value="6-20">6-20</option>
+                                    <option value="21-50">21-50</option>
+                                    <option value="51+">51+</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="form-step-content" data-step="3" style="display: none;">
+                        <div style="background: rgba(102, 126, 234, 0.1); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                            <h3 style="color: #667eea; margin-bottom: 1rem;">Bitte überprüfen Sie Ihre Angaben</h3>
+                            <div id="summaryContent" style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
+                                <!-- Summary will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="form-check" style="margin-top: 1.5rem;">
+                            <input type="checkbox" id="finalConfirm" name="finalConfirm" class="form-check-input" required>
+                            <label for="finalConfirm" class="form-check-label">
+                                Ich bestätige, dass alle Angaben korrekt sind und akzeptiere die Datenschutzerklärung.
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="prevStep" style="display: none;">Zurück</button>
+                        <button type="button" class="btn btn-primary" id="nextStep">Weiter</button>
+                        <button type="submit" class="btn btn-primary" id="submitForm" style="display: none;">Abschließen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Multi-step form logic
+        class MultiStepForm {
+            constructor(form) {
+                this.form = form;
+                this.currentStep = 1;
+                this.totalSteps = form.querySelectorAll('.form-step').length;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateUI();
+            }
+
+            setupEventListeners() {
+                const nextBtn = this.form.querySelector('#nextStep');
+                const prevBtn = this.form.querySelector('#prevStep');
+                const submitBtn = this.form.querySelector('#submitForm');
+
+                nextBtn.addEventListener('click', () => this.nextStep());
+                prevBtn.addEventListener('click', () => this.prevStep());
+                submitBtn.addEventListener('click', (e) => this.handleSubmit(e));
+            }
+
+            nextStep() {
+                if (this.validateCurrentStep()) {
+                    if (this.currentStep < this.totalSteps) {
+                        this.currentStep++;
+                        this.updateUI();
+                        
+                        if (this.currentStep === this.totalSteps) {
+                            this.populateSummary();
+                        }
+                    }
+                }
+            }
+
+            prevStep() {
+                if (this.currentStep > 1) {
+                    this.currentStep--;
+                    this.updateUI();
+                }
+            }
+
+            validateCurrentStep() {
+                const currentContent = this.form.querySelector(`[data-step="${this.currentStep}"]`);
+                const fields = currentContent.querySelectorAll('.enhanced-field');
+                let isValid = true;
+
+                fields.forEach(field => {
+                    if (!window.formValidationSystem.validateField(field)) {
+                        isValid = false;
+                    }
+                });
+
+                return isValid;
+            }
+
+            updateUI() {
+                // Update step indicators
+                this.form.querySelectorAll('.form-step').forEach((step, index) => {
+                    const stepNumber = index + 1;
+                    step.classList.remove('active', 'completed');
+                    
+                    if (stepNumber === this.currentStep) {
+                        step.classList.add('active');
+                    } else if (stepNumber < this.currentStep) {
+                        step.classList.add('completed');
+                    }
+                });
+
+                // Update step content visibility
+                this.form.querySelectorAll('.form-step-content').forEach((content, index) => {
+                    const stepNumber = index + 1;
+                    content.style.display = stepNumber === this.currentStep ? 'block' : 'none';
+                });
+
+                // Update navigation buttons
+                const nextBtn = this.form.querySelector('#nextStep');
+                const prevBtn = this.form.querySelector('#prevStep');
+                const submitBtn = this.form.querySelector('#submitForm');
+
+                prevBtn.style.display = this.currentStep > 1 ? 'block' : 'none';
+                nextBtn.style.display = this.currentStep < this.totalSteps ? 'block' : 'none';
+                submitBtn.style.display = this.currentStep === this.totalSteps ? 'block' : 'none';
+            }
+
+            populateSummary() {
+                const summary = this.form.querySelector('#summaryContent');
+                const formData = new FormData(this.form);
+                let summaryHTML = '<div style="text-align: left;">';
+
+                // Personal Data
+                summaryHTML += '<h4 style="color: #ffffff; margin-bottom: 0.5rem;">Persönliche Daten:</h4>';
+                summaryHTML += `<p><strong>Name:</strong> ${formData.get('firstName')} ${formData.get('lastName')}</p>`;
+                summaryHTML += `<p><strong>E-Mail:</strong> ${formData.get('stepEmail')}</p>`;
+
+                // Company Data
+                summaryHTML += '<h4 style="color: #ffffff; margin: 1rem 0 0.5rem 0;">Unternehmensdaten:</h4>';
+                summaryHTML += `<p><strong>Unternehmen:</strong> ${formData.get('company') || 'Nicht angegeben'}</p>`;
+                summaryHTML += `<p><strong>Position:</strong> ${formData.get('position') || 'Nicht angegeben'}</p>`;
+                summaryHTML += `<p><strong>Mitarbeiterzahl:</strong> ${formData.get('employeeCount') || 'Nicht angegeben'}</p>`;
+
+                summaryHTML += '</div>';
+                summary.innerHTML = summaryHTML;
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+                
+                if (this.validateCurrentStep()) {
+                    // Simulate form submission
+                    const submitBtn = e.target;
+                    const originalText = submitBtn.textContent;
+                    
+                    submitBtn.textContent = 'Wird verarbeitet...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        alert('Registrierung erfolgreich abgeschlossen!');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        this.form.reset();
+                        this.currentStep = 1;
+                        this.updateUI();
+                    }, 2000);
+                }
+            }
+        }
+
+        // File upload enhancements
+        function enhanceFileUploads() {
+            const fileInputs = document.querySelectorAll('.file-upload-input');
+            
+            fileInputs.forEach(input => {
+                const label = input.nextElementSibling;
+                
+                // Drag and drop support
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    label.addEventListener(eventName, preventDefaults, false);
+                });
+                
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    label.addEventListener(eventName, () => label.classList.add('drag-active'), false);
+                });
+                
+                ['dragleave', 'drop'].forEach(eventName => {
+                    label.addEventListener(eventName, () => label.classList.remove('drag-active'), false);
+                });
+                
+                label.addEventListener('drop', handleDrop, false);
+                
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                function handleDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    
+                    input.files = files;
+                    handleFiles(files, label);
+                }
+                
+                // Handle file selection
+                input.addEventListener('change', (e) => {
+                    handleFiles(e.target.files, label);
+                });
+            });
+        }
+
+        function handleFiles(files, label) {
+            const fileArray = Array.from(files);
+            const fileNames = fileArray.map(file => file.name).join(', ');
+            
+            label.querySelector('.file-upload-text').textContent = 
+                fileArray.length === 1 ? fileNames : `${fileArray.length} Dateien ausgewählt`;
+            
+            // Show progress bar
+            const progressContainer = label.closest('.component-card').querySelector('.form-progress');
+            const progressBar = progressContainer.querySelector('.form-progress-bar');
+            
+            progressContainer.style.display = 'block';
+            
+            // Simulate upload progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                        progressBar.style.width = '0%';
+                    }, 1000);
+                }
+                progressBar.style.width = progress + '%';
+            }, 500);
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize multi-step form
+            const multiStepForm = document.getElementById('multiStepForm');
+            if (multiStepForm) {
+                new MultiStepForm(multiStepForm);
+            }
+            
+            // Enhance file uploads
+            enhanceFileUploads();
+            
+            // Add drag active styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .file-upload-label.drag-active {
+                    border-color: #667eea !important;
+                    background: rgba(102, 126, 234, 0.2) !important;
+                    transform: scale(1.02);
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

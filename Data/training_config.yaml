@@ -1,0 +1,315 @@
+# German Legal Model Training Configuration
+# This file contains all configuration options for training German legal models
+
+# =============================================================================
+# MODEL CONFIGURATION
+# =============================================================================
+model:
+  # Base model to use for fine-tuning
+  name: "microsoft/DialoGPT-medium"
+  
+  # Alternative models (comment/uncomment as needed):
+  # name: "microsoft/DialoGPT-small"              # For <6GB GPU
+  # name: "microsoft/DialoGPT-large"              # For >12GB GPU  
+  # name: "meta-llama/Llama-2-7b-hf"              # For >16GB GPU (requires access)
+  # name: "mistralai/Mistral-7B-v0.1"             # For >16GB GPU
+  # name: "google/flan-t5-base"                   # Encoder-decoder model
+  # name: "deepset/gbert-base"                    # German BERT for classification
+  
+  # Model loading configuration
+  torch_dtype: "float16"          # Options: float16, bfloat16, float32
+  device_map: "auto"              # Let transformers handle device placement
+  trust_remote_code: true         # Allow custom model code
+  
+  # Quantization settings (for memory efficiency)
+  quantization:
+    enabled: true                 # Enable 4-bit quantization
+    type: "4bit"                  # Options: 4bit, 8bit
+    compute_dtype: "bfloat16"     # Computation precision
+    double_quant: true            # Use double quantization
+    quant_type: "nf4"             # Quantization type: nf4, fp4
+
+# =============================================================================
+# LORA/QLORA CONFIGURATION
+# =============================================================================
+lora:
+  # LoRA rank (higher = more parameters, better performance, more memory)
+  r: 16                           # Options: 8, 16, 32, 64
+  
+  # LoRA alpha (scaling factor)
+  alpha: 32                       # Usually 2x the rank
+  
+  # Dropout rate for LoRA layers
+  dropout: 0.1                    # Options: 0.05, 0.1, 0.2
+  
+  # Target modules for LoRA adaptation
+  target_modules:
+    # For DialoGPT:
+    - "c_attn"
+    - "c_proj"
+    
+    # For Llama models (uncomment if using Llama):
+    # - "q_proj"
+    # - "v_proj" 
+    # - "k_proj"
+    # - "o_proj"
+    # - "gate_proj"
+    # - "up_proj"
+    # - "down_proj"
+    
+    # For T5 models (uncomment if using T5):
+    # - "q"
+    # - "v"
+    # - "k"
+    # - "o"
+    # - "wi_0"
+    # - "wi_1"
+    # - "wo"
+  
+  # Bias handling
+  bias: "none"                    # Options: none, all, lora_only
+  
+  # Task type
+  task_type: "CAUSAL_LM"          # Options: CAUSAL_LM, SEQ_2_SEQ_LM, TOKEN_CLS
+
+# =============================================================================
+# TRAINING CONFIGURATION
+# =============================================================================
+training:
+  # Output directory
+  output_dir: "./german-legal-model"
+  
+  # Training duration
+  num_epochs: 3                   # Number of training epochs
+  max_steps: -1                   # Max steps (-1 for epoch-based training)
+  
+  # Batch size and gradient accumulation
+  per_device_train_batch_size: 1  # Batch size per GPU
+  gradient_accumulation_steps: 8  # Effective batch size = batch_size * accumulation
+  
+  # Learning rate and optimization
+  learning_rate: 2e-4             # Learning rate
+  weight_decay: 0.001             # L2 regularization
+  adam_beta1: 0.9                 # Adam beta1
+  adam_beta2: 0.999               # Adam beta2
+  adam_epsilon: 1e-8              # Adam epsilon
+  max_grad_norm: 0.3              # Gradient clipping
+  
+  # Optimizer selection
+  optim: "paged_adamw_32bit"      # Options: adamw_torch, paged_adamw_32bit, sgd
+  
+  # Learning rate scheduling
+  lr_scheduler_type: "cosine"     # Options: linear, cosine, constant, polynomial
+  warmup_ratio: 0.03              # Warmup as fraction of total steps
+  warmup_steps: 0                 # Alternative: specify warmup steps directly
+  
+  # Mixed precision training
+  fp16: false                     # Use FP16 (faster but less stable)
+  bf16: true                      # Use BF16 (more stable than FP16)
+  
+  # Memory optimization
+  gradient_checkpointing: true    # Trade compute for memory
+  dataloader_pin_memory: false    # Reduce memory usage
+  remove_unused_columns: false    # Keep all dataset columns
+  
+  # Logging and saving
+  logging_steps: 10               # Log every N steps
+  save_steps: 500                 # Save checkpoint every N steps
+  save_total_limit: 3             # Keep only N recent checkpoints
+  
+  # Data handling
+  group_by_length: true           # Group similar length sequences
+  
+  # Distributed training
+  ddp_find_unused_parameters: false
+
+# =============================================================================
+# DATASET CONFIGURATION
+# =============================================================================
+dataset:
+  # Text processing
+  max_length: 512                 # Maximum sequence length
+  text_field: "text"              # Field containing the text data
+  
+  # Data splits
+  validation_split: 0.1           # Fraction for validation
+  test_split: 0.1                 # Fraction for test set
+  
+  # Data loading
+  dataloader_num_workers: 0       # Number of workers for data loading
+  
+  # Preprocessing options
+  remove_columns: []              # Columns to remove from dataset
+  
+  # Custom dataset paths (if not using default)
+  train_file: null                # Path to training file
+  validation_file: null           # Path to validation file
+  test_file: null                 # Path to test file
+
+# =============================================================================
+# EVALUATION CONFIGURATION
+# =============================================================================
+evaluation:
+  # Evaluation strategy
+  strategy: "steps"               # Options: no, steps, epoch
+  eval_steps: 500                 # Evaluate every N steps
+  
+  # Evaluation batch size
+  per_device_eval_batch_size: 1   # Batch size for evaluation
+  
+  # Model selection
+  metric_for_best_model: "eval_loss"  # Metric to use for best model
+  greater_is_better: false        # Whether higher metric is better
+  load_best_model_at_end: true    # Load best model after training
+  
+  # Early stopping (optional)
+  early_stopping_patience: 3      # Stop if no improvement for N evaluations
+  early_stopping_threshold: 0.001 # Minimum improvement threshold
+
+# =============================================================================
+# LOGGING AND MONITORING
+# =============================================================================
+logging:
+  # Weights & Biases integration
+  report_to: "wandb"              # Options: wandb, tensorboard, none
+  
+  # W&B project settings
+  project: "german-legal-models"  # W&B project name
+  run_name: "legal-model-v1"      # Run name for tracking
+  tags: ["german", "legal", "lora"] # Tags for organization
+  
+  # Additional logging
+  log_level: "info"               # Logging level
+  disable_tqdm: false             # Disable progress bars
+
+# =============================================================================
+# DEPLOYMENT CONFIGURATION  
+# =============================================================================
+deployment:
+  # Hugging Face Hub integration
+  push_to_hub: true               # Push model to HF Hub after training
+  hub_model_id: "your-username/german-legal-model"  # Change this!
+  hub_strategy: "end"             # When to push: end, every_save, checkpoint
+  private: false                  # Make repository private
+  
+  # Model card generation
+  create_model_card: true         # Generate model card
+  
+  # Export formats
+  export_formats:
+    - "pytorch"                   # Standard PyTorch format
+    - "onnx"                      # ONNX format for deployment
+    - "quantized"                 # Quantized version
+
+# =============================================================================
+# PLATFORM-SPECIFIC CONFIGURATIONS
+# =============================================================================
+platforms:
+  # Google Colab optimizations
+  colab:
+    gpu_type: "T4"                # Expected GPU type
+    max_training_hours: 12        # Colab runtime limit
+    checkpoint_frequency: 100     # Save more frequently
+    memory_optimization: true     # Enable all memory optimizations
+    
+  # Kaggle optimizations  
+  kaggle:
+    gpu_type: "P100"              # Expected GPU type
+    max_training_hours: 9         # Kaggle GPU time limit
+    internet_access: true         # Internet available for downloads
+    
+  # Paperspace optimizations
+  paperspace:
+    gpu_type: "M4000"             # Expected GPU type
+    max_training_hours: 6         # Free tier limit
+    storage_limit: "50GB"         # Storage constraint
+
+# =============================================================================
+# ADVANCED TRAINING TECHNIQUES
+# =============================================================================
+advanced:
+  # Curriculum learning
+  curriculum_learning:
+    enabled: false                # Enable curriculum learning
+    start_length: 128             # Start with shorter sequences
+    length_increment: 64          # Increase by this amount each stage
+    stages: 3                     # Number of curriculum stages
+    
+  # Knowledge distillation
+  knowledge_distillation:
+    enabled: false                # Enable teacher-student training
+    teacher_model: null           # Path to teacher model
+    temperature: 4.0              # Distillation temperature
+    alpha: 0.7                    # Weight for distillation loss
+    
+  # Multi-task learning
+  multi_task:
+    enabled: false                # Enable multi-task training
+    tasks: []                     # List of additional tasks
+    task_weights: {}              # Weights for each task loss
+
+# =============================================================================
+# EXPERIMENTAL FEATURES
+# =============================================================================
+experimental:
+  # Gradient checkpointing variants
+  use_reentrant_checkpointing: false
+  
+  # Memory-efficient attention
+  use_flash_attention: false     # Requires flash-attn package
+  
+  # Dynamic loss scaling
+  use_dynamic_loss_scaling: true
+  
+  # Compilation optimizations
+  torch_compile: false           # Use torch.compile() for speedup
+  
+  # Custom loss functions
+  custom_loss: null              # Path to custom loss function
+
+# =============================================================================
+# DATA AUGMENTATION
+# =============================================================================
+data_augmentation:
+  # Text augmentation techniques
+  enabled: false                 # Enable data augmentation
+  
+  # Augmentation methods
+  methods:
+    - "synonym_replacement"       # Replace words with synonyms
+    - "random_insertion"          # Insert random legal terms
+    - "random_swap"               # Swap word positions
+    - "random_deletion"           # Delete random words
+  
+  # Augmentation parameters
+  augmentation_ratio: 0.1        # Fraction of data to augment
+  changes_per_sentence: 2        # Max changes per sentence
+
+# =============================================================================
+# HARDWARE OPTIMIZATION
+# =============================================================================
+hardware:
+  # GPU settings
+  gpu_memory_growth: true        # Allow GPU memory to grow dynamically
+  mixed_precision_policy: "mixed_float16"  # Mixed precision strategy
+  
+  # CPU settings
+  cpu_count: null                # Number of CPU cores (null for auto)
+  
+  # Memory management
+  max_memory_gb: null            # Maximum memory usage (null for auto)
+  cache_dir: "./cache"           # Directory for model cache
+
+# =============================================================================
+# REPRODUCIBILITY
+# =============================================================================
+reproducibility:
+  # Random seeds
+  seed: 42                       # Random seed for reproducibility
+  data_seed: 42                  # Seed for data shuffling
+  
+  # Deterministic training
+  deterministic: false           # Enable deterministic algorithms (slower)
+  
+  # Environment variables
+  set_env_vars: true             # Set reproducibility environment variables

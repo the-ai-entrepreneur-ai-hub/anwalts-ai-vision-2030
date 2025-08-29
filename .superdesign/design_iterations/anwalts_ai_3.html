@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Same meta -->
+    <style>
+        .kanban-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        .kanban-column {
+            background: var(--secondary);
+            border-radius: calc(var(--radius)*1.5);
+        }
+    </style>
+</head>
+<body>
+    <main class="kanban-grid gap-6 p-8">
+        <div class="kanban-column">
+            <h3 class="text-primary">Drafting</h3>
+            <!-- Document cards -->
+        </div>
+        <div class="kanban-column">
+            <h3 class="text-primary">Review</h3>
+            <!-- Cards -->
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI Design System Guide</title>
+    <link rel="stylesheet" href="anwalts-design-system.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg-primary);
+            color: #ffffff;
+            padding: var(--spacing-8);
+            background: var(--gradient-surface);
+        }
+
+        .guide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: var(--spacing-12);
+        }
+
+        .component-demo {
+            background: var(--dark-surface);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-6);
+            margin: var(--spacing-4) 0;
+        }
+
+        .demo-title {
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            color: white;
+            margin-bottom: var(--spacing-4);
+            padding-bottom: var(--spacing-2);
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-4);
+            margin: var(--spacing-4) 0;
+        }
+
+        .color-swatch {
+            width: 100px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: end;
+            padding: var(--spacing-2);
+            color: white;
+            font-size: var(--text-xs);
+            font-weight: var(--font-medium);
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--dark-border);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-4);
+            margin: var(--spacing-4) 0;
+            font-family: 'Courier New', monospace;
+            font-size: var(--text-sm);
+            overflow-x: auto;
+        }
+
+        .usage-example {
+            background: var(--dark-surface);
+            border-left: 4px solid var(--primary-500);
+            padding: var(--spacing-4);
+            margin: var(--spacing-4) 0;
+        }
+
+        .accessibility-note {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success-500);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-4);
+            margin: var(--spacing-4) 0;
+            color: var(--success-500);
+        }
+
+        .spacing-demo {
+            background: var(--primary-500);
+            color: white;
+            display: inline-block;
+            text-align: center;
+            font-size: var(--text-xs);
+            font-weight: var(--font-medium);
+        }
+    </style>
+</head>
+<body>
+    <div class="guide-container">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="page-title">AnwaltsAI Design System</h1>
+            <p class="page-subtitle">Consistent, accessible, and professional UI components for all admin interfaces</p>
+        </div>
+
+        <!-- Color System -->
+        <div class="section">
+            <h2 class="h2">Color System</h2>
+            <p class="text-base mb-6">Our color palette is designed for accessibility and professional appearance in dark interfaces.</p>
+            
+            <div class="component-demo">
+                <h3 class="demo-title">Primary Colors</h3>
+                <div class="demo-grid">
+                    <div class="color-swatch" style="background: var(--primary-400);">400</div>
+                    <div class="color-swatch" style="background: var(--primary-500);">500</div>
+                    <div class="color-swatch" style="background: var(--primary-600);">600</div>
+                    <div class="color-swatch" style="background: var(--primary-700);">700</div>
+                </div>
+                
+                <h3 class="demo-title">Secondary Colors</h3>
+                <div class="demo-grid">
+                    <div class="color-swatch" style="background: var(--secondary-400);">400</div>
+                    <div class="color-swatch" style="background: var(--secondary-500);">500</div>
+                    <div class="color-swatch" style="background: var(--secondary-600);">600</div>
+                    <div class="color-swatch" style="background: var(--secondary-700);">700</div>
+                </div>
+
+                <h3 class="demo-title">Semantic Colors</h3>
+                <div class="demo-grid">
+                    <div class="color-swatch" style="background: var(--success-500);">Success</div>
+                    <div class="color-swatch" style="background: var(--warning-500);">Warning</div>
+                    <div class="color-swatch" style="background: var(--error-500);">Error</div>
+                    <div class="color-swatch" style="background: var(--info-500);">Info</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="section">
+            <h2 class="h2">Typography Scale</h2>
+            <p class="text-base mb-6">Consistent typography hierarchy for better readability and visual structure.</p>
+            
+            <div class="component-demo">
+                <h1 class="h1">Heading 1 - Main Page Titles</h1>
+                <h2 class="h2">Heading 2 - Section Titles</h2>
+                <h3 class="h3">Heading 3 - Subsection Titles</h3>
+                <h4 class="h4">Heading 4 - Component Titles</h4>
+                <p class="text-base">Body text - Regular paragraph content for descriptions and instructions.</p>
+                <p class="text-sm">Small text - Secondary information, captions, and metadata.</p>
+                <p class="text-xs">Extra small text - Labels, timestamps, and fine print.</p>
+            </div>
+        </div>
+
+        <!-- Button System -->
+        <div class="section">
+            <h2 class="h2">Button System</h2>
+            <p class="text-base mb-6">Standardized button styles with consistent sizing, colors, and interactive states.</p>
+            
+            <div class="component-demo">
+                <h3 class="demo-title">Button Variants</h3>
+                <div class="demo-grid">
+                    <button class="btn btn-primary">Primary Button</button>
+                    <button class="btn btn-secondary">Secondary Button</button>
+                    <button class="btn btn-success">Success Button</button>
+                    <button class="btn btn-danger">Danger Button</button>
+                    <button class="btn btn-ghost">Ghost Button</button>
+                    <button class="btn btn-primary" disabled>Disabled Button</button>
+                </div>
+
+                <h3 class="demo-title">Button Sizes</h3>
+                <div class="flex items-center gap-4">
+                    <button class="btn btn-primary btn-sm">Small</button>
+                    <button class="btn btn-primary btn-md">Medium</button>
+                    <button class="btn btn-primary btn-lg">Large</button>
+                    <button class="btn btn-primary btn-xl">Extra Large</button>
+                </div>
+
+                <div class="code-block">
+&lt;!-- Primary Action --&gt;
+&lt;button class="btn btn-primary"&gt;Save Changes&lt;/button&gt;
+
+&lt;!-- Secondary Action --&gt;
+&lt;button class="btn btn-secondary"&gt;Cancel&lt;/button&gt;
+
+&lt;!-- Destructive Action --&gt;
+&lt;button class="btn btn-danger"&gt;Delete Item&lt;/button&gt;
+
+&lt;!-- Different Sizes --&gt;
+&lt;button class="btn btn-primary btn-lg"&gt;Large Button&lt;/button&gt;
+&lt;button class="btn btn-primary btn-sm"&gt;Small Button&lt;/button&gt;
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Controls -->
+        <div class="section">
+            <h2 class="h2">Form Controls</h2>
+            <p class="text-base mb-6">Consistent form inputs with proper focus states and accessibility.</p>
+            
+            <div class="component-demo">
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="form-label">Text Input</label>
+                        <input type="text" class="form-input" placeholder="Enter text here...">
+                    </div>
+                    <div>
+                        <label class="form-label">Select Dropdown</label>
+                        <select class="form-input">
+                            <option>Choose option...</option>
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                        </select>
+                    </div>
+                    <div class="grid-cols-2">
+                        <label class="form-label">Textarea</label>
+                        <textarea class="form-input" rows="3" placeholder="Enter longer text..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="section">
+            <h2 class="h2">Card Components</h2>
+            <p class="text-base mb-6">Glass morphism cards with consistent styling and hover effects.</p>
+            
+            <div class="component-demo">
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Metric Card</h3>
+                            <span class="status-badge status-active">Active</span>
+                        </div>
+                        <div class="text-3xl font-bold text-primary-500 mb-2">1,247</div>
+                        <div class="text-sm text-success-500">↗️ +12.5% vs last month</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Status Card</h3>
+                            <span class="status-badge status-warning">Warning</span>
+                        </div>
+                        <div class="text-base">This card shows warning status with consistent styling.</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Info Card</h3>
+                            <span class="status-badge status-info">Info</span>
+                        </div>
+                        <div class="text-base">Information card with standard layout and typography.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Badges -->
+        <div class="section">
+            <h2 class="h2">Status System</h2>
+            <p class="text-base mb-6">Consistent status indicators with semantic colors.</p>
+            
+            <div class="component-demo">
+                <div class="flex gap-4 items-center">
+                    <span class="status-badge status-active">Active</span>
+                    <span class="status-badge status-warning">Warning</span>
+                    <span class="status-badge status-error">Error</span>
+                    <span class="status-badge status-info">Info</span>
+                </div>
+                
+                <div class="code-block mt-6">
+&lt;span class="status-badge status-active"&gt;Active&lt;/span&gt;
+&lt;span class="status-badge status-warning"&gt;Warning&lt;/span&gt;
+&lt;span class="status-badge status-error"&gt;Error&lt;/span&gt;
+&lt;span class="status-badge status-info"&gt;Info&lt;/span&gt;
+                </div>
+            </div>
+        </div>
+
+        <!-- Spacing System -->
+        <div class="section">
+            <h2 class="h2">Spacing System</h2>
+            <p class="text-base mb-6">Consistent spacing scale for layout and component spacing.</p>
+            
+            <div class="component-demo">
+                <div class="grid grid-cols-4 gap-4">
+                    <div>
+                        <div class="spacing-demo" style="padding: var(--spacing-1);">--spacing-1 (4px)</div>
+                    </div>
+                    <div>
+                        <div class="spacing-demo" style="padding: var(--spacing-2);">--spacing-2 (8px)</div>
+                    </div>
+                    <div>
+                        <div class="spacing-demo" style="padding: var(--spacing-4);">--spacing-4 (16px)</div>
+                    </div>
+                    <div>
+                        <div class="spacing-demo" style="padding: var(--spacing-6);">--spacing-6 (24px)</div>
+                    </div>
+                </div>
+                
+                <div class="code-block">
+/* Use CSS variables for consistent spacing */
+.component {
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+    gap: var(--spacing-3);
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- Accessibility Guidelines -->
+        <div class="section">
+            <h2 class="h2">Accessibility Guidelines</h2>
+            <p class="text-base mb-6">Our design system follows WCAG guidelines for accessibility compliance.</p>
+            
+            <div class="accessibility-note">
+                <h3 class="demo-title">Key Accessibility Features</h3>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>All color combinations meet WCAG AA contrast requirements (4.5:1 minimum)</li>
+                    <li>Focus indicators are clearly visible and consistent</li>
+                    <li>Interactive elements have minimum touch target size of 44px</li>
+                    <li>Motion respects user preferences with reduced motion support</li>
+                    <li>High contrast mode support for users who need it</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Usage Guidelines -->
+        <div class="section">
+            <h2 class="h2">Usage Guidelines</h2>
+            <p class="text-base mb-6">Best practices for implementing the design system consistently.</p>
+            
+            <div class="usage-example">
+                <h3 class="demo-title">Do's and Don'ts</h3>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-success-500 font-semibold mb-3">✅ Do</h4>
+                        <ul class="text-sm space-y-2">
+                            <li>Use design tokens (CSS variables) for colors and spacing</li>
+                            <li>Follow the component class naming conventions</li>
+                            <li>Test components in both light and dark themes</li>
+                            <li>Ensure proper focus management for accessibility</li>
+                            <li>Use semantic HTML elements where appropriate</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-error-500 font-semibold mb-3">❌ Don't</h4>
+                        <ul class="text-sm space-y-2">
+                            <li>Hard-code colors or spacing values</li>
+                            <li>Create custom button styles without good reason</li>
+                            <li>Skip accessibility testing</li>
+                            <li>Mix different design patterns inconsistently</li>
+                            <li>Override system styles with !important unless necessary</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Notes -->
+        <div class="section">
+            <h2 class="h2">Implementation</h2>
+            <p class="text-base mb-6">How to integrate and use the design system in your projects.</p>
+            
+            <div class="component-demo">
+                <h3 class="demo-title">Integration Steps</h3>
+                <ol class="list-decimal list-inside space-y-3 text-base">
+                    <li>Include the design system CSS file in your HTML head:
+                        <div class="code-block">
+&lt;link rel="stylesheet" href="anwalts-design-system.css"&gt;
+                        </div>
+                    </li>
+                    <li>Use standardized class names for components:
+                        <div class="code-block">
+&lt;button class="btn btn-primary btn-lg"&gt;Action&lt;/button&gt;
+&lt;div class="card"&gt;
+    &lt;div class="card-header"&gt;
+        &lt;h3 class="card-title"&gt;Title&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class="card-body"&gt;Content&lt;/div&gt;
+&lt;/div&gt;
+                        </div>
+                    </li>
+                    <li>Follow consistent patterns for new components</li>
+                    <li>Test across different screen sizes and accessibility tools</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-16 pt-8 border-t border-opacity-20 border-white">
+            <p class="text-sm text-neutral-400">
+                AnwaltsAI Design System v1.0 - Created for consistent admin interfaces
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

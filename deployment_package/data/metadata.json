@@ -1,0 +1,46 @@
+{
+  "total_samples": 9997,
+  "splits": {
+    "train": 7997,
+    "validation": 999,
+    "test": 1001
+  },
+  "format": "instruction_tuning",
+  "language": "german",
+  "domain": "legal",
+  "generation_method": "massive_synthetic_generation",
+  "build_date": "2025-08-05T01:41:12.760586",
+  "target_size": 10000,
+  "domains_covered": [
+    "buergerliches_recht",
+    "strafrecht",
+    "verfassungsrecht",
+    "verwaltungsrecht",
+    "arbeitsrecht"
+  ],
+  "sources": [
+    "synthetic_legal_qa",
+    "synthetic_case_study",
+    "unknown"
+  ],
+  "categories": [
+    "verwaltungsrecht_case",
+    "verfassungsrecht_case",
+    "arbeitsrecht_case",
+    "buergerliches_recht",
+    "unknown",
+    "verwaltungsrecht",
+    "buergerliches_recht_case",
+    "arbeitsrecht",
+    "strafrecht",
+    "verfassungsrecht",
+    "strafrecht_case"
+  ],
+  "instruction_types": [
+    "definition",
+    "explanation",
+    "application",
+    "consequences",
+    "comparison"
+  ]
+}

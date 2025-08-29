@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Main gradient from dark blue to bright azure -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Accent gradient for highlights -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Neural network pattern -->
+    <pattern id="neuralPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="1" fill="#ffffff" opacity="0.3"/>
+      <circle cx="5" cy="5" r="0.5" fill="#ffffff" opacity="0.2"/>
+      <circle cx="15" cy="15" r="0.5" fill="#ffffff" opacity="0.2"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background circle for the logo -->
+  <circle cx="100" cy="100" r="90" fill="url(#mainGradient)" stroke="#1e40af" stroke-width="2"/>
+  
+  <!-- Letter "A" main structure - geometric and modern -->
+  <g transform="translate(100, 100)">
+    <!-- Left side of A -->
+    <polygon points="-35,-40 -20,-40 -5,0 -15,0" fill="white" opacity="0.95"/>
+    <!-- Right side of A -->
+    <polygon points="5,0 15,0 20,-40 35,-40" fill="white" opacity="0.95"/>
+    <!-- Top of A -->
+    <polygon points="-20,-40 -10,-50 10,-50 20,-40 10,-30 -10,-30" fill="white"/>
+    <!-- Cross bar of A -->
+    <rect x="-12" y="-15" width="24" height="4" fill="url(#accentGradient)"/>
+    
+    <!-- Legal scales symbol integrated into the A -->
+    <g transform="translate(0, 15) scale(0.6)">
+      <!-- Scale base -->
+      <rect x="-2" y="15" width="4" height="20" fill="white" opacity="0.9"/>
+      <!-- Left scale pan -->
+      <ellipse cx="-15" cy="5" rx="8" ry="3" fill="white" opacity="0.8"/>
+      <line x1="-15" y1="5" x2="-8" y2="-5" stroke="white" stroke-width="1.5"/>
+      <!-- Right scale pan -->
+      <ellipse cx="15" cy="5" rx="8" ry="3" fill="white" opacity="0.8"/>
+      <line x1="15" y1="5" x2="8" y2="-5" stroke="white" stroke-width="1.5"/>
+      <!-- Scale beam -->
+      <line x1="-8" y1="-5" x2="8" y2="-5" stroke="white" stroke-width="2"/>
+    </g>
+    
+    <!-- AI circuit pattern overlay -->
+    <g opacity="0.3">
+      <!-- Circuit lines -->
+      <line x1="-30" y1="-20" x2="-10" y2="-20" stroke="#ffffff" stroke-width="1"/>
+      <line x1="10" y1="-20" x2="30" y2="-20" stroke="#ffffff" stroke-width="1"/>
+      <line x1="-30" y1="20" x2="-10" y2="20" stroke="#ffffff" stroke-width="1"/>
+      <line x1="10" y1="20" x2="30" y2="20" stroke="#ffffff" stroke-width="1"/>
+      <!-- Circuit nodes -->
+      <circle cx="-25" cy="-20" r="2" fill="#ffffff"/>
+      <circle cx="25" cy="-20" r="2" fill="#ffffff"/>
+      <circle cx="-25" cy="20" r="2" fill="#ffffff"/>
+      <circle cx="25" cy="20" r="2" fill="#ffffff"/>
+    </g>
+  </g>
+  
+  <!-- Subtle neural network overlay -->
+  <circle cx="100" cy="100" r="85" fill="url(#neuralPattern)" opacity="0.4"/>
+  
+  <!-- Outer glow effect -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="url(#accentGradient)" stroke-width="1" opacity="0.5"/>
+</svg>

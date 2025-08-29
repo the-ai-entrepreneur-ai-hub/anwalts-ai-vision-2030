@@ -1,0 +1,121 @@
+{
+  "orchestration_metrics": {
+    "project_start": "${new Date().toISOString()}",
+    "target_samples": 10000,
+    "buffer_target": 12000,
+    "quality_threshold": 0.85,
+    "duplicate_limit": 0.05,
+    "agents_deployed": 0,
+    "agents_active": 0
+  },
+  "agent_metrics": {
+    "web_scraper": {
+      "agent_id": "agent-01",
+      "target_samples": 3000,
+      "collected_samples": 0,
+      "quality_score": 0,
+      "status": "pending",
+      "last_update": null
+    },
+    "database_miner": {
+      "agent_id": "agent-02", 
+      "target_samples": 2500,
+      "collected_samples": 0,
+      "quality_score": 0,
+      "status": "pending",
+      "last_update": null
+    },
+    "document_transformer": {
+      "agent_id": "agent-03",
+      "target_samples": 2000,
+      "collected_samples": 0,
+      "quality_score": 0,
+      "status": "pending", 
+      "last_update": null
+    },
+    "synthetic_generator": {
+      "agent_id": "agent-04",
+      "target_samples": 2000,
+      "collected_samples": 0,
+      "quality_score": 0,
+      "status": "pending",
+      "last_update": null
+    },
+    "quality_assurance": {
+      "agent_id": "agent-05",
+      "target_samples": 0,
+      "validated_samples": 0,
+      "rejected_samples": 0,
+      "duplicate_count": 0,
+      "quality_score": 0,
+      "status": "pending",
+      "last_update": null
+    }
+  },
+  "resource_allocation": {
+    "cpu_usage": {
+      "total_cores": 8,
+      "allocated_per_agent": 1.6,
+      "utilization": 0
+    },
+    "memory_usage": {
+      "total_gb": 32,
+      "allocated_per_agent": 6,
+      "reserved_gb": 2,
+      "utilization": 0
+    },
+    "storage_usage": {
+      "total_gb": 500,
+      "allocated_gb": 100,
+      "used_gb": 0
+    },
+    "network_limits": {
+      "requests_per_minute": 60,
+      "concurrent_connections": 10,
+      "rate_limiting": true
+    }
+  },
+  "quality_gates": {
+    "legal_accuracy": {
+      "threshold": 0.9,
+      "current": 0,
+      "samples_validated": 0
+    },
+    "language_quality": {
+      "threshold": 0.85,
+      "current": 0,
+      "samples_validated": 0
+    },
+    "format_consistency": {
+      "threshold": 1.0,
+      "current": 0,
+      "samples_validated": 0
+    },
+    "domain_coverage": {
+      "required_domains": 15,
+      "covered_domains": 0,
+      "coverage_percentage": 0
+    }
+  },
+  "phase_tracking": {
+    "current_phase": "initialization",
+    "phase_1_collection": {
+      "status": "pending",
+      "start_time": null,
+      "estimated_completion": null,
+      "progress": 0
+    },
+    "phase_2_processing": {
+      "status": "pending", 
+      "start_time": null,
+      "estimated_completion": null,
+      "progress": 0
+    },
+    "phase_3_validation": {
+      "status": "pending",
+      "start_time": null,
+      "estimated_completion": null,
+      "progress": 0
+    }
+  }
+}

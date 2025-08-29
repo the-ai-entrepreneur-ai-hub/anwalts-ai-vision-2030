@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Same meta tags -->
+    <link rel="stylesheet" href="legal_dark_theme.css">
+    <style>
+        .dashboard-grid {
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+        .data-visualization {
+            background: var(--secondary);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+    <div class="dashboard-grid container mx-auto p-8">
+        <div class="space-y-8">
+            <div class="card">
+                <h2 class="text-accent">Recent Documents</h2>
+                <!-- Document list -->
+            </div>
+            <div class="data-visualization">
+                <h3>Case Progress</h3>
+                <!-- Chart -->
+            </div>
+        </div>
+        <aside class="quick-access bg-card p-6 rounded-xl">
+            <!-- Quick action buttons -->
+        </aside>
+    </div>
+</body>
+</html>

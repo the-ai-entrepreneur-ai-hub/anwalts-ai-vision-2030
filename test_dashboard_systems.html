@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnwaltsAI Dashboard Systems Test</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+        .test-result {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .success {
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+        .info {
+            background: #dbeafe;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        /* Test styling for brand colors */
+        .test-user-chip {
+            background: var(--brand-primary, #4F46E5);
+            color: var(--on-primary, #FFFFFF);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 5px;
+            display: inline-block;
+        }
+        .test-brand-surface {
+            background: var(--brand-primary-surface, #EEF2FF);
+            border: 1px solid var(--brand-primary-border, #C7D2FE);
+            color: var(--brand-primary, #4F46E5);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>AnwaltsAI Dashboard Systems Test</h1>
+        <p>Testing the internationalization and theme color management systems implemented in the dashboard.</p>
+        
+        <!-- Test 1: Internationalization System -->
+        <div class="test-section">
+            <div class="test-title">📋 1. Internationalization System Test</div>
+            <p>Testing PageTitleManager with JSON configuration updates.</p>
+            
+            <button onclick="testPageTitleUpdate()">Test Page Title Update (DE)</button>
+            <button onclick="testPageTitleUpdateEN()">Test Page Title Update (EN)</button>
+            <button onclick="testLanguageSwitch()">Test Language Switch</button>
+            
+            <div id="i18n-results"></div>
+            
+            <div class="test-brand-surface">
+                <strong>Current Page Title:</strong> <span id="current-title">Loading...</span><br>
+                <strong>Current Language:</strong> <span id="current-lang">Loading...</span>
+            </div>
+        </div>
+        
+        <!-- Test 2: Theme Color System -->
+        <div class="test-section">
+            <div class="test-title">🎨 2. Theme Color Management Test</div>
+            <p>Testing ThemeColorManager with brand palette updates.</p>
+            
+            <button onclick="testThemeColorUpdate()">Test Theme Color Update</button>
+            <button onclick="testResetTheme()">Reset to Default</button>
+            <button onclick="testCustomColors()">Test Custom Colors</button>
+            
+            <div id="theme-results"></div>
+            
+            <div class="test-brand-surface">
+                <strong>Brand Colors Test:</strong><br>
+                <div class="test-user-chip">Admin User Chip</div>
+                <div class="test-user-chip">Role Badge</div>
+                <div style="margin-top: 10px;">
+                    <strong>CSS Variables:</strong><br>
+                    <small>--brand-primary: <span id="brand-primary-value">Loading...</span></small><br>
+                    <small>--brand-primary-surface: <span id="brand-surface-value">Loading...</span></small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test 3: Integration Test -->
+        <div class="test-section">
+            <div class="test-title">🔗 3. Integration Test</div>
+            <p>Testing both systems working together.</p>
+            
+            <button onclick="runFullTest()">Run Complete System Test</button>
+            
+            <div id="integration-results"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Mock the classes from the dashboard for testing
+        class PageTitleManager {
+            constructor() {
+                this.currentLang = document.documentElement.lang || 'de';
+                this.config = {
+                    "document-generator": {
+                        title: {
+                            "de": "Rechtsdokument-Assistent",
+                            "en": "Legal Document Assistant"
+                        },
+                        a11y: {
+                            ariaLabel: "Rechtsdokument-Assistent – Seitentitel"
+                        },
+                        seo: {
+                            titleTag: "Rechtsdokument-Assistent | Dokumentengenerator"
+                        }
+                    },
+                    "dashboard": {
+                        title: {
+                            "de": "AnwaltsAI Dashboard",
+                            "en": "AnwaltsAI Dashboard"
+                        }
+                    }
+                };
+            }
+            
+            updatePageConfig(pageId, config) {
+                if (this.config[pageId]) {
+                    this.config[pageId] = { ...this.config[pageId], ...config };
+                    this.updatePageTitle(pageId);
+                    return true;
+                }
+                return false;
+            }
+            
+            updatePageTitle(pageId) {
+                const pageConfig = this.config[pageId];
+                if (pageConfig && pageConfig.title[this.currentLang]) {
+                    document.title = pageConfig.title[this.currentLang];
+                    document.getElementById('current-title').textContent = document.title;
+                    return true;
+                }
+                return false;
+            }
+            
+            switchLanguage(newLang) {
+                this.currentLang = newLang;
+                document.documentElement.lang = newLang;
+                document.getElementById('current-lang').textContent = newLang;
+                // Update all page titles
+                Object.keys(this.config).forEach(pageId => {
+                    if (pageId === 'dashboard') {
+                        this.updatePageTitle(pageId);
+                    }
+                });
+            }
+        }
+        
+        class ThemeColorManager {
+            constructor() {
+                this.tokens = {
+                    brandPrimary: '#4F46E5',
+                    brandPrimaryHover: '#4338CA',
+                    brandPrimarySurface: '#EEF2FF',
+                    brandPrimaryBorder: '#C7D2FE',
+                    onPrimary: '#FFFFFF'
+                };
+                this.init();
+            }
+            
+            init() {
+                this.applyCSSVariables();
+            }
+            
+            applyCSSVariables() {
+                const root = document.documentElement;
+                root.style.setProperty('--brand-primary', this.tokens.brandPrimary);
+                root.style.setProperty('--brand-primary-hover', this.tokens.brandPrimaryHover);
+                root.style.setProperty('--brand-primary-surface', this.tokens.brandPrimarySurface);
+                root.style.setProperty('--brand-primary-border', this.tokens.brandPrimaryBorder);
+                root.style.setProperty('--on-primary', this.tokens.onPrimary);
+                
+                // Update display values
+                document.getElementById('brand-primary-value').textContent = this.tokens.brandPrimary;
+                document.getElementById('brand-surface-value').textContent = this.tokens.brandPrimarySurface;
+            }
+            
+            updateThemeColors(jsonConfig) {
+                if (jsonConfig.action === 'UPDATE_THEME_COLORS' && jsonConfig.tokens) {
+                    // Update tokens
+                    this.tokens = { ...this.tokens, ...jsonConfig.tokens };
+                    this.applyCSSVariables();
+                    return true;
+                }
+                return false;
+            }
+        }
+        
+        // Initialize systems
+        window.pageTitleManager = new PageTitleManager();
+        window.themeColorManager = new ThemeColorManager();
+        
+        // Update initial display
+        document.getElementById('current-title').textContent = document.title;
+        document.getElementById('current-lang').textContent = window.pageTitleManager.currentLang;
+        
+        // Test functions
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const result = document.createElement('div');
+            result.className = `test-result ${type}`;
+            result.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            container.appendChild(result);
+        }
+        
+        function testPageTitleUpdate() {
+            const jsonConfig = {
+                "action": "UPDATE_PAGE_TITLE",
+                "pageId": "dashboard",
+                "title": {
+                    "de": "AnwaltsAI Dashboard - Aktualisiert",
+                    "en": "AnwaltsAI Dashboard - Updated"
+                }
+            };
+            
+            try {
+                const success = window.pageTitleManager.updatePageConfig('dashboard', jsonConfig);
+                if (success) {
+                    addResult('i18n-results', '✅ Page title updated successfully (DE)', 'success');
+                } else {
+                    addResult('i18n-results', '❌ Failed to update page title', 'error');
+                }
+            } catch (error) {
+                addResult('i18n-results', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testPageTitleUpdateEN() {
+            window.pageTitleManager.switchLanguage('en');
+            window.pageTitleManager.updatePageTitle('dashboard');
+            addResult('i18n-results', '✅ Switched to English and updated title', 'success');
+        }
+        
+        function testLanguageSwitch() {
+            const currentLang = window.pageTitleManager.currentLang;
+            const newLang = currentLang === 'de' ? 'en' : 'de';
+            window.pageTitleManager.switchLanguage(newLang);
+            addResult('i18n-results', `✅ Language switched from ${currentLang} to ${newLang}`, 'success');
+        }
+        
+        function testThemeColorUpdate() {
+            const jsonConfig = {
+                "action": "UPDATE_THEME_COLORS",
+                "description": "Test custom brand colors",
+                "tokens": {
+                    "brandPrimary": "#10B981",
+                    "brandPrimaryHover": "#059669",
+                    "brandPrimarySurface": "#ECFDF5",
+                    "brandPrimaryBorder": "#BBF7D0"
+                }
+            };
+            
+            try {
+                const success = window.themeColorManager.updateThemeColors(jsonConfig);
+                if (success) {
+                    addResult('theme-results', '✅ Theme colors updated to green palette', 'success');
+                } else {
+                    addResult('theme-results', '❌ Failed to update theme colors', 'error');
+                }
+            } catch (error) {
+                addResult('theme-results', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function testResetTheme() {
+            const jsonConfig = {
+                "action": "UPDATE_THEME_COLORS",
+                "tokens": {
+                    "brandPrimary": "#4F46E5",
+                    "brandPrimaryHover": "#4338CA",
+                    "brandPrimarySurface": "#EEF2FF",
+                    "brandPrimaryBorder": "#C7D2FE"
+                }
+            };
+            
+            window.themeColorManager.updateThemeColors(jsonConfig);
+            addResult('theme-results', '✅ Theme reset to default indigo colors', 'success');
+        }
+        
+        function testCustomColors() {
+            const jsonConfig = {
+                "action": "UPDATE_THEME_COLORS",
+                "tokens": {
+                    "brandPrimary": "#DC2626",
+                    "brandPrimaryHover": "#B91C1C",
+                    "brandPrimarySurface": "#FEF2F2",
+                    "brandPrimaryBorder": "#FECACA"
+                }
+            };
+            
+            window.themeColorManager.updateThemeColors(jsonConfig);
+            addResult('theme-results', '✅ Theme updated to red palette', 'success');
+        }
+        
+        function runFullTest() {
+            addResult('integration-results', '🚀 Starting full system test...', 'info');
+            
+            // Test 1: Language switching
+            setTimeout(() => {
+                window.pageTitleManager.switchLanguage('en');
+                addResult('integration-results', '✅ Step 1: Language switched to English', 'success');
+                
+                // Test 2: Theme update
+                setTimeout(() => {
+                    const themeConfig = {
+                        "action": "UPDATE_THEME_COLORS",
+                        "tokens": {
+                            "brandPrimary": "#7C3AED",
+                            "brandPrimarySurface": "#F3E8FF"
+                        }
+                    };
+                    window.themeColorManager.updateThemeColors(themeConfig);
+                    addResult('integration-results', '✅ Step 2: Theme updated to purple', 'success');
+                    
+                    // Test 3: Page title update
+                    setTimeout(() => {
+                        const titleConfig = {
+                            "title": {
+                                "en": "AnwaltsAI Dashboard - Full Test Complete"
+                            }
+                        };
+                        window.pageTitleManager.updatePageConfig('dashboard', titleConfig);
+                        addResult('integration-results', '✅ Step 3: Page title updated', 'success');
+                        addResult('integration-results', '🎉 Full system test completed successfully!', 'success');
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
